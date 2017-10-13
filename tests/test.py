@@ -1,7 +1,10 @@
+import sys
+sys.path.append('..')
+
 from app import app
 import urllib2
 from flask import Flask
-from flask_testing import LiveServerTestCase 
+from flask_testing import LiveServerTestCase
 import unittest
 
 # Testing with LiveServer
