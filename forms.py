@@ -4,6 +4,7 @@ from flask_wtf import Form
 from wtforms import TextField, BooleanField, PasswordField, TextAreaField, validators, SubmitField
 from models import db, User
 
+
 class ContactForm(Form):
   name = TextField("Name")
   email = TextField("Email")
@@ -27,6 +28,7 @@ class SignupForm(Form):
       print "place that we are fialing"
       return False
 
+    print "Yo! \n"
     user = User.query.filter_by(email = self.email.data.lower()).first()
     if user:
       self.email.errors.append("That email is already taken")
@@ -44,8 +46,10 @@ class SigninForm(Form):
  
   def validate(self):
     if not Form.validate(self):
+      print "NOOOo! \n"
       return False
      
+    print "Yo! \n"
     user = User.query.filter_by(email = self.email.data.lower()).first()
     if user and user.check_password(self.password.data):
       return True

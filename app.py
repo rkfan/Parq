@@ -6,17 +6,20 @@ from flaskext.mysql import MySQL
 from models import db, User
 from forms import SignupForm, SigninForm
 from flask_wtf.csrf import CSRFProtect
+from models import db
 
 # Create application object
 
 app = Flask(__name__)
-csrf = CSRFProtect()
-csrf.init_app(app)
-
-
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # VERY BAD. FIX THIS LATER, need random key generator. Also separate config file...
 app.secret_key = "secret key"	# need secret key for sessions to work properly
 
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:root@localhost/UserData'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_ECHO'] = True
+db.init_app(app)
+CSRFProtect(app)
 
 # Login required
 def login_required(f):
@@ -46,17 +49,16 @@ def welcome():
 def signup():
   form = SignupForm(request.form)
    
+  if 'email' in session:
+    return redirect(url_for('profile')) 
+     
   if request.method == 'POST':
+
     if form.validate() == False:	
-      print form.lastname.data
-      print form.firstname.data
-      print form.email.data
-      print form.password.data
+      print "TEST!! \n"
       print form.data
       return render_template('signup.html', form=form)
-
     else:
-
       print "here!"
       newuser = User(form.firstname.data, form.lastname.data, form.email.data, form.password.data)
       db.session.add(newuser)
@@ -103,7 +105,10 @@ def contact():
 @app.route('/signin', methods=['GET', 'POST'])
 def signin():
   form = SigninForm()
-   
+  
+  if 'email' in session:
+    return redirect(url_for('profile'))
+     
   if request.method == 'POST':
     if form.validate() == False:
       return render_template('signin.html', form=form)
@@ -127,3 +132,4 @@ def signout():
 
 if __name__ == '__main__':
     app.run(debug=False)
+
