@@ -1,7 +1,7 @@
 #from flask.ext.wtf import Form, TextField, TextAreaField, SubmitField, validators, ValidationError, PasswordField
 
 from flask_wtf import Form
-from wtforms import TextField, BooleanField, PasswordField, TextAreaField, validators, SubmitField
+from wtforms import TextField, BooleanField, PasswordField, TextAreaField, validators, SubmitField, RadioField
 from models import db, User
 
 
@@ -25,7 +25,6 @@ class SignupForm(Form):
  
   def validate(self):
     if not Form.validate(self):
-      print "place that we are fialing"
       return False
 
     print "Yo! \n"
@@ -56,3 +55,21 @@ class SigninForm(Form):
     else:
       self.email.errors.append("Invalid e-mail or password")
       return False
+
+class SellerForm(Form):
+  address = TextField("Street Address", [validators.Required("Please enter your street address.")])
+  city = TextField("City", [validators.Required("Please enter your city.")])
+  state = TextField("State", [validators.Required("Please enter your state.")])
+  zipcode = TextField("Zip Code", [validators.Required("Please enter your zip code.")])
+  ps_size = RadioField('Parking Size', choices=[('LMV', 'LMV'), ('SUV', 'SUV'),('HMV', 'HMV')])
+
+  submit = SubmitField("Add Parking Spot")
+ 
+  def __init__(self, *args, **kwargs):
+    Form.__init__(self, *args, **kwargs)
+ 
+  def validate(self):
+    if not Form.validate(self):
+      return False
+
+    # Is there anything else we need to verify (does not already exist in the databse???)

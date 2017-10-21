@@ -3,8 +3,8 @@
 from flask import Flask, render_template, request, flash, session, url_for, redirect
 from functools import wraps
 from flaskext.mysql import MySQL
-from models import db, User
-from forms import SignupForm, SigninForm
+from models import db, User, Parking_Spot
+from forms import SignupForm, SigninForm, ContactForm, SellerForm
 from flask_wtf.csrf import CSRFProtect
 from models import db
 
@@ -75,7 +75,7 @@ def signup():
 def about():
   return render_template('about.html')
 
-@app.route('/profile')
+@app.route('/profile', methods=['GET', 'POST'])
 def profile():
  
   if 'email' not in session:
@@ -92,10 +92,10 @@ def profile():
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
   form = ContactForm()
- 
+  
   if request.method == 'POST':
     return 'Form posted.'
- 
+  
   elif request.method == 'GET':
     return render_template('contact.html', form=form)
 
@@ -118,6 +118,7 @@ def signin():
   elif request.method == 'GET':
     return render_template('signin.html', form=form)
 
+
 @app.route('/signout')
 def signout():
  
@@ -126,6 +127,64 @@ def signout():
      
   session.pop('email', None)
   return redirect(url_for('home'))
+
+
+@app.route('/buyer')
+def buyer():
+  if 'email' not in session:
+    return redirect(url_for('signin'))
+
+  user = User.query.filter_by(email = session['email']).first()
+  uid = user.uid
+
+  allspots = Parking_Spot.query.order_by(Parking_Spot.city).all()
+  
+  return render_template('buyer.html', allspots=allspots)
+
+
+@app.route('/seller')
+def seller():
+  if 'email' not in session:
+    return redirect(url_for('signin'))
+  return render_template('seller.html')
+
+
+@app.route('/viewspots')
+def viewspots():
+  if 'email' not in session:
+    return redirect(url_for('signin'))
+
+  user = User.query.filter_by(email = session['email']).first()
+  uid = user.uid
+
+  # A user's garage is a list containing his parking spots
+  garage = Parking_Spot.query.filter_by(ownerid = uid).all()
+
+  return render_template('viewspots.html', garage=garage)
+
+
+@app.route('/addspots',methods=['GET', 'POST'])
+def addspots():
+  form = SellerForm(request.form)
+   
+  if 'email' not in session:
+    return redirect(url_for('signin')) 
+     
+  if request.method == 'POST':
+    if form.validate() == False:  
+      return render_template('addspots.html', form=form)
+    else:
+      user = User.query.filter_by(email = session['email']).first()
+      uid = user.uid
+
+      parking_spot = Parking_Spot(uid, form.address.data, form.city.data, form.state.data, form.zipcode.data, form.ps_size.data)
+      db.session.add(parking_spot)
+
+      db.session.commit()
+      return redirect(url_for('seller'))
+   
+  elif request.method == 'GET':
+    return render_template('addspots.html', form=form)
 
 
 if __name__ == '__main__':

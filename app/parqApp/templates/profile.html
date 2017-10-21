@@ -3,5 +3,10 @@
   <div class="jumbo">
     <h2>Profile<h2>
     <h3>This is {{ session['email'] }}'s profile page<h3>
+    	{% if 'email' in session %}
+	    	<a href="{{ url_for('buyer') }}">buyer</a>
+	    	<a href="{{ url_for('seller') }}">seller</a>
+        {% endif %}
+
   </div>
 {% endblock %}

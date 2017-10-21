@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+ 
+{% block content %}
+  <h2>Add a parking spot<h2>
+      	{% if 'email' in session %}
+	    	<h1>Enter Details Here</h1>
+			  {% for message in form.address.errors %}
+    		  <div class="flash">{{ message }}</div>
+              {% endfor %}
+   				
+   			  {% for message in form.city.errors %}
+    		  <div class="flash">{{ message }}</div>
+              {% endfor %}
+
+              {% for message in form.state.errors %}
+    		  <div class="flash">{{ message }}</div>
+              {% endfor %}
+
+              {% for message in form.zipcode.errors %}
+    		  <div class="flash">{{ message }}</div>
+              {% endfor %}
+
+              {% for message in form.ps_size.errors %}
+    		  <div class="flash">{{ message }}</div>
+              {% endfor %}
+    
+			  <form action="{{ url_for('addspots') }}" method=post>
+			    {{ form.hidden_tag() }}
+			     
+			    {{ form.address.label }}
+			    {{ form.address }}
+			     
+			    {{ form.city.label }}
+			    {{ form.city }}
+			     
+			    {{ form.state.label }}
+			    {{ form.state }}
+			     
+			    {{ form.zipcode.label }}
+			    {{ form.zipcode }}
+
+			    {{ form.ps_size.label }}
+			    {{ form.ps_size }}
+			     
+			    {{ form.submit }}
+			  </form>
+        {% endif %}
+
+{% endblock %}

@@ -104,6 +104,7 @@ ENV/
 bin/
 lib/
 local/
+include/
 selenium/
 *.pdf
 *.json
