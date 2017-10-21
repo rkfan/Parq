@@ -12,8 +12,7 @@ from models import db
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-# VERY BAD. FIX THIS LATER, need random key generator. Also separate config file...
-app.secret_key = "secret key"	# need secret key for sessions to work properly
+app.secret_key = 'vTI\x9f\xe6y\xf3g\xbb?\xa6(\x84\xf8\x82(\xd8wM\xe8}\xeb\xd1='
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:root@localhost/UserData'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -119,7 +118,6 @@ def signin():
   elif request.method == 'GET':
     return render_template('signin.html', form=form)
 
-# TODO link the logout to the logout button?
 @app.route('/signout')
 def signout():
  
