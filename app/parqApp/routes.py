@@ -171,13 +171,15 @@ def addspots():
     return redirect(url_for('signin')) 
      
   if request.method == 'POST':
-    if form.validate() == False:  
-      return render_template('addspots.html', form=form)
-    else:
-      user = User.query.filter_by(email = session['email']).first()
-      uid = user.uid
+    user = User.query.filter_by(email = session['email']).first()
+    uid = user.uid
 
+    if form.validate(uid) == False:  
+      return render_template('addspots.html', form=form)
+
+    else:
       parking_spot = Parking_Spot(uid, form.address.data, form.city.data, form.state.data, form.zipcode.data, form.ps_size.data)
+      
       db.session.add(parking_spot)
 
       db.session.commit()

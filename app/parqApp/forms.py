@@ -2,7 +2,7 @@
 
 from flask_wtf import Form
 from wtforms import TextField, BooleanField, PasswordField, TextAreaField, validators, SubmitField, RadioField
-from models import db, User
+from models import db, User, Parking_Spot
 
 
 class ContactForm(Form):
@@ -27,13 +27,12 @@ class SignupForm(Form):
     if not Form.validate(self):
       return False
 
-    print "Yo! \n"
     user = User.query.filter_by(email = self.email.data.lower()).first()
     if user:
       self.email.errors.append("That email is already taken")
       return False
-    else:
-      return True
+    
+    return True
 
 class SigninForm(Form):
   email = TextField("Email",  [validators.Required("Please enter your email address."), validators.Email("Please enter your email address.")])
@@ -48,13 +47,12 @@ class SigninForm(Form):
       print "NOOOo! \n"
       return False
      
-    print "Yo! \n"
     user = User.query.filter_by(email = self.email.data.lower()).first()
     if user and user.check_password(self.password.data):
       return True
-    else:
-      self.email.errors.append("Invalid e-mail or password")
-      return False
+
+    self.email.errors.append("Invalid e-mail or password")
+    return False
 
 class SellerForm(Form):
   address = TextField("Street Address", [validators.Required("Please enter your street address.")])
@@ -68,8 +66,20 @@ class SellerForm(Form):
   def __init__(self, *args, **kwargs):
     Form.__init__(self, *args, **kwargs)
  
-  def validate(self):
+  def validate(self, uid):
     if not Form.validate(self):
       return False
+
+    # Looks to see if that parking space is already listed by this user. For now, only allow one parking
+    # space for a seller for one type of car
+    parking_space = Parking_Spot.query.filter_by(ownerid=uid, address=self.address.data.title(),
+                                                city=self.city.data.title(), state=self.state.data.title(),
+                                                zipcode=self.zipcode.data.title()).first()
+    if parking_space:
+      self.address.errors.append("You already added this spot to your garage.")
+      return False
+
+    return True
+
 
     # Is there anything else we need to verify (does not already exist in the databse???)
