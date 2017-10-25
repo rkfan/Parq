@@ -10,15 +10,15 @@ metropolitan areas such as New York City.
 In order to use the application, you must register for an account: going to the home page of the website 
 prompts you to sign in. 
 
-## **Sign Up and Login**
+## Sign Up and Login
 Clicking "Sign Up" on the top navigation bar allows you to fill out information to create an account. After
 creating an account, you can then log in - which brings you to your personal profile page. Only one account per
 email address. 
 
-## ** Sign Out **
+## Sign Out
 Clicking "Sign Out" on the top navigation bar signs the user out, bringing them back into the login page. 
 
-## ** Profile **
+## Profile 
 Right now, the profile does not have much: it consists of two options **Buyer** and **Seller**. Clicking "Profile" on the
 top navigation bar brings you to the profile.
 
@@ -30,11 +30,11 @@ in the database. More sophisticated location filtering will be implemented in th
 Clicking on "Seller" brings you to a page where you can view all of the parking spots that make up your ** Garage **
 or you can fill out and register any additional parking spots you have availible for Parq. 
 
-## ** About **
+## About
 Clicking the "About" on the top navigation brings you to the page that gives a brief description about us.
 
 TODO: 
-## ** Update Contact **
+## Update Contact
 On your profile, you can choose to update information. For the time being, the only piece of information we allow to be changed
 is the display name associated with the account (wouldn't make much sense to change the email...) This is just to show for our
 first iteration that you are allowed to make changes to data associated with you as the user.
