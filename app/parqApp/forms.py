@@ -81,5 +81,14 @@ class SellerForm(Form):
 
     return True
 
-
-    # Is there anything else we need to verify (does not already exist in the databse???)
+class UpdateProfileForm(Form):
+  firstname = TextField("First name",  [validators.Required("Please enter your first name.")])
+  lastname = TextField("Last name",  [validators.Required("Please enter your last name.")])
+  submit = SubmitField("Update Profile")
+ 
+  def __init__(self, *args, **kwargs):
+    Form.__init__(self, *args, **kwargs)
+ 
+  def validate(self):
+    if not Form.validate(self):
+      return False

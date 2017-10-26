@@ -4,7 +4,7 @@ from flask import Flask, render_template, request, flash, session, url_for, redi
 from functools import wraps
 from flaskext.mysql import MySQL
 from models import db, User, Parking_Spot
-from forms import SignupForm, SigninForm, ContactForm, SellerForm
+from forms import SignupForm, SigninForm, ContactForm, SellerForm, UpdateProfileForm
 from flask_wtf.csrf import CSRFProtect
 from models import db
 
@@ -85,8 +85,8 @@ def profile():
  
   if user is None:
     return redirect(url_for('signin'))
-  else:
-    return render_template('profile.html')
+
+  return render_template('profile.html', name=user.firstname + " " + user.lastname)
 
 
 @app.route('/contact', methods=['GET', 'POST'])
@@ -184,10 +184,28 @@ def addspots():
 
       db.session.commit()
       return redirect(url_for('seller'))
-   
-  elif request.method == 'GET':
+
     return render_template('addspots.html', form=form)
 
+
+@app.route('/updateprofile', methods=['GET', 'POST'])
+def updateprofile():
+  form = UpdateProfileForm(request.form)
+
+  if 'email' not in session:
+    return redirect(url_for('signin'))
+
+  if request.method == 'POST':
+    user = User.query.filter_by(email=session['email']).first()
+
+    user.firstname = form.firstname.data.title()
+    user.lastname = form.lastname.data.title()
+    db.session.commit()
+    
+    return redirect(url_for('profile'))
+
+  # GET Method
+  return render_template('updateprofile.html', form = form)
 
 if __name__ == '__main__':
     app.run(debug=False)
