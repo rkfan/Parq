@@ -6,7 +6,7 @@
         <h1>(For the first iteration all parking spots are availible)</h1>
             {% for spot in allspots %}
             <ul>
-                <li><span style="padding-left:20px"> {{ spot.address }} | {{ spot.city }} | 
+                <li><span style="padding-left:20px"> {{ spot.address }} | {{ spot.city }} | {{ spot.state }} |
                 {{ spot.zipcode }} | {{ spot.ps_size }}</span>
             </ul>
             {% endfor %}

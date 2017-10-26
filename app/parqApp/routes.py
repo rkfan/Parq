@@ -176,16 +176,15 @@ def addspots():
 
     if form.validate(uid) == False:  
       return render_template('addspots.html', form=form)
+    
+    parking_spot = Parking_Spot(uid, form.address.data, form.city.data, form.state.data, form.zipcode.data, form.ps_size.data)
+    
+    db.session.add(parking_spot)
 
-    else:
-      parking_spot = Parking_Spot(uid, form.address.data, form.city.data, form.state.data, form.zipcode.data, form.ps_size.data)
-      
-      db.session.add(parking_spot)
+    db.session.commit()
+    return redirect(url_for('seller'))
 
-      db.session.commit()
-      return redirect(url_for('seller'))
-
-    return render_template('addspots.html', form=form)
+  return render_template('addspots.html', form=form)
 
 
 @app.route('/updateprofile', methods=['GET', 'POST'])
@@ -201,7 +200,7 @@ def updateprofile():
     user.firstname = form.firstname.data.title()
     user.lastname = form.lastname.data.title()
     db.session.commit()
-    
+
     return redirect(url_for('profile'))
 
   # GET Method
