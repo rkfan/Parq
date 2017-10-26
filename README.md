@@ -33,7 +33,6 @@ or you can fill out and register any additional parking spots you have availible
 ## About
 Clicking the "About" on the top navigation brings you to the page that gives a brief description about us.
 
-TODO: 
 ## Update Contact
 On your profile, you can choose to update information. For the time being, the only piece of information we allow to be changed
 is the display name associated with the account (wouldn't make much sense to change the email...) This is just to show for our
