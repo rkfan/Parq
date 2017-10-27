@@ -1,7 +1,7 @@
-#from flask.ext.wtf import Form, TextField, TextAreaField, SubmitField, validators, ValidationError, PasswordField
-
 from flask_wtf import Form
 from wtforms import TextField, BooleanField, PasswordField, TextAreaField, validators, SubmitField, RadioField
+
+# Need to import for querying for the purpose of validation
 from models import db, User, Parking_Spot
 
 
@@ -44,7 +44,6 @@ class SigninForm(Form):
  
   def validate(self):
     if not Form.validate(self):
-      print "NOOOo! \n"
       return False
      
     user = User.query.filter_by(email = self.email.data.lower()).first()

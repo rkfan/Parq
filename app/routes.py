@@ -1,24 +1,15 @@
 #!/usr/bin/env python
 
-from flask import Flask, render_template, request, flash, session, url_for, redirect
+from flask import render_template, request, flash, session, url_for, redirect, \
+                  Blueprint
+
 from functools import wraps
-from flaskext.mysql import MySQL
-from models import db, User, Parking_Spot
+from app import db, app
 from forms import SignupForm, SigninForm, ContactForm, SellerForm, UpdateProfileForm
-from flask_wtf.csrf import CSRFProtect
-from models import db
+from models import User, Parking_Spot
 
-# Create application object
-
-app = Flask(__name__)
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.secret_key = 'vTI\x9f\xe6y\xf3g\xbb?\xa6(\x84\xf8\x82(\xd8wM\xe8}\xeb\xd1='
-
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:root@localhost/UserData'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_ECHO'] = True
-db.init_app(app)
-CSRFProtect(app)
+# define the blueprint: 'parq', set url prefix: app.url/parq
+#app = Blueprint('parq', __name__, url_prefix='/parq')
 
 # Login required
 def login_required(f):
@@ -31,17 +22,15 @@ def login_required(f):
 			return redirect(url_for('signin'))
 	return wrap
 
-
 @app.route('/')
 @login_required
 def home():
-    return render_template('index.html')
-
+  return render_template('index.html')
 
 @app.route('/welcome')
 @login_required
 def welcome():
-    return render_template('welcome.html')
+  return render_template('welcome.html')
 
 # TODO signup method not allowed
 @app.route('/signup', methods=['GET', 'POST'])
@@ -54,16 +43,14 @@ def signup():
   if request.method == 'POST':
 
     if form.validate() == False:	
-      print "TEST!! \n"
-      print form.data
       return render_template('signup.html', form=form)
+
     else:
-      print "here!"
       newuser = User(form.firstname.data, form.lastname.data, form.email.data, form.password.data)
       db.session.add(newuser)
 
       db.session.commit()
-      print "comiited to database"
+
       session['email'] = newuser.email
       return redirect(url_for('profile'))
    
@@ -206,6 +193,6 @@ def updateprofile():
   # GET Method
   return render_template('updateprofile.html', form = form)
 
-if __name__ == '__main__':
-    app.run(debug=False)
+# if __name__ == '__main__':
+#     app.run(debug=False)
 
