@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+ 
+{% block content %}
+  <h2>This is {{ session['email'] }}'s seller page<h2>
+      	{% if 'email' in session %}
+      	<h4>
+	    	<a href="{{ url_for('viewspots') }}">My Garage</a>
+	    	<a href="{{ url_for('addspots') }}">Add Parking Space </a>
+        </h4>
+        {% endif %}
+
+{% endblock %}
