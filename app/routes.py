@@ -5,7 +5,8 @@ from flask import render_template, request, flash, session, url_for, redirect, \
 
 from functools import wraps
 from app import db, app
-from forms import SignupForm, SigninForm, ContactForm, SellerForm, UpdateProfileForm
+from forms import SignupForm, SigninForm, ContactForm, SellerForm, UpdateProfileForm, \
+                  UpdateParkingSpotForm
 from models import User, Parking_Spot
 
 # define the blueprint: 'parq', set url prefix: app.url/parq
@@ -193,6 +194,25 @@ def updateprofile():
   # GET Method
   return render_template('updateprofile.html', form = form)
 
-# if __name__ == '__main__':
-#     app.run(debug=False)
+@app.route('/update_spot/<parking_id>', methods=['GET', 'POST'])
+def update_parking_spot(parking_id):
+  form = UpdateParkingSpotForm(request.form)  
+
+  if 'email' not in session:
+    return redirect(url_for('signin'))
+
+  # Updates details of parking spot
+  if request.method == 'POST':
+    return redirect(url_for('profile'))
+
+  # GET Method
+  # Query for this parking spot
+  user = User.query.filter_by(email=session['email']).first()
+  parking_spot = Parking_Spot.query.filter_by(psid=parking_id, ownerid=user.uid).first()
+
+  if parking_spot:
+    return render_template('update_spot.html', parking_spot=parking_spot)
+
+  return render_template('notallowed.html')
+
 

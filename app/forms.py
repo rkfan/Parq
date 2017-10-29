@@ -83,7 +83,6 @@ class SellerForm(Form):
     return True
 
 
-
 class UpdateProfileForm(Form):
   firstname = TextField("First name",  [validators.Required("Please enter your first name.")])
   lastname = TextField("Last name",  [validators.Required("Please enter your last name.")])
@@ -95,3 +94,32 @@ class UpdateProfileForm(Form):
   def validate(self):
     if not Form.validate(self):
       return False
+
+
+class UpdateParkingSpotForm(Form):
+  address = TextField("Street Address", [validators.Required("Please enter your street address.")])
+  city = TextField("City", [validators.Required("Please enter your city.")])
+  state = TextField("State", [validators.Required("Please enter your state.")])
+  zipcode = IntegerField("Zip Code", [validators.Required("Please enter your zip code."), \
+                      validators.NumberRange(min=10001, max=14975, message="Invalid NY zipcode.")]) 
+  ps_size = RadioField('Parking Size', choices=[('LMV', 'LMV'), ('SUV', 'SUV'),('HMV', 'HMV')])
+
+  submit = SubmitField("Add Parking Spot")
+ 
+  def __init__(self, *args, **kwargs):
+    Form.__init__(self, *args, **kwargs)
+
+  def validate(self, uid):
+    if not Form.validate(self):
+      return False
+
+    # Looks to see if that parking space is already listed by this user. For now, only allow one parking
+    # space for a seller for one type of car
+    parking_space = Parking_Spot.query.filter_by(ownerid=uid, address=self.address.data.title(),
+                                                city=self.city.data.title(), state=self.state.data.title(),
+                                                zipcode=self.zipcode.data).first()
+    if parking_space:
+      self.address.errors.append("You already added this spot to your garage.")
+      return False
+
+    return True
