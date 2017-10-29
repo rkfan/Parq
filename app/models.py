@@ -7,7 +7,7 @@ class User(db.Model):
   firstname = db.Column(db.String(100))
   lastname = db.Column(db.String(100))
   email = db.Column(db.String(120), unique=True)
-  pwdhash = db.Column(db.String(54))
+  pwdhash = db.Column(db.String(100))
 
   parking_spots = db.relationship("Parking_Spot", backref="users")
    
@@ -30,7 +30,7 @@ class Parking_Spot(db.Model):
   address = db.Column(db.String(200), nullable=False)
   city = db.Column(db.String(100), nullable=False)
   state = db.Column(db.String(100), nullable=False)
-  zipcode = db.Column(db.String(100), nullable=False)
+  zipcode = db.Column(db.Integer, nullable=False)
   ps_size = db.Column(db.String(120), nullable=False)
 
   # ownerid? Do we need to do something with that...?
@@ -39,6 +39,6 @@ class Parking_Spot(db.Model):
     self.address = address.title()
     self.city = city.title()
     self.state = state.title()
-    self.zipcode = zipcode.title()
+    self.zipcode = zipcode
     self.ps_size = ps_size.title()
 

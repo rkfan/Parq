@@ -1,5 +1,6 @@
 from flask_wtf import Form
-from wtforms import TextField, BooleanField, PasswordField, TextAreaField, validators, SubmitField, RadioField
+from wtforms import TextField, BooleanField, PasswordField, TextAreaField, validators, \
+                    SubmitField, RadioField, IntegerField
 
 # Need to import for querying for the purpose of validation
 from models import db, User, Parking_Spot
@@ -57,14 +58,15 @@ class SellerForm(Form):
   address = TextField("Street Address", [validators.Required("Please enter your street address.")])
   city = TextField("City", [validators.Required("Please enter your city.")])
   state = TextField("State", [validators.Required("Please enter your state.")])
-  zipcode = TextField("Zip Code", [validators.Required("Please enter your zip code.")])
+  zipcode = IntegerField("Zip Code", [validators.Required("Please enter your zip code."), \
+                      validators.NumberRange(min=10001, max=14975, message="Invalid NY zipcode.")]) 
   ps_size = RadioField('Parking Size', choices=[('LMV', 'LMV'), ('SUV', 'SUV'),('HMV', 'HMV')])
 
   submit = SubmitField("Add Parking Spot")
  
   def __init__(self, *args, **kwargs):
     Form.__init__(self, *args, **kwargs)
- 
+
   def validate(self, uid):
     if not Form.validate(self):
       return False
@@ -73,12 +75,14 @@ class SellerForm(Form):
     # space for a seller for one type of car
     parking_space = Parking_Spot.query.filter_by(ownerid=uid, address=self.address.data.title(),
                                                 city=self.city.data.title(), state=self.state.data.title(),
-                                                zipcode=self.zipcode.data.title()).first()
+                                                zipcode=self.zipcode.data).first()
     if parking_space:
       self.address.errors.append("You already added this spot to your garage.")
       return False
 
     return True
+
+
 
 class UpdateProfileForm(Form):
   firstname = TextField("First name",  [validators.Required("Please enter your first name.")])
