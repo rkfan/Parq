@@ -108,3 +108,6 @@ include/
 selenium/
 *.pdf
 *.json
+
+# nose tests directory
+man/
