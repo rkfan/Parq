@@ -1,11 +1,11 @@
 from app import app, db
 import urllib2
 from flask import Flask
-from flask_testing import LiveServerTestCase, TestCase
+from flask_testing import LiveServerTestCase
 import unittest
 
 # Testing with LiveServer
-class MyTest(LiveServerTestCase):
+class MyTest(LiveServerTestCase, unittest.TestCase):
 	TESTING = True
 
   	# if the create_app is not implemented NotImplementedError will be raised
@@ -31,6 +31,40 @@ class MyTest(LiveServerTestCase):
 	def tearDown(self):
 		db.session.remove()
 		db.drop_all()
+
+	# Does not work!!! :(
+	def test_get_home(self):
+		rv = urllib2.urlopen(self.get_server_url()+'/login')
+		self.assertEqual(rv.code, 200)
+	########################
+	#### helper methods ####
+	########################
+	 
+	# def register(self, fname, lname, email, password):
+	#     return self.app.post(
+	#         '/signup',
+	#         data=dict(firstname=fname, lastname=lnmae, email=email, password=password),
+	#         follow_redirects=True
+	#     )
+	 
+	# # def login(self, email, password):
+	# #     return self.app.post(
+	# #         '/signin',
+	# #         data=dict(email=email, password=password),
+	# #         follow_redirects=True
+	# #     )
+	 
+	# # def logout(self):
+	# #     return self.app.get(
+	# #         '/logout',
+	# #         follow_redirects=True
+	# #     )
+
+	# def test_valid_user_registration(self):
+	#     response = self.register('patrick', 'kennedy', 'patkennedy79@gmail.com', 'FlaskIsAwesome')
+	#     self.assertEqual(response.status_code, 200)
+	#     #self.assertIn(b'Thanks for registering!', response.data)
+
 
 if __name__ == '__main__':
     unittest.main()

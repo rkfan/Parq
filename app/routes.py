@@ -2,7 +2,7 @@
 
 from flask import render_template, request, flash, session, url_for, redirect, \
                   Blueprint
-
+from flask_login import current_user, login_required, login_user, logout_user
 from functools import wraps
 from app import db, app
 from forms import SignupForm, SigninForm, ContactForm, SellerForm, UpdateProfileForm, \
@@ -13,15 +13,15 @@ from models import User, Parking_Spot
 #app = Blueprint('parq', __name__, url_prefix='/parq')
 
 # Login required
-def login_required(f):
-	@wraps(f)
-	def wrap(*args, **kwargs):
-		if 'logged_in' in session:
-			return f(*args, **kwargs)
-		else:
-			flash('Login required.')
-			return redirect(url_for('signin'))
-	return wrap
+# def login_required(f):
+# 	@wraps(f)
+# 	def wrap(*args, **kwargs):
+# 		if 'logged_in' in session:
+# 			return f(*args, **kwargs)
+# 		else:
+# 			flash('Login required.')
+# 			return redirect(url_for('login'))
+# 	return wrap
 
 @app.route('/')
 @login_required
@@ -29,7 +29,6 @@ def home():
   return render_template('index.html')
 
 @app.route('/welcome')
-@login_required
 def welcome():
   return render_template('welcome.html')
 
@@ -37,9 +36,6 @@ def welcome():
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
   form = SignupForm(request.form)
-   
-  if 'email' in session:
-    return redirect(url_for('profile')) 
      
   if request.method == 'POST':
 
@@ -64,16 +60,9 @@ def about():
   return render_template('about.html')
 
 @app.route('/profile', methods=['GET', 'POST'])
+@login_required
 def profile():
- 
-  if 'email' not in session:
-    return redirect(url_for('signin'))
- 
-  user = User.query.filter_by(email = session['email']).first()
- 
-  if user is None:
-    return redirect(url_for('signin'))
-
+  user = current_user
   return render_template('profile.html', name=user.firstname + " " + user.lastname)
 
 
@@ -88,61 +77,57 @@ def contact():
     return render_template('contact.html', form=form)
 
 
-
-@app.route('/signin', methods=['GET', 'POST'])
-def signin():
+@app.route('/login', methods=['GET', 'POST'])
+def login():
   form = SigninForm()
-  
-  if 'email' in session:
-    return redirect(url_for('profile'))
      
   if request.method == 'POST':
-    if form.validate() == False:
-      return render_template('signin.html', form=form)
-    else:
-      session['email'] = form.email.data
-      return redirect(url_for('profile'))
-                 
-  elif request.method == 'GET':
-    return render_template('signin.html', form=form)
+    # if this doesn't work change back to just validate()
+    if form.validate_on_submit(): 
+      user = User.query.filter_by(email=form.email.data).first()
+      if user is not None and user.is_correct_password(form.password.data):
+        # Logs the user in authenticates him/her
+        user.authenticated = True
+        db.session.add(user)
+        db.session.commit()
+        login_user(user)
+        return redirect(url_for('profile'))
+      else: 
+        flash('Error! Incorrect login credentials.', 'error')
+  return render_template('login.html', form=form)
 
 
-@app.route('/signout')
-def signout():
- 
-  if 'email' not in session:
-    return redirect(url_for('signin'))
-     
-  session.pop('email', None)
+@app.route('/logout')
+@login_required
+def logout():
+  user = current_user
+  user.authenticated = False
+  db.session.add(user)
+  db.session.commit()
+  logout_user()
   return redirect(url_for('home'))
 
 
 @app.route('/buyer')
+@login_required
 def buyer():
-  if 'email' not in session:
-    return redirect(url_for('signin'))
-
-  user = User.query.filter_by(email = session['email']).first()
+  user = current_user
   uid = user.uid
-
   allspots = Parking_Spot.query.order_by(Parking_Spot.city).all()
   
   return render_template('buyer.html', allspots=allspots)
 
 
 @app.route('/seller')
+@login_required
 def seller():
-  if 'email' not in session:
-    return redirect(url_for('signin'))
   return render_template('seller.html')
 
 
 @app.route('/viewspots')
+@login_required
 def viewspots():
-  if 'email' not in session:
-    return redirect(url_for('signin'))
-
-  user = User.query.filter_by(email = session['email']).first()
+  user = current_user
   uid = user.uid
 
   # A user's garage is a list containing his parking spots
@@ -152,38 +137,33 @@ def viewspots():
 
 
 @app.route('/addspots',methods=['GET', 'POST'])
+@login_required
 def addspots():
   form = SellerForm(request.form)
-   
-  if 'email' not in session:
-    return redirect(url_for('signin')) 
      
   if request.method == 'POST':
-    user = User.query.filter_by(email = session['email']).first()
+    user = current_user
     uid = user.uid
 
     if form.validate(uid) == False:  
       return render_template('addspots.html', form=form)
     
-    parking_spot = Parking_Spot(uid, form.address.data, form.city.data, form.state.data, form.zipcode.data, form.ps_size.data)
-    
+    parking_spot = Parking_Spot(uid, form.address.data, form.city.data, form.state.data, form.zipcode.data, form.ps_size.data)   
     db.session.add(parking_spot)
-
     db.session.commit()
+
     return redirect(url_for('seller'))
 
   return render_template('addspots.html', form=form)
 
 
 @app.route('/updateprofile', methods=['GET', 'POST'])
+@login_required
 def updateprofile():
   form = UpdateProfileForm(request.form)
 
-  if 'email' not in session:
-    return redirect(url_for('signin'))
-
   if request.method == 'POST':
-    user = User.query.filter_by(email=session['email']).first()
+    user = current_user
 
     user.firstname = form.firstname.data.title()
     user.lastname = form.lastname.data.title()
@@ -192,14 +172,12 @@ def updateprofile():
     return redirect(url_for('profile'))
 
   # GET Method
-  return render_template('updateprofile.html', form = form)
+  return render_template('updateprofile.html', form=form)
 
 @app.route('/update_spot/<parking_id>', methods=['GET', 'POST'])
+@login_required
 def update_parking_spot(parking_id):
   form = UpdateParkingSpotForm(request.form)  
-
-  if 'email' not in session:
-    return redirect(url_for('signin'))
 
   # Updates details of parking spot
   if request.method == 'POST':
@@ -207,7 +185,7 @@ def update_parking_spot(parking_id):
 
   # GET Method
   # Query for this parking spot
-  user = User.query.filter_by(email=session['email']).first()
+  user = current_user
   parking_spot = Parking_Spot.query.filter_by(psid=parking_id, ownerid=user.uid).first()
 
   if parking_spot:

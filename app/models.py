@@ -3,11 +3,13 @@ from werkzeug import generate_password_hash, check_password_hash
 
 class User(db.Model):
   __tablename__ = 'users'
+
   uid = db.Column(db.Integer, primary_key = True)
   firstname = db.Column(db.String(100))
   lastname = db.Column(db.String(100))
   email = db.Column(db.String(120), unique=True)
   pwdhash = db.Column(db.String(100))
+  authenticated = db.Column(db.Boolean, default=False)
 
   parking_spots = db.relationship("Parking_Spot", backref="users")
    
@@ -16,12 +18,34 @@ class User(db.Model):
     self.lastname = lastname.title()
     self.email = email.lower()
     self.set_password(password)
+    self.authenticated = False
      
   def set_password(self, password):
     self.pwdhash = generate_password_hash(password)
-   
-  def check_password(self, password):
+  
+  def is_correct_password(self, password):
     return check_password_hash(self.pwdhash, password)
+
+  @property
+  def is_authenticated(self):
+    """ Returns True if the user is authenticated """ 
+    return self.authenticated
+
+  @property
+  def is_active(self):
+    """ Always true, as all users are active. """
+    return True
+
+  @property
+  def is_anonymous(self):
+    """ Always False, users aren't supposed to be anonymouse """
+    return False
+
+  def get_id(self):
+    return str(self.uid)
+    
+  def __rep__(self):
+    return '<User {0} {1} with email: {2}>'.format(self.firstname, self.lastname, self.email)
 
 class Parking_Spot(db.Model):
   __tablename__ = 'parking_spots'

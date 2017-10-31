@@ -1,8 +1,7 @@
 {% extends "layout.html" %}
  
 {% block content %}
-  {% if 'email' in session %}
-    <h2>Update Profile</h2>
+  <h2>Update Profile</h2>
 
   {% for message in form.firstname.errors %}
     <div class="flash">{{ message }}</div>
@@ -12,16 +11,16 @@
     <div class="flash">{{ message }}</div>
   {% endfor %}
 
-    <form action="{{ url_for('updateprofile') }}" method=post>
-      {{ form.hidden_tag() }}
-   
-      {{ form.firstname.label }}
-      {{ form.firstname }}
-   
-      {{ form.lastname.label }}
-      {{ form.lastname }}
-   
-      {{ form.submit }}
-    </form>
-    {% endif %}
+  <form action="{{ url_for('updateprofile') }}" method=post>
+    {{ form.hidden_tag() }}
+    {{ form.csrf_token }}
+ 
+    {{ form.firstname.label }}
+    {{ form.firstname }}
+ 
+    {{ form.lastname.label }}
+    {{ form.lastname }}
+ 
+    {{ form.submit }}
+  </form>
 {% endblock %}

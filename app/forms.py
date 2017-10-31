@@ -48,7 +48,7 @@ class SigninForm(Form):
       return False
      
     user = User.query.filter_by(email = self.email.data.lower()).first()
-    if user and user.check_password(self.password.data):
+    if user and user.is_correct_password(self.password.data):
       return True
 
     self.email.errors.append("Invalid e-mail or password")

@@ -1,15 +1,13 @@
 {% extends "layout.html" %}
  
 {% block content %}
-  <h2>These are {{ session['email'] }}'s parking spaces<h2>
-      	{% if 'email' in session %}
-	    	<h1>Welcome to your garage</h1>
-	    	{% for spot in garage %}
-	    	<ul>
-	    		<li> <a href="{{ url_for('update_parking_spot', parking_id=spot.psid) }}">{{ spot.address }} | {{ spot.city }} | 
-	    		{{ spot.zipcode }} | {{ spot.ps_size }}</a>
-	    	</ul>
-            {% endfor %}
-        {% endif %}
+  	<h2>These are {{ current_user.email }}'s parking spaces<h2>
+	<h1>Welcome to your garage</h1>
+	{% for spot in garage %}
+	<ul>
+		<li> <a href="{{ url_for('update_parking_spot', parking_id=spot.psid) }}">{{ spot.address }} | {{ spot.city }} | 
+		{{ spot.zipcode }} | {{ spot.ps_size }}</a>
+	</ul>
+	{% endfor %}
 
 {% endblock %}

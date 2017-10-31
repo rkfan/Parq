@@ -4,6 +4,9 @@ from flask import Flask, render_template
 # Import SQLAlchemy
 from flask_sqlalchemy import SQLAlchemy
 
+# For Flask-Login
+from flask_login import LoginManager
+
 import os
 
 from flaskext.mysql import MySQL
@@ -29,6 +32,17 @@ app.config['SQLALCHEMY_ECHO'] = True
 db = SQLAlchemy(app)
 #db.init_app(app)
 CSRFProtect(app)
+
+# Link the Flak-Login module with flask application
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
+
+from models import User
+
+@login_manager.user_loader
+def load_user(user_id):
+	return User.query.filter(User.uid == int(user_id)).first()
 
 # Sample HTML Error handling
 @app.errorhandler(404)

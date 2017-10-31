@@ -21,6 +21,7 @@
    
   <form action="{{ url_for('signup') }}" method=post>
     {{ form.hidden_tag() }}
+    {{ form.csrf_token }}
      
     {{ form.firstname.label }}
     {{ form.firstname }}
