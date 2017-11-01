@@ -12,25 +12,11 @@ from models import User, Parking_Spot
 # define the blueprint: 'parq', set url prefix: app.url/parq
 #app = Blueprint('parq', __name__, url_prefix='/parq')
 
-# Login required
-# def login_required(f):
-# 	@wraps(f)
-# 	def wrap(*args, **kwargs):
-# 		if 'logged_in' in session:
-# 			return f(*args, **kwargs)
-# 		else:
-# 			flash('Login required.')
-# 			return redirect(url_for('login'))
-# 	return wrap
-
 @app.route('/')
-@login_required
 def home():
+  if current_user.is_authenticated:
+    return render_template('profile.html')
   return render_template('index.html')
-
-@app.route('/welcome')
-def welcome():
-  return render_template('welcome.html')
 
 # TODO signup method not allowed
 @app.route('/signup', methods=['GET', 'POST'])
@@ -84,7 +70,9 @@ def login():
   if request.method == 'POST':
     # if this doesn't work change back to just validate()
     if form.validate_on_submit(): 
-      user = User.query.filter_by(email=form.email.data).first()
+      user = User.get_user(form.email.data)
+
+      # Check if user exists and the password is correct
       if user is not None and user.is_correct_password(form.password.data):
         # Logs the user in authenticates him/her
         user.authenticated = True
@@ -113,7 +101,7 @@ def logout():
 def buyer():
   user = current_user
   uid = user.uid
-  allspots = Parking_Spot.query.order_by(Parking_Spot.city).all()
+  allspots = Parking_Spot.get_all_spots()
   
   return render_template('buyer.html', allspots=allspots)
 
@@ -128,10 +116,9 @@ def seller():
 @login_required
 def viewspots():
   user = current_user
-  uid = user.uid
 
   # A user's garage is a list containing his parking spots
-  garage = Parking_Spot.query.filter_by(ownerid = uid).all()
+  garage = user.get_parking_spots()
 
   return render_template('viewspots.html', garage=garage)
 
@@ -184,9 +171,8 @@ def update_parking_spot(parking_id):
     return redirect(url_for('profile'))
 
   # GET Method
-  # Query for this parking spot
   user = current_user
-  parking_spot = Parking_Spot.query.filter_by(psid=parking_id, ownerid=user.uid).first()
+  parking_spot = Parking_Spot.get_parking_spot_by_id(parking_id, user.uid)
 
   if parking_spot:
     return render_template('update_spot.html', parking_spot=parking_spot)

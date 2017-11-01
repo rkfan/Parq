@@ -2,7 +2,6 @@ from flask_wtf import Form
 from wtforms import TextField, BooleanField, PasswordField, TextAreaField, validators, \
                     SubmitField, RadioField, IntegerField
 
-# Need to import for querying for the purpose of validation
 from models import db, User, Parking_Spot
 
 
@@ -28,8 +27,7 @@ class SignupForm(Form):
     if not Form.validate(self):
       return False
 
-    user = User.query.filter_by(email = self.email.data.lower()).first()
-    if user:
+    if User.user_email_taken(self.email.data.lower()):
       self.email.errors.append("That email is already taken")
       return False
     
@@ -46,8 +44,8 @@ class SigninForm(Form):
   def validate(self):
     if not Form.validate(self):
       return False
-     
-    user = User.query.filter_by(email = self.email.data.lower()).first()
+
+    user = User.get_user(self.email.data.lower()) 
     if user and user.is_correct_password(self.password.data):
       return True
 
@@ -73,10 +71,11 @@ class SellerForm(Form):
 
     # Looks to see if that parking space is already listed by this user. For now, only allow one parking
     # space for a seller for one type of car
-    parking_space = Parking_Spot.query.filter_by(ownerid=uid, address=self.address.data.title(),
-                                                city=self.city.data.title(), state=self.state.data.title(),
-                                                zipcode=self.zipcode.data).first()
-    if parking_space:
+
+    full_address_dict = {'address':self.address.data.title(), 'city':self.city.data.title(),
+    'state': self.state.data.title(), 'zipcode':self.zipcode.data}
+
+    if Parking_Spot.spot_exists(uid, full_address_dict):
       self.address.errors.append("You already added this spot to your garage.")
       return False
 
@@ -113,13 +112,14 @@ class UpdateParkingSpotForm(Form):
     if not Form.validate(self):
       return False
 
-    # Looks to see if that parking space is already listed by this user. For now, only allow one parking
-    # space for a seller for one type of car
-    parking_space = Parking_Spot.query.filter_by(ownerid=uid, address=self.address.data.title(),
-                                                city=self.city.data.title(), state=self.state.data.title(),
-                                                zipcode=self.zipcode.data).first()
-    if parking_space:
-      self.address.errors.append("You already added this spot to your garage.")
-      return False
+    # Not neccesary?
+    # # Looks to see if that parking space is already listed by this user. For now, only allow one parking
+    # # space for a seller for one type of car
+    # full_address_dict = {'address':self.address.data.title(), 'city':self.city.data.title(), \
+    # 'state': self.city.data.title(), 'zipcode':self.zipcode.data}
+
+    # if Parking_Spot.spot_exists(uid, full_address_dict):
+    #   self.address.errors.append("You already added this spot to your garage.")
+    #   return False
 
     return True

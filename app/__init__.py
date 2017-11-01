@@ -1,20 +1,10 @@
-# Import flask and template operators
 from flask import Flask, render_template
-
-# Import SQLAlchemy
 from flask_sqlalchemy import SQLAlchemy
-
-# For Flask-Login
 from flask_login import LoginManager
-
 import os
-
 from flaskext.mysql import MySQL
-
-# For CSRFProtect
 from flask_wtf.csrf import CSRFProtect
 
-# Define application object
 template_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 app = Flask(__name__, template_folder = template_dir)
 
@@ -24,7 +14,6 @@ app = Flask(__name__, template_folder = template_dir)
 # Define and cnofigure the database object imported by modules and controllers
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = 'vTI\x9f\xe6y\xf3g\xbb?\xa6(\x84\xf8\x82(\xd8wM\xe8}\xeb\xd1='
-
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:root@localhost/UserData'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ECHO'] = True
