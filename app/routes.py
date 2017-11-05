@@ -34,8 +34,8 @@ def signup():
 
       db.session.commit()
 
-      session['email'] = newuser.email
-      return redirect(url_for('profile'))
+      #session['email'] = newuser.email
+      return redirect(url_for('login'))
    
   elif request.method == 'GET':
     return render_template('signup.html', form=form)

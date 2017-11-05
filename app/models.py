@@ -59,8 +59,8 @@ class User(db.Model):
   def get_id(self):
     return str(self.uid)
 
-  def __rep__(self):
-    return '<User {0} {1} with email: {2}>'.format(self.firstname, self.lastname, self.email)
+  def __str__(self):
+    return 'User {0} {1} with email: {2}'.format(self.firstname, self.lastname, self.email)
 
 class Parking_Spot(db.Model):
   __tablename__ = 'parking_spots'
@@ -113,7 +113,7 @@ class Parking_Spot(db.Model):
     owner = User.query.filter_by(uid=self.ownerid).first()
     return owner.email
 
-  def __rep__(self):
+  def __str__(self):
     return '<Parking Spot at {0} owned by: {1}. Availibility: {2}>'.format(self.address, self.get_owner_name, 
                                                                           self.availible)
 

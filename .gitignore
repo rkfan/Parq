@@ -111,3 +111,5 @@ selenium/
 
 # nose tests directory
 man/
+
+*.DS_Store

@@ -9,17 +9,9 @@ template_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templat
 app = Flask(__name__, template_folder = template_dir)
 
 # Configurations
-#app.config.from_object('config') # Maybe have from configuration file?
-
-# Define and cnofigure the database object imported by modules and controllers
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.secret_key = 'vTI\x9f\xe6y\xf3g\xbb?\xa6(\x84\xf8\x82(\xd8wM\xe8}\xeb\xd1='
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:root@localhost/UserData'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_ECHO'] = True
+app.config.from_object('config.BaseConfig')
 
 db = SQLAlchemy(app)
-#db.init_app(app)
 CSRFProtect(app)
 
 # Link the Flak-Login module with flask application
