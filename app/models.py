@@ -57,7 +57,8 @@ class User(db.Model):
     return False
 
   def get_id(self):
-    return str(self.uid)
+    """ Returns the uid as an int """ 
+    return self.uid
 
   def __str__(self):
     return 'User {0} {1} with email: {2}'.format(self.firstname, self.lastname, self.email)

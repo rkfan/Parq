@@ -15,7 +15,8 @@ from models import User, Parking_Spot
 @app.route('/')
 def home():
   if current_user.is_authenticated:
-    return render_template('profile.html')
+    user = current_user
+    return render_template('profile.html',name=user.firstname + " " + user.lastname)
   return render_template('index.html')
 
 # TODO signup method not allowed
@@ -33,8 +34,7 @@ def signup():
       db.session.add(newuser)
 
       db.session.commit()
-
-      #session['email'] = newuser.email
+      flash('Registration successful')
       return redirect(url_for('login'))
    
   elif request.method == 'GET':

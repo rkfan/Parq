@@ -8,11 +8,23 @@ from app.models import User, Parking_Spot
 
 class BaseTestCase(TestCase):
 	""" A base test case."""
-	
+
 	def assertLoginReq(self, page):
 		""" Assert that this page requires signing in """ 
 		response = self.client.get(page, follow_redirects=True)
 		self.assertIn(b'Sign In', response.data)
+
+	def get_test_acc(self):
+		return User.query.filter_by(email='test@tester.com').first()
+
+	def login(self, email, password):
+	    return self.client.post(
+	        '/login',
+	        data=dict(email=email, password=password),
+	        follow_redirects=True
+	    )
+
+	# Overriden/set up methods
 
 	def create_app(self):
 		app.config.from_object('config.TestConfig')
