@@ -9,6 +9,7 @@ from app.models import User, Parking_Spot
 class BaseTestCase(TestCase):
 	""" A base test case."""
 
+	# Helper inherited methods
 	def assertLoginReq(self, page):
 		""" Assert that this page requires signing in """ 
 		response = self.client.get(page, follow_redirects=True)

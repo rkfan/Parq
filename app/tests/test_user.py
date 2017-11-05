@@ -120,7 +120,5 @@ class UserViewsTests(BaseTestCase):
 	def test_logout_route_requires_login(self):
 		self.assertLoginReq('/logout')
 
-	# Test individual pages without login first (can't get access)
-
 if __name__ == '__main__':
 	unittest.main()
