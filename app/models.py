@@ -12,6 +12,7 @@ class User(db.Model):
   authenticated = db.Column(db.Boolean, default=False)
 
   parking_spots = db.relationship("Parking_Spot", backref="users")
+  my_messages = db.relationship("Message", backref="users")
    
   def __init__(self, firstname, lastname, email, password):
     self.firstname = firstname.title()
@@ -65,6 +66,7 @@ class User(db.Model):
 
 class Parking_Spot(db.Model):
   __tablename__ = 'parking_spots'
+
   psid = db.Column(db.Integer, primary_key = True)
   ownerid = db.Column(db.Integer, db.ForeignKey('users.uid', ondelete="CASCADE"), nullable=False)
   address = db.Column(db.String(200), nullable=False)
@@ -73,6 +75,8 @@ class Parking_Spot(db.Model):
   zipcode = db.Column(db.Integer, nullable=False)
   ps_size = db.Column(db.String(120), nullable=False)
   availible = db.Column(db.Boolean, default=True)
+
+  my_messages = db.relationship("Message", backref="parking_spots")
 
   # ownerid? Do we need to do something with that...?
   def __init__(self, ownerid, address, city, state, zipcode, ps_size):
@@ -118,10 +122,19 @@ class Parking_Spot(db.Model):
     return '<Parking Spot at {0} owned by: {1}. Availibility: {2}>'.format(self.address, self.get_owner_name, 
                                                                           self.availible)
 
+class Message(db.Model):
+  __tablename__ = 'my_messages'
 
+  message_id = db.Column(db.Integer, primary_key=True)
+  sender_uid = db.Column(db.Integer, db.ForeignKey('users.uid', ondelete="CASCADE"), nullable=False)
+  receiver_uid = db.Column(db.Integer, db.ForeignKey('users.uid', ondelete="CASCADE"), nullable=False)
+  psid = db.Column(db.Integer, db.ForeignKey('parking_spots.psid', ondelete="CASCADE"), nullable=False)
+  message = db.Column(db.String(500), nullable=False)
+  isRead = db.Column(db.Boolean, default=False)
 
-
-
-
-
-
+  def __init__(self, sender_uid, rcv_uid, psid, msg):
+    self.sender_uid = sender_uid
+    self.receiver_uid = rcv_uid
+    self.psid = psid
+    self.message = msg
+    self.isRead = False
