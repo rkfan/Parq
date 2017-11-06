@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+{% block content %}
+  <div class="jumbo">
+    <h2>Profile<h2>
+    <h3>Hi! Please choose your option from below for {{parking_spot.psid}}:<h3>
+  	<a href="{{ url_for('update_spot', parking_id=parking_spot.psid) }}">Update Parking Spot</a>
+  	<a href="{{ url_for('delete_spot', parking_id=parking_spot.psid) }}">Delete Parking Spot</a>
+  	<br />
+  </div>
+{% endblock %}
