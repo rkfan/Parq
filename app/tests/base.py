@@ -19,11 +19,8 @@ class BaseTestCase(TestCase):
 		return User.query.filter_by(email='test@tester.com').first()
 
 	def login(self, email, password):
-	    return self.client.post(
-	        '/login',
-	        data=dict(email=email, password=password),
-	        follow_redirects=True
-	    )
+	    return self.client.post('/login', data=dict(email=email, password=password), 
+	    	follow_redirects=True)
 
 	# Overriden/set up methods
 

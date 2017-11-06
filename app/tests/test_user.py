@@ -14,8 +14,7 @@ class ParqTestUser(BaseTestCase):
 	#### helper methods ####
 	########################
 	def register(self, fname, lname, email, password):
-	    return self.client.post(
-	        '/signup',
+	    return self.client.post('/signup',
 	        data=dict(firstname=fname, lastname=lname, email=email, password=password),
 	        follow_redirects=True
 	    )
@@ -28,7 +27,6 @@ class ParqTestUser(BaseTestCase):
 		""" Tests that user can register """ 
 		with self.client:
 			response = self.register('patrick', 'kennedy', 'patkennedy79@gmail.com', 'FlaskIsAwesome')
-			self.assertEqual(response.status_code, 200)
 			self.assertIn(b'/login', request.url)
 			self.assertIn(b'Registration successful', response.data)
 
@@ -59,6 +57,21 @@ class ParqTestUser(BaseTestCase):
 		self.assertTrue(check_password_hash(pass_hash, 'test'))
 		self.assertFalse(check_password_hash(pass_hash, 'TeSt'))
 
+	def test_update_profile(self):
+		""" Tests to see that the user can update their profile """ 
+		self.assertLoginReq('/updateprofile')
+
+		with self.client:
+			self.login('test@tester.com', 'test')
+			response = self.client.post('/updateprofile', data=dict(firstname='Adam', lastname='Admin'), 
+				follow_redirects=True)
+			self.assertIn(b'/profile', request.url)
+			self.assertIn(b'This is Adam Admin\'s profile page', response.data)
+			self.assertIn(b'buyer', response.data)
+			self.assertIn(b'seller', response.data)
+			self.assertIn(b'Update Profile', response.data)
+	    
+
 class UserViewsTests(BaseTestCase):
 	########################
 	#### helper methods ####
@@ -73,6 +86,7 @@ class UserViewsTests(BaseTestCase):
 
 	def test_login_page_loads(self):
 		response = self.client.get('/login')
+		self.assertTrue(response.status_code, 200)
 		self.assertIn(b'Sign In', response.data)
 
 	def test_correct_login(self):
@@ -102,7 +116,7 @@ class UserViewsTests(BaseTestCase):
 			self.assertIn(b'Please signup or login.', response.data)
 			self.assertFalse(current_user.is_active)
 
-		# User isn't authenticated
+		# Check that User isn't authenticated
 		test_user = self.get_test_acc()
 		self.assertFalse(test_user.authenticated)
 
@@ -110,15 +124,17 @@ class UserViewsTests(BaseTestCase):
 	def test_profile_view(self):
 		self.assertLoginReq('/profile')
 
-		response = self.login('test@tester.com', 'test')
-		self.assertIn(b'Profile', response.data)
-		self.assertIn(b'This is Test Tester\'s profile page', response.data)
-		self.assertIn(b'buyer', response.data)
-		self.assertIn(b'seller', response.data)
-		self.assertIn(b'Update Profile', response.data)
+		with self.client:
+			response = self.login('test@tester.com', 'test')
+			self.assertIn(b'Profile', response.data)
+			self.assertIn(b'This is Test Tester\'s profile page', response.data)
+			self.assertIn(b'buyer', response.data)
+			self.assertIn(b'seller', response.data)
+			self.assertIn(b'Update Profile', response.data)
 
 	def test_logout_route_requires_login(self):
 		self.assertLoginReq('/logout')
+		
 
 if __name__ == '__main__':
 	unittest.main()
