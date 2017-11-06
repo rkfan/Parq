@@ -15,7 +15,8 @@ from models import User, Parking_Spot
 @app.route('/')
 def home():
   if current_user.is_authenticated:
-    return render_template('profile.html',name=current_user.firstname+" "+current_user.lastname)
+    user = current_user
+    return render_template('profile.html',name=user.firstname + " " + user.lastname)
   return render_template('index.html')
 
 # TODO signup method not allowed
@@ -47,7 +48,8 @@ def about():
 @app.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile():
-  return render_template('profile.html', name=current_user.firstname+" "+current_user.lastname)
+  user = current_user
+  return render_template('profile.html', name=user.firstname + " " + user.lastname)
 
 
 @app.route('/contact', methods=['GET', 'POST'])
@@ -107,17 +109,16 @@ def buyer():
 @app.route('/seller')
 @login_required
 def seller():
-  return render_template('seller.html', name=current_user.firstname+" "+current_user.lastname )
+  return render_template('seller.html')
 
 
 @app.route('/viewspots')
 @login_required
 def viewspots():
   user = current_user
-
+  uid = user.uid
   # A user's garage is a list containing his parking spots
-  garage = user.get_parking_spots()
-
+  garage = Parking_Spot.query.filter_by(ownerid = uid, validity=1).all()
   return render_template('viewspots.html', garage=garage)
 
 
@@ -159,22 +160,55 @@ def updateprofile():
   # GET Method
   return render_template('updateprofile.html', form=form)
 
+@app.route('/parking/<parking_id>')
+@login_required
+def parking(parking_id):
+  user = current_user
+  parking_spot = Parking_Spot.query.filter_by(psid=parking_id, ownerid=user.uid).first()
+  return render_template('parking.html', parking_spot=parking_spot)
+
+@app.route('/delete_spot/<parking_id>')
+#@login_required
+def delete_spot(parking_id):
+  user = current_user
+  parking_spot = Parking_Spot.query.filter_by(psid=parking_id, ownerid=user.uid).first()
+  parking_spot.validity = 0
+  db.session.commit()
+  return render_template('delete_spot.html', parking_spot=parking_spot)
+
 @app.route('/update_spot/<parking_id>', methods=['GET', 'POST'])
 @login_required
-def update_parking_spot(parking_id):
+def update_spot(parking_id):
   form = UpdateParkingSpotForm(request.form)  
 
   # Updates details of parking spot
-  if request.method == 'POST':
-    return redirect(url_for('profile'))
+  #if request.method == 'POST':
+   # parking_spot.address = form.address
+    #parking_spot.city = form.city
+    #parking_spot.state = form.state
+    #parking_spot.zipcode = form.zipcode
+    #parking_spot.size = form.ps_size
+    #db.session.commit()
+
+    #return redirect(url_for('profile'))
 
   # GET Method
+  # Query for this parking spot
   user = current_user
-  parking_spot = Parking_Spot.get_parking_spot_by_id(parking_id, user.uid)
+  parking_spot = Parking_Spot.query.filter_by(psid=parking_id, ownerid=user.uid).first()
+
+  if request.method == 'POST':
+    parking_spot.address = form.address.data
+    parking_spot.city = form.city.data
+    parking_spot.state = form.state.data
+    parking_spot.zipcode = form.zipcode.data
+    parking_spot.size = form.ps_size.data
+    db.session.commit()
+
+    return redirect(url_for('profile'))
 
   if parking_spot:
-    return render_template('update_spot.html', parking_spot=parking_spot)
-
+    return render_template('update_spot.html', parking_spot=parking_spot, form=form)
   return render_template('notallowed.html')
 
 
