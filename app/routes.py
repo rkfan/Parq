@@ -15,8 +15,7 @@ from models import User, Parking_Spot
 @app.route('/')
 def home():
   if current_user.is_authenticated:
-    user = current_user
-    return render_template('profile.html',name=user.firstname + " " + user.lastname)
+    return render_template('profile.html',name=current_user.firstname+" "+current_user.lastname)
   return render_template('index.html')
 
 # TODO signup method not allowed
@@ -48,8 +47,7 @@ def about():
 @app.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile():
-  user = current_user
-  return render_template('profile.html', name=user.firstname + " " + user.lastname)
+  return render_template('profile.html', name=current_user.firstname+" "+current_user.lastname)
 
 
 @app.route('/contact', methods=['GET', 'POST'])
@@ -109,7 +107,7 @@ def buyer():
 @app.route('/seller')
 @login_required
 def seller():
-  return render_template('seller.html')
+  return render_template('seller.html', name=current_user.firstname+" "+current_user.lastname )
 
 
 @app.route('/viewspots')

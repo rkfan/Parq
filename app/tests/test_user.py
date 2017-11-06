@@ -9,16 +9,7 @@ from app.models import User
 from werkzeug import generate_password_hash, check_password_hash
 
 """ Tests User functionality"""
-class ParqTestUser(BaseTestCase):
-	########################
-	#### helper methods ####
-	########################
-
-	def register(self, fname, lname, email, password):
-		""" Registers a user with the following credentials """ 
-		return self.client.post('/signup', data=dict(firstname=fname, lastname=lname, 
-			email=email, password=password), follow_redirects=True)
-
+class ParqTestUserFunctionality(BaseTestCase):
 	########################
 	#### Tests          ####
 	########################
@@ -50,6 +41,16 @@ class ParqTestUser(BaseTestCase):
 			self.assertTrue(current_user.uid == test_user.get_id())
 			self.assertFalse(current_user.uid == test_user.get_id() + 1)
 
+	def test_get_user_by_email(self):
+		""" Tests the get_user method of User model """ 
+		# Non existing email
+		self.assertEqual(User.get_user('nonexisting@gmail.com'), None)
+		
+		with self.client:
+			# Existing email of logged in user
+			self.login('test@tester.com', 'test')
+			self.assertEqual(current_user, User.get_user(current_user.email))
+
 	def test_check_password(self):
 		""" Tests password is correct after hashing """ 
 		test_user = self.get_test_acc()
@@ -73,6 +74,35 @@ class ParqTestUser(BaseTestCase):
 	    
 
 class UserViewsTests(BaseTestCase):
+	########################
+	#### Tests 			####
+	########################
+
+	def test_profile_view(self):
+		""" Tests to see if the user can see his/her respective profile """ 
+		self.assertLoginReq('/profile')
+
+		with self.client:
+			response = self.login('test@tester.com', 'test')
+			self.assertIn(b'Profile', response.data)
+			self.assertIn(b'This is Test Tester\'s profile page', response.data)
+			self.assertIn(b'buyer', response.data)
+			self.assertIn(b'seller', response.data)
+			self.assertIn(b'Update Profile', response.data)
+
+	def test_seller_view(self):
+		""" Tests to see that the user can see the seller page if logged in """
+		self.assertLoginReq('/seller')
+
+		with self.client:
+			self.login('test@tester.com', 'test')
+			response = self.client.get('/seller')
+			self.assertTrue(response.status_code, 200)
+			self.assertIn(b'This is Test Tester\'s seller page', response.data)
+			self.assertIn(b'My Garage', response.data)
+			self.assertIn(b'Add Parking Space', response.data)
+
+class UserLoginLogoutTests(BaseTestCase):
 	########################
 	#### helper methods ####
 	########################
@@ -133,18 +163,6 @@ class UserViewsTests(BaseTestCase):
 		# Check that User isn't authenticated
 		test_user = self.get_test_acc()
 		self.assertFalse(test_user.authenticated)
-
-	def test_profile_view(self):
-		""" Tests to see if the user can see his/her respective profile """ 
-		self.assertLoginReq('/profile')
-
-		with self.client:
-			response = self.login('test@tester.com', 'test')
-			self.assertIn(b'Profile', response.data)
-			self.assertIn(b'This is Test Tester\'s profile page', response.data)
-			self.assertIn(b'buyer', response.data)
-			self.assertIn(b'seller', response.data)
-			self.assertIn(b'Update Profile', response.data)
 
 	def test_logout_route_requires_login(self):
 		""" Tests to see that you have to be logged in to logout """ 

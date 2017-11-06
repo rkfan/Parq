@@ -16,11 +16,18 @@ class BaseTestCase(TestCase):
 		self.assertIn(b'Sign In', response.data)
 
 	def get_test_acc(self):
+		""" Returns the object that describes the predefined test account """ 
 		return User.query.filter_by(email='test@tester.com').first()
 
+	def register(self, fname, lname, email, password):
+		""" Registers a user with the following credentials """ 
+		return self.client.post('/signup', data=dict(firstname=fname, lastname=lname, 
+			email=email, password=password), follow_redirects=True)
+
 	def login(self, email, password):
-	    return self.client.post('/login', data=dict(email=email, password=password), 
-	    	follow_redirects=True)
+		""" Logs in the with specified email and password. Returns the response """ 
+		return self.client.post('/login', data=dict(email=email, password=password), 
+			follow_redirects=True)
 
 	# Overriden/set up methods
 
@@ -29,6 +36,7 @@ class BaseTestCase(TestCase):
 		return app
 
 	def setUp(self):
+		""" Setup. Creates a test user and two parking spots """ 
 		db.create_all()
 		db.session.add(User("Test", "Tester", "test@tester.com", "test"))
 		db.session.add(Parking_Spot(1, "600 Broadway", "New York", "NY", 10001, "SUV"))
@@ -36,5 +44,6 @@ class BaseTestCase(TestCase):
 		db.session.commit()
 
 	def tearDown(self):
+		""" Teardown method """ 
 		db.session.remove()
 		db.drop_all()

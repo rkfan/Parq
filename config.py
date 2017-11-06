@@ -3,7 +3,7 @@
 # Source: https://github.com/realpython/discover-flask/blob/master/config.py
 
 class BaseConfig(object):
-    DEBUG = False
+    DEBUG = True
     SECRET_KEY = 'vTI\x9f\xe6y\xf3g\xbb?\xa6(\x84\xf8\x82(\xd8wM\xe8}\xeb\xd1='
     SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://root:root@localhost/UserData'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
