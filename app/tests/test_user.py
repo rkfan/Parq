@@ -13,11 +13,11 @@ class ParqTestUser(BaseTestCase):
 	########################
 	#### helper methods ####
 	########################
+
 	def register(self, fname, lname, email, password):
-	    return self.client.post('/signup',
-	        data=dict(firstname=fname, lastname=lname, email=email, password=password),
-	        follow_redirects=True
-	    )
+		""" Registers a user with the following credentials """ 
+		return self.client.post('/signup', data=dict(firstname=fname, lastname=lname, 
+			email=email, password=password), follow_redirects=True)
 
 	########################
 	#### Tests          ####
@@ -78,18 +78,21 @@ class UserViewsTests(BaseTestCase):
 	########################
 
 	def logout(self):
-	    return self.client.get('/logout', follow_redirects=True)
+		""" Logs out the user """ 
+		return self.client.get('/logout', follow_redirects=True)
 
 	########################
 	#### Tests 			####
 	########################
 
 	def test_login_page_loads(self):
+		""" Tests to see that the login page can load """ 
 		response = self.client.get('/login')
 		self.assertTrue(response.status_code, 200)
 		self.assertIn(b'Sign In', response.data)
 
 	def test_correct_login(self):
+		""" Tests to see if a user can log in correctly """ 
 		with self.client:
 			response = self.login('test@tester.com', 'test')
 			self.assertIn(b'/profile', request.url)
@@ -104,12 +107,23 @@ class UserViewsTests(BaseTestCase):
 			
 
 	def test_incorrect_login(self):
+		""" Tests to see that user with invalid credentials will not be able to log in """ 
 		with self.client:
 			response = self.login('test@tester.com', 'WRONG')
 			self.assertFalse(current_user.is_authenticated)
 			self.assertIn(b'/login', request.url)
+			self.assertIn(b'Invalid e-mail or password', response.data)
+
+	def test_blank_login(self):
+		""" Tests to see correct output if user enters blank password and malformed email"""
+		with self.client:
+			response = self.login('', '')
+			self.assertFalse(current_user.is_authenticated)
+			self.assertIn(b'Please enter your email address.', response.data)
+			self.assertIn(b'Please enter a password.', response.data)
 
 	def test_logout(self):
+		""" Tests to see if logout is working correctly """ 
 		with self.client:
 			response = self.login('test@tester.com', 'test')
 			response = self.logout()
@@ -120,8 +134,8 @@ class UserViewsTests(BaseTestCase):
 		test_user = self.get_test_acc()
 		self.assertFalse(test_user.authenticated)
 
-
 	def test_profile_view(self):
+		""" Tests to see if the user can see his/her respective profile """ 
 		self.assertLoginReq('/profile')
 
 		with self.client:
@@ -133,8 +147,8 @@ class UserViewsTests(BaseTestCase):
 			self.assertIn(b'Update Profile', response.data)
 
 	def test_logout_route_requires_login(self):
+		""" Tests to see that you have to be logged in to logout """ 
 		self.assertLoginReq('/logout')
-		
 
 if __name__ == '__main__':
 	unittest.main()
