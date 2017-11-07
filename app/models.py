@@ -12,7 +12,7 @@ class User(db.Model):
   authenticated = db.Column(db.Boolean, default=False)
 
   parking_spots = db.relationship("Parking_Spot", backref="users")
-  my_messages = db.relationship("Message", backref="users")
+  #my_messages = db.relationship("Message", backref="users")
    
   def __init__(self, firstname, lastname, email, password):
     self.firstname = firstname.title()
@@ -22,13 +22,20 @@ class User(db.Model):
     self.authenticated = False
      
   def set_password(self, password):
+    """ Sets the password hash for the user """ 
     self.pwdhash = generate_password_hash(password)
   
   def is_correct_password(self, password):
+    """ Checks to see if the password is correct """
     return check_password_hash(self.pwdhash, password)
 
-  def get_parking_spots(self):
-    return Parking_Spot.query.filter_by(ownerid = self.uid).all()
+  def get_all_parking_spots(self):
+    """ Gets all the user's valid parking spots """ 
+    return Parking_Spot.query.filter_by(ownerid = self.uid, validity=True).all()
+
+  def get_avail_parking_spots(self):
+    """ Gets all the user's availible parking spots """ 
+    return Parking_Spot.query.filter_by(ownerid = self.uid, availible=True).all()
 
   @classmethod
   def user_email_taken(cls, email):
@@ -77,7 +84,7 @@ class Parking_Spot(db.Model):
   validity = db.Column(db.Boolean, default=True)
   availible = db.Column(db.Boolean, default=True)
 
-  my_messages = db.relationship("Message", backref="parking_spots")
+  #my_messages = db.relationship("Message", backref="parking_spots")
 
   # ownerid? Do we need to do something with that...?
   def __init__(self, ownerid, address, city, state, zipcode, ps_size):
@@ -124,19 +131,19 @@ class Parking_Spot(db.Model):
     return '<Parking Spot at {0} owned by: {1}. Availibility: {2}>'.format(self.address, self.get_owner_name, 
                                                                           self.availible)
 
-class Message(db.Model):
-  __tablename__ = 'my_messages'
+# class Message(db.Model):
+#   __tablename__ = 'my_messages'
 
-  message_id = db.Column(db.Integer, primary_key=True)
-  sender_uid = db.Column(db.Integer, db.ForeignKey('users.uid', ondelete="CASCADE"), nullable=False)
-  receiver_uid = db.Column(db.Integer, db.ForeignKey('users.uid', ondelete="CASCADE"), nullable=False)
-  psid = db.Column(db.Integer, db.ForeignKey('parking_spots.psid', ondelete="CASCADE"), nullable=False)
-  message = db.Column(db.String(500), nullable=False)
-  isRead = db.Column(db.Boolean, default=False)
+#   message_id = db.Column(db.Integer, primary_key=True)
+#   sender_uid = db.Column(db.Integer, db.ForeignKey('users.uid', ondelete="CASCADE"), nullable=False)
+#   receiver_uid = db.Column(db.Integer, db.ForeignKey('users.uid', ondelete="CASCADE"), nullable=False)
+#   psid = db.Column(db.Integer, db.ForeignKey('parking_spots.psid', ondelete="CASCADE"), nullable=False)
+#   message = db.Column(db.String(500), nullable=False)
+#   isRead = db.Column(db.Boolean, default=False)
 
-  def __init__(self, sender_uid, rcv_uid, psid, msg):
-    self.sender_uid = sender_uid
-    self.receiver_uid = rcv_uid
-    self.psid = psid
-    self.message = msg
-    self.isRead = False
+#   def __init__(self, sender_uid, rcv_uid, psid, msg):
+#     self.sender_uid = sender_uid
+#     self.receiver_uid = rcv_uid
+#     self.psid = psid
+#     self.message = msg
+#     self.isRead = False

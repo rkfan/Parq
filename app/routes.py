@@ -15,8 +15,7 @@ from models import User, Parking_Spot
 @app.route('/')
 def home():
   if current_user.is_authenticated:
-    user = current_user
-    return render_template('profile.html',name=user.firstname + " " + user.lastname)
+    return render_template('profile.html',name=current_user.firstname + " " + current_user.lastname)
   return render_template('index.html')
 
 # TODO signup method not allowed
@@ -25,7 +24,6 @@ def signup():
   form = SignupForm(request.form)
      
   if request.method == 'POST':
-
     if form.validate() == False:	
       return render_template('signup.html', form=form)
 
@@ -40,7 +38,6 @@ def signup():
   elif request.method == 'GET':
     return render_template('signup.html', form=form)
 
-
 @app.route('/about')
 def about():
   return render_template('about.html')
@@ -48,9 +45,7 @@ def about():
 @app.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile():
-  user = current_user
-  return render_template('profile.html', name=user.firstname + " " + user.lastname)
-
+  return render_template('profile.html', name=current_user.firstname + " " + current_user.lastname)
 
 @app.route('/contact', methods=['GET', 'POST'])
 def contact():
@@ -62,13 +57,11 @@ def contact():
   elif request.method == 'GET':
     return render_template('contact.html', form=form)
 
-
 @app.route('/login', methods=['GET', 'POST'])
 def login():
   form = SigninForm()
      
   if request.method == 'POST':
-    # if this doesn't work change back to just validate()
     if form.validate_on_submit(): 
       user = User.get_user(form.email.data)
 
@@ -84,7 +77,6 @@ def login():
         flash('Error! Incorrect login credentials.', 'error')
   return render_template('login.html', form=form)
 
-
 @app.route('/logout')
 @login_required
 def logout():
@@ -95,30 +87,23 @@ def logout():
   logout_user()
   return redirect(url_for('home'))
 
-
 @app.route('/buyer')
 @login_required
 def buyer():
-  user = current_user
-  uid = user.uid
   allspots = Parking_Spot.get_all_spots()
   
   return render_template('buyer.html', allspots=allspots)
 
-
 @app.route('/seller')
 @login_required
 def seller():
-  return render_template('seller.html')
-
+  return render_template('seller.html', name=current_user.firstname + " " + current_user.lastname)
 
 @app.route('/viewspots')
 @login_required
 def viewspots():
-  user = current_user
-  uid = user.uid
   # A user's garage is a list containing his parking spots
-  garage = Parking_Spot.query.filter_by(ownerid = uid, validity=1).all()
+  garage = current_user.get_all_parking_spots()
   return render_template('viewspots.html', garage=garage)
 
 
@@ -128,8 +113,7 @@ def addspots():
   form = SellerForm(request.form)
      
   if request.method == 'POST':
-    user = current_user
-    uid = user.uid
+    uid = current_user.uid
 
     if form.validate(uid) == False:  
       return render_template('addspots.html', form=form)
@@ -149,10 +133,10 @@ def updateprofile():
   form = UpdateProfileForm(request.form)
 
   if request.method == 'POST':
-    user = current_user
+    #user = current_user
 
-    user.firstname = form.firstname.data.title()
-    user.lastname = form.lastname.data.title()
+    current_user.firstname = form.firstname.data.title()
+    current_user.lastname = form.lastname.data.title()
     db.session.commit()
 
     return redirect(url_for('profile'))
@@ -163,17 +147,16 @@ def updateprofile():
 @app.route('/parking/<parking_id>')
 @login_required
 def parking(parking_id):
-  user = current_user
-  parking_spot = Parking_Spot.query.filter_by(psid=parking_id, ownerid=user.uid).first()
+  parking_spot = Parking_Spot.get_parking_spot_by_id(parking_id, current_user.uid)
   return render_template('parking.html', parking_spot=parking_spot)
 
 @app.route('/delete_spot/<parking_id>')
 #@login_required
 def delete_spot(parking_id):
-  user = current_user
-  parking_spot = Parking_Spot.query.filter_by(psid=parking_id, ownerid=user.uid).first()
+  parking_spot = Parking_Spot.get_parking_spot_by_id(parking_id, current_user.uid)
   parking_spot.validity = 0
   db.session.commit()
+
   return render_template('delete_spot.html', parking_spot=parking_spot)
 
 @app.route('/update_spot/<parking_id>', methods=['GET', 'POST'])
@@ -181,21 +164,9 @@ def delete_spot(parking_id):
 def update_spot(parking_id):
   form = UpdateParkingSpotForm(request.form)  
 
-  # Updates details of parking spot
-  #if request.method == 'POST':
-   # parking_spot.address = form.address
-    #parking_spot.city = form.city
-    #parking_spot.state = form.state
-    #parking_spot.zipcode = form.zipcode
-    #parking_spot.size = form.ps_size
-    #db.session.commit()
-
-    #return redirect(url_for('profile'))
-
   # GET Method
   # Query for this parking spot
-  user = current_user
-  parking_spot = Parking_Spot.query.filter_by(psid=parking_id, ownerid=user.uid).first()
+  parking_spot = Parking_Spot.get_parking_spot_by_id(parking_id, current_user.uid)
 
   if request.method == 'POST':
     parking_spot.address = form.address.data
@@ -210,5 +181,3 @@ def update_spot(parking_id):
   if parking_spot:
     return render_template('update_spot.html', parking_spot=parking_spot, form=form)
   return render_template('notallowed.html')
-
-
