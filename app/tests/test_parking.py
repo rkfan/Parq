@@ -19,7 +19,7 @@ class ParqSellerFunctTests(BaseTestCase):
 			self.assertIn(b'New York', response.data)
 			self.assertIn(b'10001', response.data)
 
-			user_garage = current_user.get_parking_spots()
+			user_garage = current_user.get_all_parking_spots()
 			for spot in user_garage:
 				self.assertEqual(str(spot), '<Parking Spot at {0} owned by: {1}. Availibility: {2}>'.format(spot.address, 
 				spot.get_owner_name, spot.availible))
@@ -29,7 +29,7 @@ class ParqSellerFunctTests(BaseTestCase):
 		self.register('jimmy', 'buckets', 'jbuckets@aol.com', 'igetBuckets')
 		with self.client:
 			self.login('jbuckets@aol.com', 'igetBuckets')
-			user_garage = current_user.get_parking_spots()
+			user_garage = current_user.get_all_parking_spots()
 			self.assertTrue(user_garage, None)
 
 	def test_add_parking_space(self):
