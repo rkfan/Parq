@@ -5,7 +5,7 @@
 	<h1>Welcome to your garage</h1>
 	{% for spot in garage %}
 	<ul>
-		<li> <a href="{{ url_for('update_parking_spot', parking_id=spot.psid) }}">{{ spot.address }} | {{ spot.city }} | 
+		<li> <a href="{{ url_for('parking', parking_id=spot.psid) }}">{{ spot.address }} | {{ spot.city }} | 
 		{{ spot.zipcode }} | {{ spot.ps_size }}</a>
 	</ul>
 	{% endfor %}

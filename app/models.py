@@ -74,6 +74,7 @@ class Parking_Spot(db.Model):
   state = db.Column(db.String(100), nullable=False)
   zipcode = db.Column(db.Integer, nullable=False)
   ps_size = db.Column(db.String(120), nullable=False)
+  validity = db.Column(db.Boolean, default=True)
   availible = db.Column(db.Boolean, default=True)
 
   my_messages = db.relationship("Message", backref="parking_spots")
@@ -86,6 +87,7 @@ class Parking_Spot(db.Model):
     self.state = state.title()
     self.zipcode = zipcode
     self.ps_size = ps_size.title()
+    self.validity = True
     self.availible = True
 
   def getAvailibility(self):  
