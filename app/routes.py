@@ -29,9 +29,8 @@ def signup():
 
     else:
       newuser = User(form.firstname.data, form.lastname.data, form.email.data, form.password.data)
-      db.session.add(newuser)
+      User.add_user(newuser)
 
-      db.session.commit()
       flash('Registration successful')
       return redirect(url_for('login'))
    
@@ -68,9 +67,7 @@ def login():
       # Check if user exists and the password is correct
       if user is not None and user.is_correct_password(form.password.data):
         # Logs the user in authenticates him/her
-        user.authenticated = True
-        db.session.add(user)
-        db.session.commit()
+        user.authenticate_user()
         login_user(user)
         return redirect(url_for('profile'))
       else: 
@@ -81,9 +78,7 @@ def login():
 @login_required
 def logout():
   user = current_user
-  user.authenticated = False
-  db.session.add(user)
-  db.session.commit()
+  user.deauthenticate_user()
   logout_user()
   return redirect(url_for('home'))
 
@@ -118,9 +113,17 @@ def addspots():
     if form.validate(uid) == False:  
       return render_template('addspots.html', form=form)
     
-    parking_spot = Parking_Spot(uid, form.address.data, form.city.data, form.state.data, form.zipcode.data, form.ps_size.data)   
-    db.session.add(parking_spot)
-    db.session.commit()
+    # Form validated, see if the parking spot exists for the user already, just is "invalidated"
+    full_address_dict = {'address':form.address.data.title(), 'city':form.city.data.title(),
+    'state': form.state.data.title(), 'zipcode':form.zipcode.data}
+
+    parking_spot = Parking_Spot.spot_exists_but_deleted(current_user.uid, full_address_dict)
+
+    if parking_spot:
+      parking_spot.reactivate_spot(form.ps_size.data.title())
+    else:
+      parking_spot = Parking_Spot(uid, form.address.data, form.city.data, form.state.data, form.zipcode.data, form.ps_size.data)   
+      parking_spot.add_spot()
 
     return redirect(url_for('seller'))
 
@@ -133,12 +136,7 @@ def updateprofile():
   form = UpdateProfileForm(request.form)
 
   if request.method == 'POST':
-    #user = current_user
-
-    current_user.firstname = form.firstname.data.title()
-    current_user.lastname = form.lastname.data.title()
-    db.session.commit()
-
+    current_user.update_profile(form.firstname.data, form.lastname.data)
     return redirect(url_for('profile'))
 
   # GET Method
@@ -151,30 +149,30 @@ def parking(parking_id):
   return render_template('parking.html', parking_spot=parking_spot)
 
 @app.route('/delete_spot/<parking_id>')
-#@login_required
+@login_required
 def delete_spot(parking_id):
   parking_spot = Parking_Spot.get_parking_spot_by_id(parking_id, current_user.uid)
-  parking_spot.validity = 0
-  db.session.commit()
 
-  return render_template('delete_spot.html', parking_spot=parking_spot)
+  if parking_spot:
+    parking_spot.delete_spot()
+    return render_template('delete_spot.html', parking_spot=parking_spot)
+
+  return render_template('notallowed.html')
 
 @app.route('/update_spot/<parking_id>', methods=['GET', 'POST'])
 @login_required
 def update_spot(parking_id):
   form = UpdateParkingSpotForm(request.form)  
 
-  # GET Method
   # Query for this parking spot
   parking_spot = Parking_Spot.get_parking_spot_by_id(parking_id, current_user.uid)
 
   if request.method == 'POST':
-    parking_spot.address = form.address.data
-    parking_spot.city = form.city.data
-    parking_spot.state = form.state.data
-    parking_spot.zipcode = form.zipcode.data
-    parking_spot.size = form.ps_size.data
-    db.session.commit()
+    # #TODO : See if the info filled out in the form already exists
+    full_address_dict = {'address':form.address.data, 'city':form.city.data,
+    'state':form.state.data, 'zipcode':form.zipcode.data, 'ps_size':form.ps_size.data}
+
+    parking_spot.update_spot(full_address_dict)
 
     return redirect(url_for('profile'))
 

@@ -111,6 +111,7 @@ class UpdateParkingSpotForm(Form):
   def validate(self, uid):
     if not Form.validate(self):
       return False
+      #TODO Why is there no further validation for updating the parking spot
 
     # Not neccesary?
     # # Looks to see if that parking space is already listed by this user. For now, only allow one parking

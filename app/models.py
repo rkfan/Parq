@@ -29,6 +29,16 @@ class User(db.Model):
     """ Checks to see if the password is correct """
     return check_password_hash(self.pwdhash, password)
 
+  def authenticate_user(self):
+    self.authenticated = True
+    db.session.add(self)
+    db.session.commit()
+
+  def deauthenticate_user(self):
+    self.authenticated = False
+    db.session.add(self)
+    db.session.commit()
+
   def get_all_parking_spots(self):
     """ Gets all the user's valid parking spots """ 
     return Parking_Spot.query.filter_by(ownerid = self.uid, validity=True).all()
@@ -36,6 +46,11 @@ class User(db.Model):
   def get_avail_parking_spots(self):
     """ Gets all the user's availible parking spots """ 
     return Parking_Spot.query.filter_by(ownerid = self.uid, availible=True).all()
+
+  def update_profile(self, firstname, lastname):
+    self.firstname = firstname.title()
+    self.lastname = lastname.title()
+    db.session.commit()
 
   @classmethod
   def user_email_taken(cls, email):
@@ -47,6 +62,12 @@ class User(db.Model):
   def get_user(cls, email):
     """ Queries to see if the user exists and returns the User object """
     return cls.query.filter_by(email=email).first()
+
+  @classmethod 
+  def add_user(cls, newuser):
+    """ Adds a new user to the database """ 
+    db.session.add(newuser)
+    db.session.commit()
 
   # Stuff for flask_login
   @property
@@ -104,7 +125,8 @@ class Parking_Spot(db.Model):
   def get_all_spots(cls):
     """ Select all method for parking spots. Returns all Parking_Spot
         objects that are stored in the database """ 
-    return cls.query.order_by(cls.city).all()
+    #return cls.query.order_by(cls.city).all()
+    return cls.query.filter_by(validity=True, availible=True).all()
 
   @classmethod
   def get_parking_spot_by_id(cls, parking_id, uid):
@@ -116,7 +138,13 @@ class Parking_Spot(db.Model):
     """ Return true if spot exists, false otherwise """ 
     return cls.query.filter_by(ownerid=uid, address=full_address['address'],
                         city=full_address['city'], state=full_address['state'],
-                        zipcode=full_address['zipcode']).first() is not None
+                        zipcode=full_address['zipcode'], validity=True).first() is not None
+  @classmethod 
+  def spot_exists_but_deleted(cls, uid, full_address):
+    """ Returns the parking spot if it has been added by the user but 'deleted' """ 
+    return cls.query.filter_by(ownerid=uid, address=full_address['address'],
+                    city=full_address['city'], state=full_address['state'],
+                    zipcode=full_address['zipcode'], validity=False).first()
 
   def get_owner_name(self):
     """ Returns the owner name based on the ownerid """
@@ -126,6 +154,31 @@ class Parking_Spot(db.Model):
   def get_owner_email(self):
     owner = User.query.filter_by(uid=self.ownerid).first()
     return owner.email
+
+  def add_spot(self):
+    """ Adds a spot to the database """ 
+    db.session.add(self)
+    db.session.commit()
+
+  def update_spot(self, full_address):
+    """ Updates information about the parking spot using dictionary stored with the info """ 
+    self.address = full_address['address'].title()
+    self.city = full_address['city'].title()
+    self.state = full_address['state'].title()
+    self.zipcode = full_address['zipcode']
+    self.ps_size = full_address['ps_size'].title()
+    db.session.commit()
+
+  def reactivate_spot(self, space_size):
+    """ Reactivates a spot that has been 'deleted' prior """ 
+    self.validity = 1
+    self.ps_size = space_size
+    db.session.commit()
+
+  def delete_spot(self):
+    """ Deletes a spot by setting the validity to false """ 
+    self.validity = 0
+    db.session.commit()
 
   def __str__(self):
     return '<Parking Spot at {0} owned by: {1}. Availibility: {2}>'.format(self.address, self.get_owner_name, 
