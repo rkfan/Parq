@@ -2,7 +2,7 @@ from flask_wtf import Form
 from wtforms import TextField, BooleanField, PasswordField, TextAreaField, validators, \
                     SubmitField, RadioField, IntegerField
 
-from models import db, User, Parking_Spot
+from models import db, User, Parking_Spot, Message
 
 
 class ContactForm(Form):
@@ -111,7 +111,16 @@ class UpdateParkingSpotForm(Form):
   def validate(self, uid):
     if not Form.validate(self):
       return False
-      #TODO Why is there no further validation for updating the parking spot
+
+class ApprovalForm(Form):
+  submit = SubmitField("Approve Request")
+  def __init__(self, *args, **kwargs):
+    Form.__init__(self, *args, **kwargs)
+
+  def validate(self, uid):
+    if not Form.validate(self):
+      return False
+
 
     # Not neccesary?
     # # Looks to see if that parking space is already listed by this user. For now, only allow one parking
@@ -124,3 +133,15 @@ class UpdateParkingSpotForm(Form):
     #   return False
 
     return True
+
+class MessageForm(Form):
+  message = TextAreaField("Message",  [validators.Required("Please enter your message")])
+  submit = SubmitField("Send Message")
+ 
+  def __init__(self, *args, **kwargs):
+    Form.__init__(self, *args, **kwargs)
+ 
+  def validate(self):
+    if not Form.validate(self):
+      return False
+
