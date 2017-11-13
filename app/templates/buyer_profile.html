@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+{% block content %}
+  <div class="jumbo">
+    <h2>Profile</h2>
+    <center>
+  		<a href="{{ url_for('buyer') }}">View Parking Spots</a>
+  		<a href="{{ url_for('requests') }}">View Pending Requests</a>
+  		<a href="{{ url_for('approved_requests') }}">View Approved Requests</a>
+  	</center>
+  </div>
+{% endblock %}

@@ -1,0 +1,6 @@
+{% extends "layout.html" %}
+ 
+{% block content %}
+	<h2>From : {{ get_user(message.sender_uid) }}</h2>
+	<p>Message: {{ message.message }}</p>
+{% endblock %}

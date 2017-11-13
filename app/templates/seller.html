@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
  
 {% block content %}
-  <h2>This is {{ name }}'s seller page<h2>
+  <h2>This is {{ session['email'] }}'s seller page<h2>
   	<h4>
     	<a href="{{ url_for('viewspots') }}">My Garage</a>
     	<a href="{{ url_for('addspots') }}">Add Parking Space </a>

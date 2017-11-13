@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+{% block content %}
+  	{% for message in form.message.errors %}
+	<div class="flash">{{ message }}</div>
+    {% endfor %}
+
+	<form action="{{ url_for('message', parking_id=parking_spot.psid) }}" method=post>
+		{{ form.csrf_token }}
+		{{ form.hidden_tag() }}
+		     
+		{{ form.message.label }}
+		{{ form.message }}
+		     
+		{{ form.submit }}
+	</form>
+{% endblock %}
