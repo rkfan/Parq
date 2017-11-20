@@ -5,8 +5,8 @@
     <h1>(For the first iteration all parking spots are availible)</h1>
         {% for spot in allspots %}
         <ul>
-            <li><span style="padding-left:20px"> {{ spot.address }} | {{ spot.city }} | {{ spot.state }} |
-            {{ spot.zipcode }} | {{ spot.ps_size }}</span>
+            <li><span style="padding-left:20px"> <a href="{{ url_for('message', parking_id=spot.psid) }}">{{ spot.address }} | {{ spot.city }} | {{ spot.state }} |
+            {{ spot.zipcode }} | {{ spot.ps_size }}</a></span>
         </ul>
         {% endfor %}
 {% endblock %}
