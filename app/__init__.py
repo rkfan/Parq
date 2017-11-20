@@ -4,6 +4,9 @@ from flask_login import LoginManager
 import os
 from flaskext.mysql import MySQL
 from flask_wtf.csrf import CSRFProtect
+import googlemaps
+from haversine import haversine
+import jellyfish as jf
 
 template_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'templates')
 app = Flask(__name__, template_folder = template_dir)
@@ -13,6 +16,8 @@ app.config.from_object('config.BaseConfig')
 
 db = SQLAlchemy(app)
 CSRFProtect(app)
+
+gmaps = googlemaps.Client(key='AIzaSyA3puSdjsWawVHB0LxKU7dk9s9bzHHteGU')
 
 # Link the Flak-Login module with flask application
 login_manager = LoginManager()

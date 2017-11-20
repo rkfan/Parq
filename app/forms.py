@@ -120,18 +120,6 @@ class ApprovalForm(Form):
   def validate(self, uid):
     if not Form.validate(self):
       return False
-
-
-    # Not neccesary?
-    # # Looks to see if that parking space is already listed by this user. For now, only allow one parking
-    # # space for a seller for one type of car
-    # full_address_dict = {'address':self.address.data.title(), 'city':self.city.data.title(), \
-    # 'state': self.city.data.title(), 'zipcode':self.zipcode.data}
-
-    # if Parking_Spot.spot_exists(uid, full_address_dict):
-    #   self.address.errors.append("You already added this spot to your garage.")
-    #   return False
-
     return True
 
 class MessageForm(Form):

@@ -1,21 +1,32 @@
 #!/usr/bin/env python
-import googlemaps
-from haversine import haversine
-import os
-import jellyfish as jf
 from flask import render_template, request, flash, session, url_for, redirect, \
                   Blueprint
 from flask_login import current_user, login_required, login_user, logout_user
 from functools import wraps
-from app import db, app
+from app import db, app, gmaps
 from forms import SignupForm, SigninForm, ContactForm, SellerForm, UpdateProfileForm, \
                   UpdateParkingSpotForm, MessageForm, ApprovalForm, BuyerForm
 from models import User, Parking_Spot, Message
-gmaps = googlemaps.Client(key='AIzaSyA3puSdjsWawVHB0LxKU7dk9s9bzHHteGU')
 
 # define the blueprint: 'parq', set url prefix: app.url/parq
 #app = Blueprint('parq', __name__, url_prefix='/parq')
 
+###################
+# Helper Functions
+###################
+def validate_address(val_address, gmaps):
+  """ Uses google maps api to see if inserted address is valid or not """ 
+  response = gmaps.geocode(val_address)
+  
+  if len(response) == 0 or ('partial_match' in response[0].keys() and response[0]['partial_match'] == True):
+    return False
+  else:
+    coordinates = [response[0]['geometry']['location']['lat'], response[0]['geometry']['location']['lng']]
+    full_place_name = str(response[0]['formatted_address'])
+
+    return (full_place_name, coordinates)
+
+# Routes
 @app.route('/')
 def home():
   if current_user.is_authenticated:
@@ -44,7 +55,6 @@ def signup():
   elif request.method == 'GET':
     return render_template('signup.html', form=form)
 
-
 @app.route('/about')
 def about():
   return render_template('about.html')
@@ -60,15 +70,15 @@ def profile():
 @login_required
 def message_page():
   user = current_user
-  my_messages = user.get_messages()
+  my_messages = user.get_all_messages()
   return render_template('messagepage.html', my_messages=my_messages, get_user=User.get_user_name)
 
 @app.route('/view_message/<message_id>', methods =['GET', 'POST'])
 @login_required
 def view_message(message_id):
     form = ApprovalForm()
-    message = Message.query.filter_by(message_id=message_id).first()
-    
+    message = get_message_by_id(message_id)
+
     if request.method == 'POST':
       message.approved = 1
       db.session.commit()
@@ -109,13 +119,13 @@ def logout():
   return redirect(url_for('home'))
 
 
+# This page shouldnt exist???! links directly to buyer profile... Look into this.
 @app.route('/buyer')
 @login_required
 def buyer():
   user = current_user
   uid = user.uid
-  allspots = Parking_Spot.query.filter(Parking_Spot.ownerid != uid, Parking_Spot.validity == 1).all()
-  
+  allspots = Parking_Spot.get_spots_for_buyer(uid)
   return render_template('buyer.html', allspots=allspots)
 
 @app.route('/buyer_search',methods=['GET', 'POST'])
@@ -131,8 +141,9 @@ def buyer_search():
       return render_template('buyer_search.html', form=form)
     
     val_address = form.address.data+","+form.city.data+","+form.state.data+" "+str(form.zipcode.data)
-    if validate_address(val_address, gmaps):
-      val_add = validate_address(val_address, gmaps)
+    val_add = validate_address(val_address, gmaps)
+
+    if val_add:
       lat_lon = tuple(val_add[1])
     else:
       flash('Invalid Address')
@@ -151,10 +162,9 @@ def buyer_profile():
 @app.route('/requests')
 @login_required
 def requests():
-
   user = current_user
-  #my_messages = user.get_messages()
-  unapproved_messages = Message.query.filter_by(sender_uid=user.uid, approved=0).all()
+  unapproved_messages = user.get_my_messages_by_status(0)
+
   if not unapproved_messages:
     flash('You have no pending requests!')
     return redirect(url_for('buyer_profile'))
@@ -164,18 +174,16 @@ def requests():
 @app.route('/view_requests/<message_id>')
 @login_required
 def view_requests(message_id):
-  message = Message.query.filter_by(message_id=message_id, approved=0).first()
+  # TODO: Can user see other user's messages because of this query?
+  message = Message.get_message_by_id(message_id, 0)
   return render_template('view_requests.html', message=message, get_user=User.get_user_name)
-
-
 
 @app.route('/approved_requests')
 @login_required
 def approved_requests():
-
   user = current_user
-  #my_messages = user.get_messages()
-  approved_messages = Message.query.filter_by(sender_uid=user.uid, approved=1).all()
+  approved_messages = user.get_my_messages_by_status(1)
+
   if not approved_messages:
     flash('You have no approved requests!')
     return redirect(url_for('buyer_profile'))
@@ -185,41 +193,27 @@ def approved_requests():
 @app.route('/view_approved_requests/<message_id>')
 @login_required
 def view_approved_requests(message_id):
-  message = Message.query.filter_by(message_id=message_id, approved=1).first()
+  message = Message.get_message_by_id(message_id, 1)
   return render_template('view_approved_requests.html', message=message, get_user=User.get_user_name)
-
-
-
 
 @app.route('/seller')
 @login_required
 def seller():
   return render_template('seller.html')
 
-
 @app.route('/viewspots')
 @login_required
 def viewspots():
   user = current_user
-  uid = user.uid
   # A user's garage is a list containing his parking spots
-  garage = Parking_Spot.query.filter_by(ownerid = uid, validity=1).all()
+  garage = user.get_all_parking_spots()
+
   return render_template('viewspots.html', garage=garage)
-
-def validate_address(val_address, gmaps):
-  response = gmaps.geocode(val_address)
-  #print response
-  if len(response) == 0 or ('partial_match' in response[0].keys() and response[0]['partial_match'] == True) :
-    return False
-  else:
-    coordinates = [response[0]['geometry']['location']['lat'], response[0]['geometry']['location']['lng']]
-    full_place_name = str(response[0]['formatted_address'])
-
-    return (full_place_name, coordinates)
 
 @app.route('/addspots',methods=['GET', 'POST'])
 @login_required
 def addspots():
+  # TODO go back to this later...
   form = SellerForm(request.form)
      
   if request.method == 'POST':

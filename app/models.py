@@ -26,12 +26,16 @@ class User(db.Model):
   def is_correct_password(self, password):
     return check_password_hash(self.pwdhash, password)
 
-  def get_parking_spots(self):
-    return Parking_Spot.query.filter_by(ownerid = self.uid).all()
+  def get_all_parking_spots(self):
+    return Parking_Spot.query.filter_by(ownerid = self.uid, validity=1).all()
 
-  def get_messages(self):
+  def get_all_messages(self):
     """ Gets a user's messages """  
     return Message.query.filter_by(receiver_uid=self.uid).all()
+
+  def get_my_messages_by_status(self, approved=0):
+    """ Returns user's unapproved messages """ 
+    return Message.query.filter_by(sender_uid=self.uid, approved=approved).all()
 
   @classmethod
   def user_email_taken(cls, email):
@@ -121,12 +125,18 @@ class Parking_Spot(db.Model):
                         city=full_address['city'], state=full_address['state'],
                         zipcode=full_address['zipcode']).first() is not None
 
+  @classmethod 
+  def get_spots_for_buyer(cls, uid):
+    return cls.query.filter(cls.ownerid != uid, cls.validity == 1).all()
+
+
   def get_owner_name(self):
     """ Returns the owner name based on the ownerid """
     owner = User.query.filter_by(uid=self.ownerid).first()
     return owner.firstname + " " + owner.lastname 
 
   def get_owner_email(self):
+    """ Returns the owner's email """ 
     owner = User.query.filter_by(uid=self.ownerid).first()
     return owner.email
 
@@ -154,8 +164,12 @@ class Message(db.Model):
     self.isRead = False
     self.approved = False
 
+  @classmethod 
+  def get_message_by_id(cls, message_id):
+    return cls.query.filter_by(message_id=message_id).first()
 
-
-
+  @classmethod
+  def get_message_by_id(cls, message_id, status):
+    return cls.query.filter_by(message_id=message_id, approved=status).first()
 
 
