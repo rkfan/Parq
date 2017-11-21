@@ -14,6 +14,7 @@ from models import User, Parking_Spot, Message
 ###################
 # Helper Functions
 ###################
+
 def validate_address(val_address, gmaps):
   """ Uses google maps api to see if inserted address is valid or not """ 
   response = gmaps.geocode(val_address)
@@ -26,7 +27,25 @@ def validate_address(val_address, gmaps):
 
     return (full_place_name, coordinates)
 
+def parse_valid_data(val_add):
+    """ Processes the validated address and returns its parsed parts""" 
+    val_add1 = val_add[0]
+    val_add2 = val_add1.split(",")
+    valid_address = val_add2[0]
+    valid_city = val_add2[1]
+    val_add3 = val_add2[2].split(" ")
+    valid_state = val_add3[1]
+    valid_zipcode = int(val_add3[2])
+    val_location = val_add[1]
+    valid_latitude = val_location[0]
+    valid_longitude = val_location[1] 
+
+    return (valid_address, valid_city, valid_state, valid_zipcode, valid_latitude, valid_longitude)
+
+###################
 # Routes
+###################
+
 @app.route('/')
 def home():
   if current_user.is_authenticated:
@@ -34,7 +53,6 @@ def home():
     return render_template('profile.html',name=user.firstname + " " + user.lastname)
   return render_template('index.html')
 
-# TODO signup method not allowed
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
   form = SignupForm(request.form)
@@ -120,6 +138,7 @@ def logout():
 
 
 # This page shouldnt exist???! links directly to buyer profile... Look into this.
+# Alter this to route to soemthing else probably is the correct behavior
 @app.route('/buyer')
 @login_required
 def buyer():
@@ -163,7 +182,7 @@ def buyer_profile():
 @login_required
 def requests():
   user = current_user
-  unapproved_messages = user.get_my_messages_by_status(0)
+  unapproved_messages = user.get_my_messages_by_status(approved=0)
 
   if not unapproved_messages:
     flash('You have no pending requests!')
@@ -174,15 +193,15 @@ def requests():
 @app.route('/view_requests/<message_id>')
 @login_required
 def view_requests(message_id):
-  # TODO: Can user see other user's messages because of this query?
-  message = Message.get_message_by_id(message_id, 0)
+  # TODO: Check to see if a user can see other user's messages because of this query?
+  message = Message.get_message_by_id_status(message_id, 0)
   return render_template('view_requests.html', message=message, get_user=User.get_user_name)
 
 @app.route('/approved_requests')
 @login_required
 def approved_requests():
   user = current_user
-  approved_messages = user.get_my_messages_by_status(1)
+  approved_messages = user.get_my_messages_by_status(approved=1)
 
   if not approved_messages:
     flash('You have no approved requests!')
@@ -193,7 +212,7 @@ def approved_requests():
 @app.route('/view_approved_requests/<message_id>')
 @login_required
 def view_approved_requests(message_id):
-  message = Message.get_message_by_id(message_id, 1)
+  message = Message.get_message_by_id_status(message_id, 1)
   return render_template('view_approved_requests.html', message=message, get_user=User.get_user_name)
 
 @app.route('/seller')
@@ -207,13 +226,11 @@ def viewspots():
   user = current_user
   # A user's garage is a list containing his parking spots
   garage = user.get_all_parking_spots()
-
   return render_template('viewspots.html', garage=garage)
 
 @app.route('/addspots',methods=['GET', 'POST'])
 @login_required
 def addspots():
-  # TODO go back to this later...
   form = SellerForm(request.form)
      
   if request.method == 'POST':
@@ -224,18 +241,12 @@ def addspots():
       return render_template('addspots.html', form=form)
     
     val_address = form.address.data+","+form.city.data+","+form.state.data+" "+str(form.zipcode.data)
-    if validate_address(val_address, gmaps):
-      val_add = validate_address(val_address, gmaps)
-      val_add1 = val_add[0]
-      val_add2 = val_add1.split(",")
-      valid_address = val_add2[0]
-      valid_city = val_add2[1]
-      val_add3 = val_add2[2].split(" ")
-      valid_state = val_add3[1]
-      valid_zipcode = int(val_add3[2])
-      val_location = val_add[1]
-      valid_latitude = val_location[0]
-      valid_longitude = val_location[1] 
+    val_add = validate_address(val_address, gmaps)
+
+    if val_add:
+      valid_address, valid_city, valid_state, valid_zipcode, valid_latitude, \
+      valid_longitude = parse_valid_data(val_add)
+
       parking_spot = Parking_Spot(uid, valid_address, valid_city, valid_state, valid_zipcode, form.ps_size.data, valid_latitude, valid_longitude)
     else:
       flash('Invalid Address')
@@ -260,7 +271,6 @@ def updateprofile():
     user.firstname = form.firstname.data.title()
     user.lastname = form.lastname.data.title()
     db.session.commit()
-
     return redirect(url_for('profile'))
 
   # GET Method
@@ -270,7 +280,7 @@ def updateprofile():
 @login_required
 def parking(parking_id):
   user = current_user
-  parking_spot = Parking_Spot.query.filter_by(psid=parking_id, ownerid=user.uid).first()
+  parking_spot = Parking_Spot.get_user_parking_spot_by_id(parking_id, user.uid)
   return render_template('parking.html', parking_spot=parking_spot)
 
 @app.route('/message/<parking_id>', methods=['GET', 'POST'])
@@ -278,19 +288,25 @@ def parking(parking_id):
 def message(parking_id):
   form = MessageForm(request.form) 
   user = current_user
-  parking_spot = Parking_Spot.query.filter_by(psid=parking_id).first()
+
+  # Get the information related to this parking spot
+  parking_spot = Parking_Spot.get_parking_spot_by_id(parking_id)
+
   if request.method == 'POST':
     message = Message(user.uid, parking_spot.ownerid, parking_spot.psid, form.message.data)
     db.session.add(message)
     db.session.commit()
     return redirect(url_for('profile'))
+
   return render_template('message.html', parking_spot=parking_spot, form=form)
 
 @app.route('/delete_spot/<parking_id>')
 @login_required
 def delete_spot(parking_id):
   user = current_user
-  parking_spot = Parking_Spot.query.filter_by(psid=parking_id, ownerid=user.uid).first()
+  parking_spot = Parking_Spot.get_user_parking_spot_by_id(parking_id, user.uid)
+
+  # Deletes by simply setting the validity to zero
   parking_spot.validity = 0
   db.session.commit()
   return render_template('delete_spot.html', parking_spot=parking_spot)
@@ -301,22 +317,14 @@ def update_spot(parking_id):
   form = UpdateParkingSpotForm(request.form)  
 
   user = current_user
-  parking_spot = Parking_Spot.query.filter_by(psid=parking_id, ownerid=user.uid).first()
+  parking_spot = Parking_Spot.get_user_parking_spot_by_id(parking_id, user.uid)
 
   if request.method == 'POST':
     val_address = form.address.data+","+form.city.data+","+form.state.data+" "+str(form.zipcode.data)
-    if validate_address(val_address, gmaps):
-      val_add = validate_address(val_address, gmaps)
-      val_add1 = val_add[0]
-      val_add2 = val_add1.split(",")
-      valid_address = val_add2[0]
-      valid_city = val_add2[1]
-      val_add3 = val_add2[2].split(" ")
-      valid_state = val_add3[1]
-      valid_zipcode = int(val_add3[2])
-      val_location = val_add[1]
-      valid_latitude = val_location[0]
-      valid_longitude = val_location[1] 
+    val_add = validate_address(val_address, gmaps)
+    if val_add:
+      valid_address, valid_city, valid_state, valid_zipcode, valid_latitude, \
+      valid_longitude = parse_valid_data(val_add)
     else:
       flash('Invalid Address')
       return render_template('update_spot.html', parking_spot=parking_spot, form=form)
@@ -335,5 +343,3 @@ def update_spot(parking_id):
   if parking_spot:
     return render_template('update_spot.html', parking_spot=parking_spot, form=form)
   return render_template('notallowed.html')
-
-

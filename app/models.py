@@ -114,8 +114,13 @@ class Parking_Spot(db.Model):
     return cls.query.order_by(cls.city).all()
 
   @classmethod
-  def get_parking_spot_by_id(cls, parking_id, uid):
-    """ Gets a parking spot by its parking spot id (psd) """  
+  def get_parking_spot_by_id(cls, parking_id):
+    """ Gets a parking spot by parking id only """
+    return cls.query.filter_by(psid=parking_id).first()
+
+  @classmethod
+  def get_user_parking_spot_by_id(cls, parking_id, uid):
+    """ Gets a user's parking spot by its parking spot id (psid) """  
     return cls.query.filter_by(psid=parking_id, ownerid=uid).first()
 
   @classmethod 
