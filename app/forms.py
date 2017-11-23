@@ -145,3 +145,22 @@ class MessageForm(Form):
     if not Form.validate(self):
       return False
 
+class BuyerForm(Form):
+  address = TextField("Street Address", [validators.Required("Please enter your street address.")])
+  city = TextField("City", [validators.Required("Please enter your city.")])
+  state = TextField("State", [validators.Required("Please enter your state.")])
+  zipcode = IntegerField("Zip Code", [validators.Required("Please enter your zip code."), \
+                      validators.NumberRange(min=10001, max=14975, message="Invalid NY zipcode.")]) 
+  ps_size = RadioField('Parking Size', choices=[('LMV', 'LMV'), ('SUV', 'SUV'),('HMV', 'HMV')])
+
+  submit = SubmitField("Search parking Spot")
+ 
+  def __init__(self, *args, **kwargs):
+    Form.__init__(self, *args, **kwargs)
+
+  def validate(self, uid):
+    if not Form.validate(self):
+      return False
+
+    return True
+
