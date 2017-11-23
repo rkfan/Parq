@@ -113,7 +113,6 @@ def logout():
 @app.route('/buyer')
 @login_required
 def buyer():
-  lat_long = (40.810792, -73.960837)
   user = current_user
   uid = user.uid
   #allspots = Parking_Spot.query.filter(Parking_Spot.ownerid != uid, Parking_Spot.validity == 1).all()
@@ -163,7 +162,7 @@ def buyer_search():
       flash('Invalid Address')
       return render_template('buyer_search.html', form=form)    
 
-    allspots = Parking_Spot.query.filter(Parking_Spot.validity == 1).all()
+    allspots = Parking_Spot.query.filter(Parking_Spot.validity == 1, Parking_Spot.ownerid != uid).all()
     new_spots = get_closest(lat_long, allspots)
     allspots = new_spots
     
