@@ -1,4 +1,3 @@
-USE UserData;
 INSERT INTO users (firstname, lastname, email, pwdhash) VALUES ( "Driscoll","Pierce","fringilla@acliberonec.com","pbkdf2:sha256:50000$KT8OYFzE$a1c8051cc2d23f47dd009b5f41b6ce5b34bb50d3242756ff2b00e4d0c3676076") ; 
 INSERT INTO users (firstname, lastname, email, pwdhash) VALUES ( "Roth","Lamb","sit.amet@turpisNulla.edu","pbkdf2:sha256:50000$tHT3LKnc$60a26fa73a420b0b6a188d34fc533bf353c153068ecae112ff59f789269a8dd4") ; 
 INSERT INTO users (firstname, lastname, email, pwdhash) VALUES ( "Emery","Fischer","pharetra@Aliquam.ca","pbkdf2:sha256:50000$HStpV0Rx$0ddc84d2785bfc178c57baced4cee7242ce86b385612ecacf43039c01194649a") ; 
