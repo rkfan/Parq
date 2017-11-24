@@ -147,6 +147,7 @@ def buyer():
   allspots = Parking_Spot.get_spots_for_buyer(uid)
   return render_template('buyer.html', allspots=allspots)
 
+
 @app.route('/buyer_search',methods=['GET', 'POST'])
 @login_required
 def buyer_search():

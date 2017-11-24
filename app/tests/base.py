@@ -2,7 +2,7 @@
 
 from flask_testing import TestCase
 
-from app import app, db
+from app import app, db, gmaps
 import config
 from app.models import User, Parking_Spot
 
@@ -39,8 +39,8 @@ class BaseTestCase(TestCase):
 		""" Setup. Creates a test user and two parking spots """ 
 		db.create_all()
 		db.session.add(User("Test", "Tester", "test@tester.com", "test"))
-		db.session.add(Parking_Spot(1, "600 Broadway", "New York", "NY", 10001, "SUV"))
-		db.session.add(Parking_Spot(2, "100 West 14 Street", "New York", "NY", 10002, "LMV"))
+		# db.session.add(Parking_Spot(1, "600 Broadway", "New York", "NY", 10001, "SUV"))
+		# db.session.add(Parking_Spot(2, "100 West 14 Street", "New York", "NY", 10002, "LMV"))
 		db.session.commit()
 
 	def tearDown(self):
