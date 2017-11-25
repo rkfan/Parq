@@ -18,11 +18,6 @@ class ParqBasicTestCases(BaseTestCase):
 		self.assertEqual(response.status_code, 200)
 		self.assertIn(b'We are a small startup in the heart of Manhattan.', response.data)
 
-	def test_contact(self):
-		""" Gets contact page """ 
-		response = self.client.get('/contact', follow_redirects=True)
-		self.assertEquals(response.status_code, 200)
-
 	def test_junk(self):
 		""" Tests to see if 404 page is yielded """ 
 		response = self.client.get('/safjsdlkjfsdlkjf', follow_redirects=True)

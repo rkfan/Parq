@@ -1,7 +1,7 @@
 #test/test_helper.py
 
 import unittest
-from mock import MagicMock, patch
+from mock import MagicMock
 from flask_login import current_user
 from flask import request
 

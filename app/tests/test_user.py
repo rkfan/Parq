@@ -98,7 +98,7 @@ class UserViewsTests(BaseTestCase):
 			self.login('test@tester.com', 'test')
 			response = self.client.get('/seller')
 			self.assertTrue(response.status_code, 200)
-			self.assertIn(b'This is Test Tester\'s seller page', response.data)
+			self.assertIn(b'This is test@tester.com\'s seller page', response.data)
 			self.assertIn(b'My Garage', response.data)
 			self.assertIn(b'Add Parking Space', response.data)
 
