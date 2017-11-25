@@ -174,7 +174,7 @@ class Message(db.Model):
     return cls.query.filter_by(message_id=message_id).first()
 
   @classmethod
-  def get_message_by_id(cls, message_id, status):
+  def get_message_by_id_status(cls, message_id, status):
     return cls.query.filter_by(message_id=message_id, approved=status).first()
 
 

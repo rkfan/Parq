@@ -95,13 +95,17 @@ def message_page():
 @login_required
 def view_message(message_id):
     form = ApprovalForm()
-    message = get_message_by_id(message_id)
+    message = Message.get_message_by_id(message_id)
 
     if request.method == 'POST':
       message.approved = 1
       db.session.commit()
       return redirect(url_for('profile')) 
 
+    # Messages that are already approved should not have the approved field
+    if message.approved: 
+      return render_template('view_message.html', form=None, message=message, get_user=User.get_user_name)
+    
     return render_template('view_message.html', form=form, message=message, get_user=User.get_user_name)
 
 @app.route('/login', methods=['GET', 'POST'])
