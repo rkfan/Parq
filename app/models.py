@@ -88,8 +88,8 @@ class Parking_Spot(db.Model):
   ps_size = db.Column(db.String(120), nullable=False)
   validity = db.Column(db.Boolean, default=True)
   availible = db.Column(db.Boolean, default=True)
-  lat = db.Column(db.String(100), nullable=False)
-  lon = db.Column(db.String(100), nullable=False)
+  lat = db.Column(db.Float, nullable=False)
+  lon = db.Column(db.Float, nullable=False)
 
   # ownerid? Do we need to do something with that...?
   def __init__(self, ownerid, address, city, state, zipcode, ps_size, lat, lon):

@@ -37,8 +37,8 @@ def parse_valid_data(val_add):
     valid_state = val_add3[1]
     valid_zipcode = int(val_add3[2])
     val_location = val_add[1]
-    valid_latitude = val_location[0]
-    valid_longitude = val_location[1] 
+    valid_latitude = float(val_location[0])
+    valid_longitude = float(val_location[1]) 
 
     return (valid_address, valid_city, valid_state, valid_zipcode, valid_latitude, valid_longitude)
 
@@ -163,6 +163,7 @@ def buyer_search():
     val_address = form.address.data+","+form.city.data+","+form.state.data+" "+str(form.zipcode.data)
     val_add = validate_address(val_address, gmaps)
 
+    # TODO: Not complete this part doesn't really do anything
     if val_add:
       lat_lon = tuple(val_add[1])
     else:
