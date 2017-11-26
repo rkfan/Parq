@@ -22,7 +22,7 @@ class ParqSellerFunctTests(BaseTestCase):
 			user_garage = current_user.get_all_parking_spots()
 			for spot in user_garage:
 				self.assertEqual(str(spot), '<Parking Spot at {0} owned by: {1}. Availibility: {2}>'.format(spot.address, 
-				spot.get_owner_name, spot.availible))
+				spot.get_owner_name(), spot.availible))
 
 	def test_new_user_has_no_spots(self):
 		""" Tests to see that a new user that registers has no associated parking spots """
