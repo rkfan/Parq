@@ -42,6 +42,13 @@ def parse_valid_data(val_add):
 
     return (valid_address, valid_city, valid_state, valid_zipcode, valid_latitude, valid_longitude)
 
+def parse_search_query(query):
+  query = query.split('%')
+  lat_lon = (float(query[0]), float(query[1]))
+  zipcode = int(query[2])
+
+  return (lat_lon, zipcode)
+
 ###################
 # Routes
 ###################
@@ -91,6 +98,7 @@ def message_page():
   my_messages = user.get_all_messages()
   return render_template('messagepage.html', my_messages=my_messages, get_user=User.get_user_name)
 
+# Check to see if user can see other people's messages...
 @app.route('/view_message/<message_id>', methods =['GET', 'POST'])
 @login_required
 def view_message(message_id):
@@ -99,6 +107,11 @@ def view_message(message_id):
 
     if request.method == 'POST':
       message.approved = 1
+
+      # Mark the parking spot as taken
+      parking_spot = Parking_Spot.get_parking_spot_by_id(message.psid)
+      parking_spot.availible = 0
+
       db.session.commit()
       return redirect(url_for('profile')) 
 
@@ -141,41 +154,50 @@ def logout():
   return redirect(url_for('home'))
 
 
-# This page shouldnt exist???! links directly to buyer profile... Look into this.
-# Alter this to route to soemthing else probably is the correct behavior
-@app.route('/buyer')
+# TODO Alter this to show the results of the search.
+@app.route('/buyer_search_results/<query>')
 @login_required
-def buyer():
+def buyer_search_results(query):
   user = current_user
   uid = user.uid
-  allspots = Parking_Spot.get_spots_for_buyer(uid)
-  return render_template('buyer.html', allspots=allspots)
+
+  # Parse the query
+  lat_lon, zipcode = parse_search_query(query)
+
+  search_results = Parking_Spot.vicinity_search(lat_lon, zipcode, uid)
+  if search_results:
+    return render_template('buyer_search_results.html', spots=search_results)
+
+  # When none are found
+  return render_template('buyer_search_results.html', spots=None)
 
 
-@app.route('/buyer_search',methods=['GET', 'POST'])
+@app.route('/buyer_search', methods=['GET', 'POST'])
 @login_required
 def buyer_search():
   form = BuyerForm(request.form)
      
   if request.method == 'POST':
-    user = current_user
-    uid = user.uid
-
-    if form.validate(uid) == False:  
+    if form.validate() == False:  
       return render_template('buyer_search.html', form=form)
-    
+
     val_address = form.address.data+","+form.city.data+","+form.state.data+" "+str(form.zipcode.data)
     val_add = validate_address(val_address, gmaps)
 
-    # TODO: Not complete this part doesn't really do anything
     if val_add:
+      # Query is unicode. Need to format it in a parseable way
       lat_lon = tuple(val_add[1])
+      query = str(lat_lon[0])+'%'+str(lat_lon[1])+'%'+str(form.zipcode.data)
+
+      return redirect(url_for('buyer_search_results', query=query))
+
     else:
       flash('Invalid Address')
       return render_template('buyer_search.html', form=form)    
+    # print("Print here")
+    # print(search_results)
 
-    return redirect(url_for('buyer'))
-
+  # GET request
   return render_template('buyer_search.html', form=form)
 
 @app.route('/buyer_profile')

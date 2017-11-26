@@ -1,5 +1,6 @@
 from app import db
 from werkzeug import generate_password_hash, check_password_hash
+from haversine import haversine
 
 class User(db.Model):
   __tablename__ = 'users'
@@ -134,6 +135,34 @@ class Parking_Spot(db.Model):
   def get_spots_for_buyer(cls, uid):
     return cls.query.filter(cls.ownerid != uid, cls.validity == 1).all()
 
+  @classmethod 
+  def get_spots_by_zipcode(cls, zip_code, current_user_id):
+    """ Returns the valid and availible parking spots in a certain zip code (that are not the owner's own""" 
+    return cls.query.filter(cls.zipcode==zip_code, cls.validity==1, 
+      cls.availible==1, cls.ownerid!=current_user_id).all()
+
+  @classmethod
+  def vicinity_search(cls, center_lat_lon, zipcode, current_user_id, radius=0.5):
+    """ Returns a list of parking spots within (default) radius of 0.5 miles """
+    # First get spots within the same zipcode
+    spots_same_zipcode = cls.get_spots_by_zipcode(zipcode, current_user_id)
+    # print("Same zipcode")
+    # print(zipcode)
+    # print(spots_same_zipcode)
+
+    spots_in_vicinity = []
+    for spot in spots_same_zipcode:
+      # get longitude latitude tuple for the spots
+      spot_lat_lon = (spot.lat, spot.lon)
+
+      # return the spots that are within the radius
+      if haversine(center_lat_lon, spot_lat_lon, miles=True) <= radius:
+        spots_in_vicinity.append(spot)
+
+    # print("Spots in vicinity")
+    # print(spots_in_vicinity)
+
+    return spots_in_vicinity
 
   def get_owner_name(self):
     """ Returns the owner name based on the ownerid """
@@ -146,7 +175,7 @@ class Parking_Spot(db.Model):
     return owner.email
 
   def __str__(self):
-    return '<Parking Spot at {0} owned by: {1}. Availibility: {2}>'.format(self.address, self.get_owner_name, 
+    return '<Parking Spot at {0} owned by: {1}. Availibility: {2}>'.format(self.address, self.get_owner_name(), 
                                                                           self.availible)
 
 

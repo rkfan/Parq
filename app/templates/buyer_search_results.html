@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block content %}
+	<h2>Search Results</h2>
+	{% if spots is none %}
+		<p>Your search yielded no results :-(</p>
+	{% else %}
+    	<h2>Here is a list of all availible parking spots availible in your search area</h2>
+	    {% for spot in spots %}
+	    <ul>
+	        <li><span style="padding-left:20px"> <a href="{{ url_for('message', parking_id=spot.psid) }}">{{ spot.address }} | {{ spot.city }} | {{ spot.state }} |
+	        {{ spot.zipcode }} | {{ spot.ps_size }}</a></span>
+	    </ul>
+		{% endfor %}
+	{% endif %}
+{% endblock %}

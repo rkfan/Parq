@@ -93,6 +93,7 @@ class UpdateProfileForm(Form):
   def validate(self):
     if not Form.validate(self):
       return False
+    return True
 
 
 class UpdateParkingSpotForm(Form):
@@ -117,7 +118,7 @@ class ApprovalForm(Form):
   def __init__(self, *args, **kwargs):
     Form.__init__(self, *args, **kwargs)
 
-  def validate(self, uid):
+  def validate(self):
     if not Form.validate(self):
       return False
     return True
@@ -132,6 +133,7 @@ class MessageForm(Form):
   def validate(self):
     if not Form.validate(self):
       return False
+    return True
 
 class BuyerForm(Form):
   address = TextField("Street Address", [validators.Required("Please enter your street address.")])
@@ -146,9 +148,8 @@ class BuyerForm(Form):
   def __init__(self, *args, **kwargs):
     Form.__init__(self, *args, **kwargs)
 
-  def validate(self, uid):
+  def validate(self):
     if not Form.validate(self):
       return False
-
     return True
 
