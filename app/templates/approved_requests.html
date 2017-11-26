@@ -1,10 +1,13 @@
 {% extends "layout.html" %}
  
 {% block content %}
-  <h2>My messages</h2>
-    {% for m in my_messages %}
+  <h2>Approved Requests</h2>
+    {% for spot in approved_spots %}
           <ul>
-              <li><a href="{{ url_for('view_approved_requests', message_id=m.message_id) }}">Message sent from : {{ get_user(m.sender_uid) }}</a>
+              <li>Approved by: {{ get_user(spot.ownerid) }} 
+              	<br> Parking spot at: 
+              	{{ spot.address }}, {{ spot.city }} {{ spot.zipcode }} for 
+              	{{spot.ps_size }} type vehicle.
           </ul>
     {% endfor %}
 {% endblock %}

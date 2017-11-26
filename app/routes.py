@@ -213,7 +213,12 @@ def approved_requests():
     flash('You have no approved requests!')
     return redirect(url_for('buyer_profile'))
 
-  return render_template('approved_requests.html', my_messages=approved_messages, get_user=User.get_user_name)
+  # Get a list of the approved parking spots (psid)
+  approved_spots = [a.psid for a in approved_messages]
+  for i, psid in enumerate(approved_spots):
+    approved_spots[i] = Parking_Spot.get_parking_spot_by_id(psid)
+
+  return render_template('approved_requests.html', approved_spots=approved_spots, get_user=User.get_user_name)
 
 @app.route('/view_approved_requests/<message_id>')
 @login_required
