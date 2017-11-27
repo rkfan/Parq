@@ -69,9 +69,11 @@ def message_page():
 def view_message(message_id):
     form = ApprovalForm()
     message = Message.query.filter_by(message_id=message_id).first()
+    spot = Parking_Spot.query.filter_by(psid=message.psid).first()
     
     if request.method == 'POST':
       message.approved = 1
+      spot.availible = 0
       db.session.commit()
       return redirect(url_for('profile')) 
 
