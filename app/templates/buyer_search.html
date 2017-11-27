@@ -1,11 +1,8 @@
 {% extends "layout.html" %}
  
 {% block content %}
-  <div class="jumbo" style="background-color: rgba(43, 43, 43, 0.7)">
-  <h2>Add a parking spot</h2>
-  <center><h1>Enter Details Here</h1></center>
-  </div>
-  </h2>
+  <h2>Enter the locality for searching for parking spots<h2>
+    	<h1>Enter Details Here</h1>
 		  {% for message in form.address.errors %}
 		  <div class="flash">{{ message }}</div>
           {% endfor %}
@@ -26,7 +23,7 @@
 		  <div class="flash">{{ message }}</div>
           {% endfor %}
 
-		  <form action="{{ url_for('addspots') }}" method=post>
+		  <form action="{{ url_for('buyer_search') }}" method=post>
 		  	{{ form.csrf_token }}
 		    {{ form.hidden_tag() }}
 		     

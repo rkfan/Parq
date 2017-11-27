@@ -1,9 +1,13 @@
 {% extends "layout.html" %}
  
 {% block content %}
-  <h2>This is {{ session['email'] }}'s seller page<h2>
-  	<h4>
-    	<a href="{{ url_for('viewspots') }}">My Garage</a>
-    	<a href="{{ url_for('addspots') }}">Add Parking Space </a>
-    </h4>
+  <div class="jumbo" style="background-color: rgba(43, 43, 43, 0.7)">
+   <center><h1>This is {{ current_user.email }}'s seller page<h1></h1></center>
+   	<center>
+    	 <a href="{{ url_for('viewspots') }}" style="color: white">My Garage</a>
+    	 <br />
+    	 <br />
+    	 <a href="{{ url_for('addspots') }}" style="color: white">Add Parking Space </a>
+    </center>
+  </div>
 {% endblock %}

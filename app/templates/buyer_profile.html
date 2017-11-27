@@ -1,11 +1,15 @@
 {% extends "layout.html" %}
 {% block content %}
-  <div class="jumbo">
-    <h2>Profile</h2>
+  <div class="jumbo" style="background-color: rgba(43, 43, 43, 0.7)">
+    <h2>Buyer Profile</h2>
     <center>
-  		<a href="{{ url_for('buyer') }}">View Parking Spots</a>
-  		<a href="{{ url_for('requests') }}">View Pending Requests</a>
-  		<a href="{{ url_for('approved_requests') }}">View Approved Requests</a>
+  		<a href="{{ url_for('buyer_search') }}" style="color: white">View Parking Spots</a>
+  		<br />
+  		<br />
+  		<a href="{{ url_for('requests') }}" style="color: white">View Pending Requests</a>
+  		<br />
+  		<br />
+  		<a href="{{ url_for('approved_requests') }}" style="color: white">View Approved Requests</a>
   	</center>
   </div>
 {% endblock %}

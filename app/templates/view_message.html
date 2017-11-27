@@ -1,6 +1,7 @@
 {% extends "layout.html" %}
  
 {% block content %}
+	<div>
 	<h2>From : {{ get_user(message.sender_uid) }}</h2>
 	<p>Message: {{ message.message }}</p>
 	<form action="{{ url_for('view_message', message_id = message.message_id) }}" method=post>
@@ -8,4 +9,5 @@
 	 {{ form.hidden_tag() }}
 	{{ form.submit }}
 	</form>
+    </div>
 {% endblock %}

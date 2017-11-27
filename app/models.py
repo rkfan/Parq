@@ -84,17 +84,21 @@ class Parking_Spot(db.Model):
   ps_size = db.Column(db.String(120), nullable=False)
   validity = db.Column(db.Boolean, default=True)
   availible = db.Column(db.Boolean, default=True)
+  lat = db.Column(db.String(100), nullable=False)
+  lon = db.Column(db.String(100), nullable=False)
 
   # ownerid? Do we need to do something with that...?
-  def __init__(self, ownerid, address, city, state, zipcode, ps_size):
+  def __init__(self, ownerid, address, city, state, zipcode, ps_size, lat, lon):
     self.ownerid = ownerid
-    self.address = address.title()
-    self.city = city.title()
-    self.state = state.title()
+    self.address = address
+    self.city = city
+    self.state = state
     self.zipcode = zipcode
     self.ps_size = ps_size.title()
     self.validity = True
     self.availible = True
+    self.lat = lat
+    self.lon = lon
 
   def getAvailibility(self):  
     return self.availible
