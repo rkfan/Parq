@@ -25,7 +25,8 @@
     <title>Parq</title>    
     <strong><link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}"></strong>
   </head>
-  <body>     
+  <body style="background-image:url({{ url_for('static', filename='css/images/parq1.jpg') }})">  
+    <!-- <img src="{{ url_for('static', filename = 'css/images/parq1.jpg') }}">   -->
     <div class="container">
       {% with messages = get_flashed_messages() %}
         {% if messages %}

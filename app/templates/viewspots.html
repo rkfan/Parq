@@ -1,13 +1,15 @@
 {% extends "layout.html" %}
  
 {% block content %}
-  	<h2>These are {{ current_user.email }}'s parking spaces<h2>
-	<h1>Welcome to your garage</h1>
+	<div class="jumbo" style="background-color: rgba(43, 43, 43, 0.7)">
+  	<h2>These are {{ current_user.email }}'s parking spaces</h2>
+	<center><h1>Welcome to your garage</h1></center>
 	{% for spot in garage %}
 	<ul>
-		<li> <a href="{{ url_for('parking', parking_id=spot.psid) }}">{{ spot.address }} | {{ spot.city }} | 
+		<li> <a href="{{ url_for('parking', parking_id=spot.psid) }}" style="color: white">{{ spot.address }} | {{ spot.city }} | 
 		{{ spot.zipcode }} | {{ spot.ps_size }}</a>
 	</ul>
 	{% endfor %}
+    </div>
 
 {% endblock %}

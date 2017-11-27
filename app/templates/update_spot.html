@@ -1,8 +1,10 @@
 {% extends "layout.html" %}
  
 {% block content %}
+      <div class="jumbo" style="background-color: rgba(43, 43, 43, 0.7)">
   	  <h2>This is your parking spot : {{parking_spot.psid}}</h2>
-  	  <h2> Update Details Here </h2>
+  	  <center><h1> Update Details Here </h1></center>
+      </div>
   	  {% for message in form.address.errors %}
       <div class="flash">{{ message }}</div>
       {% endfor %}
