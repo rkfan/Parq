@@ -124,25 +124,64 @@ def buyer():
 
   return render_template('buyer.html', allspots=allspots)
 
-def get_mapbox_features(parking_spots):
+def get_mapbox_features(parking_spots, lat_long, val_add):
+  feat_dict  = {}  
   features =[]
+  center = [lat_long[1], lat_long[0]]
 
   for spot in parking_spots:
-    feature = {}
-    feature['type'] = 'Feature'
-    
-    feature['geometry'] = {}
-    feature['geometry']['type'] = 'Point'
+    if spot.address not in feat_dict.keys():
+      feat_dict[spot.address] = []
+      feature = {}
+      feature['type'] = 'Feature'
+      
+      feature['geometry'] = {}
+      feature['geometry']['type'] = 'Point'
 
-    feature['properties'] = {}
-    feature['properties']['icon'] = 'circle'
-    feature['geometry']['coordinates'] = [float(spot.lon), float(spot.lat)]
-    feature['properties']['description'] = "<strong>"+ "Parking Spot : "+ str(spot.psid) +"</strong><p><a href=\"message/"+str(spot.psid)+"\" target=\"_blank\" title=\"Opens in a new window\">"+ spot.address + ", " + spot.city + ", " + spot.state + " " + str(spot.zipcode)+ "  :  " + spot.ps_size+  "</a></p>"
+      feature['properties'] = {}
+      feature['properties']['icon'] = 'circle'
+      feature['geometry']['coordinates'] = [float(spot.lon), float(spot.lat)]
+      feature['properties']['description'] = "<strong><li style=\"color:black\">"+ "Parking Spot : "+ str(spot.psid) +"</li></strong><p><a href=\"message/"+str(spot.psid)+"\" target=\"_blank\" title=\"Opens in a new window\">"+ spot.address + ", " + spot.city + ", " + spot.state + " " + str(spot.zipcode)+ "  :  " + spot.ps_size+  "</a></p>"
 
-    features.append(feature)
+      feat_dict[spot.address].append(feature)
+    else :
+      feature = {}
+      feature['type'] = 'Feature'
+      
+      feature['geometry'] = {}
+      feature['geometry']['type'] = 'Point'
 
-  return features
+      feature['properties'] = {}
+      feature['properties']['icon'] = 'circle'
+      feature['geometry']['coordinates'] = [float(spot.lon), float(spot.lat)]
+      feature['properties']['description'] = "<strong><li style=\"color:black\">"+ "Parking Spot : "+ str(spot.psid) +"</li></strong><p><a href=\"message/"+str(spot.psid)+"\" target=\"_blank\" title=\"Opens in a new window\">"+ spot.address + ", " + spot.city + ", " + spot.state + " " + str(spot.zipcode)+ "  :  " + spot.ps_size+  "</a></p>"
 
+      feat_dict[spot.address].append(feature)
+
+  feature = {}
+  feature['type'] = 'Feature'
+  
+  feature['geometry'] = {}
+  feature['geometry']['type'] = 'Point'
+
+  feature['properties'] = {}
+  feature['properties']['icon'] = 'harbor'
+  feature['geometry']['coordinates'] = [lat_long[1], lat_long[0]]
+  feature['properties']['description'] = "<strong><li style=\"color:black\">Requested Position</li></strong><p><a>"+ val_add[0] +  "</a></p>"
+
+  if val_add[0].split(",")[0] in feat_dict.keys():
+    feat_dict[val_add[0].split(",")[0]] = [feature] + feat_dict[val_add[0].split(",")[0]]
+
+  for spot in feat_dict.keys():
+    desc = ""
+    for sub_spot in feat_dict[spot]:
+      desc = desc + sub_spot['properties']['description']
+
+    feat_dict[spot][0]['properties']['description'] = desc
+
+    features.append(feat_dict[spot][0])
+
+  return center, features
 
 @app.route('/buyer_search',methods=['GET', 'POST'])
 @login_required
@@ -164,26 +203,14 @@ def buyer_search():
       flash('Invalid Address')
       return render_template('buyer_search.html', form=form)    
 
-    allspots = Parking_Spot.query.filter(Parking_Spot.validity == 1, Parking_Spot.ownerid != uid).all()
+    allspots = Parking_Spot.query.filter(Parking_Spot.validity == 1, Parking_Spot.ownerid != uid, Parking_Spot.availible == 1).all()
+    #allspots = Parking_Spot.query.filter(Parking_Spot.validity == 1).all()
+    
     new_spots = get_closest(lat_long, allspots)
     allspots = new_spots
     
-    features = get_mapbox_features(allspots)
+    center, features = get_mapbox_features(allspots, lat_long, val_add)
 
-    feature = {}
-    feature['type'] = 'Feature'
-    
-    feature['geometry'] = {}
-    feature['geometry']['type'] = 'Point'
-
-    feature['properties'] = {}
-    feature['properties']['icon'] = 'harbor'
-    feature['geometry']['coordinates'] = [lat_long[1], lat_long[0]]
-    feature['properties']['description'] = "<strong>Requested Position</strong><p><a>"+ val_add[0] +  "</a></p>"
-
-    features = [feature] + features
-
-    center = features[0]['geometry']['coordinates']
     features = json.dumps(features)
     center = json.dumps(center)
 
@@ -191,7 +218,6 @@ def buyer_search():
     return render_template('buyer.html',  mapbox_features = features, map_center = center )
 
   return render_template('buyer_search.html', form=form)
-
 
 @app.route('/buyer_profile')
 @login_required
