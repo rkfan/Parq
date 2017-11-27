@@ -4,7 +4,6 @@ form label {
   font-weight: bold;
   display: block;
   padding: 10px 0;
-  color: #fff;
 }
  
 form input#name,
@@ -76,7 +75,6 @@ form input#password {
   border: 1px solid #cccccc;
   padding: 5px;
   font-size: 1.1em;
-  color: #fff;
 }
  
 form input#password {
@@ -87,8 +85,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-  color: #fff;
-  background-color: #2B2B2B;
+  color: #444;
 }
  .menu {
   float: right;
@@ -104,7 +101,7 @@ body {
 }
  
 .menu li a {
-  color: #fff;
+  color: #999;
   text-decoration: none;
 }
 /*
@@ -136,13 +133,14 @@ header h1.logo:hover {
  * Center the body content
  */
   
-div.container {
+.container {
   width: 940px;
   margin: 0 auto;
 }
  
 div.jumbo {
   padding: 10px 0 30px 0;
+  background-color: #eeeeee;
   -webkit-border-radius: 6px;
      -moz-border-radius: 6px;
           border-radius: 6px;
@@ -153,7 +151,6 @@ h2 {
   margin-top: 40px;
   text-align: center;
   letter-spacing: -2px;
-  color: #fff;
 }
  
 h3 {
@@ -162,5 +159,5 @@ h3 {
   margin-top: 30px;
   text-align: center;
   letter-spacing: -1px;
-  color: #fff;
+  color: #999;
 }
