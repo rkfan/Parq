@@ -1,0 +1,1533 @@
+Messages
+========
+
+config.py
+  Line: None
+    pep8: E101 / indentation contains mixed spaces and tabs (col 1)
+  Line: 5
+    pep8: E302 / expected 2 blank lines, found 1 (col 1)
+  Line: 8
+    dodgy: secret / Possible hardcoded secret key
+  Line: 13
+    pep8: E302 / expected 2 blank lines, found 1 (col 1)
+  Line: 20
+    pep8: E302 / expected 2 blank lines, found 1 (col 1)
+  Line: 23
+    pep8: E302 / expected 2 blank lines, found 1 (col 1)
+
+createBlankDB.py
+  Line: None
+    pep8: E101 / indentation contains mixed spaces and tabs (col 1)
+  Line: 1
+    pylint: invalid-name / Invalid module name "createBlankDB"
+  Line: 4
+    pep8: N802 / function name should be lowercase (col 5)
+    pep8: E302 / expected 2 blank lines, found 1 (col 1)
+    pylint: invalid-name / Invalid function name "createUserDataDB"
+  Line: 8
+    pep8: N802 / function name should be lowercase (col 5)
+    pep8: E302 / expected 2 blank lines, found 1 (col 1)
+    pylint: invalid-name / Invalid function name "registerTestUsers"
+  Line: 9
+    pep8: N806 / variable in function should be lowercase (col 2)
+    pylint: invalid-name / Invalid variable name "testUser1" (col 1)
+  Line: 10
+    pep8: N806 / variable in function should be lowercase (col 2)
+    pylint: invalid-name / Invalid variable name "testUser2" (col 1)
+  Line: 16
+    pep8: E501 / line too long (90 > 79 characters) (col 80)
+
+
+
+Check Information
+=================
+         Started: 2017-11-26 22:14:32.643804
+        Finished: 2017-11-26 22:14:32.834593
+      Time Taken: 0.19 seconds
+       Formatter: grouped
+        Profiles: profile.yaml, no_doc_warnings, strictness_high, strictness_veryhigh, no_member_warnings
+      Strictness: from profile
+  Libraries Used: flask
+       Tools Run: dodgy, mccabe, pep8, profile-validator, pyflakes, pylint
+  Messages Found: 19
+
+Messages
+========
+
+app/__init__.py
+  Line: 1
+    pylint: import-error / Unable to import 'flask'
+  Line: 2
+    pylint: import-error / Unable to import 'flask_sqlalchemy'
+  Line: 3
+    pylint: import-error / Unable to import 'flask_login'
+  Line: 4
+    pylint: wrong-import-order / standard import "import os" should be placed before "from flask import Flask, render_template"
+  Line: 5
+    pylint: import-error / Unable to import 'flaskext.mysql'
+    pyflakes: F401 / 'flaskext.mysql.MySQL' imported but unused (col 1)
+  Line: 6
+    pylint: import-error / Unable to import 'flask_wtf.csrf'
+  Line: 7
+    pylint: import-error / Unable to import 'googlemaps'
+  Line: 8
+    pylint: import-error / Unable to import 'jellyfish'
+    pyflakes: F401 / 'jellyfish as jf' imported but unused (col 1)
+  Line: 10
+    pep8: E501 / line too long (84 > 79 characters) (col 80)
+    pylint: invalid-name / Invalid constant name "template_dir"
+  Line: 11
+    pep8: E251 / unexpected spaces around keyword / parameter equals (col 38)
+    pylint: invalid-name / Invalid constant name "app"
+  Line: 16
+    pylint: invalid-name / Invalid constant name "db"
+  Line: 19
+    pylint: invalid-name / Invalid constant name "gmaps"
+  Line: 22
+    pylint: invalid-name / Invalid constant name "login_manager"
+  Line: 26
+    pep8: E402 / module level import not at top of file (col 1)
+    pylint: wrong-import-position / Import "from models import User" should be placed at the top of the module
+  Line: 28
+    pep8: E302 / expected 2 blank lines, found 1 (col 1)
+  Line: 33
+    pep8: E302 / expected 2 blank lines, found 1 (col 1)
+  Line: 34
+    pylint: unused-argument / Unused argument 'error' (col 14)
+  Line: 43
+    pep8: E402 / module level import not at top of file (col 1)
+    pylint: wrong-import-position / Import "from app import routes" should be placed at the top of the module
+    pyflakes: F401 / 'app.routes' imported but unused (col 1)
+
+app/forms.py
+  Line: 1
+    pylint: import-error / Unable to import 'flask_wtf'
+  Line: 2
+    pylint: import-error / Unable to import 'wtforms'
+    pylint: unused-import / Unused BooleanField imported from wtforms
+    pep8: E501 / line too long (88 > 79 characters) (col 80)
+  Line: 3
+    pep8: E126 / continuation line over-indented for hanging indent (col 21)
+  Line: 5
+    pylint: unused-import / Unused Message imported from models
+  Line: 9
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 10
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 11
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 12
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 13
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 17
+    pep8: E501 / line too long (94 > 79 characters) (col 80)
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+    pylint: bad-whitespace / Exactly one space required after comma
+  firstname = TextField("First name",  [validators.Required("Please enter your first name.")])
+                                    ^
+  Line: 18
+    pep8: E501 / line too long (91 > 79 characters) (col 80)
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+    pylint: bad-whitespace / Exactly one space required after comma
+  lastname = TextField("Last name",  [validators.Required("Please enter your last name.")])
+                                  ^
+  Line: 19
+    pep8: E501 / line too long (142 > 79 characters) (col 80)
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+    pylint: bad-whitespace / Exactly one space required after comma
+  email = TextField("Email",  [validators.Required("Please enter your email address."), validators.Email("Please enter your email address.")])
+                           ^
+  Line: 20
+    pep8: E501 / line too long (89 > 79 characters) (col 80)
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 21
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 22
+    pep8: W293 / blank line contains whitespace (col 1)
+  Line: 23
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 24
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 25
+    pep8: W293 / blank line contains whitespace (col 1)
+  Line: 26
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 27
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 28
+    pylint: bad-indentation / Bad indentation. Found 6 spaces, expected 12
+  Line: 30
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 31
+    pylint: bad-indentation / Bad indentation. Found 6 spaces, expected 12
+  Line: 32
+    pylint: bad-indentation / Bad indentation. Found 6 spaces, expected 12
+  Line: 33
+    pep8: W293 / blank line contains whitespace (col 1)
+  Line: 34
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 36
+    pep8: E302 / expected 2 blank lines, found 1 (col 1)
+  Line: 37
+    pep8: E501 / line too long (142 > 79 characters) (col 80)
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+    pylint: bad-whitespace / Exactly one space required after comma
+  email = TextField("Email",  [validators.Required("Please enter your email address."), validators.Email("Please enter your email address.")])
+                           ^
+  Line: 38
+    pep8: E501 / line too long (89 > 79 characters) (col 80)
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 39
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 40
+    pep8: W293 / blank line contains whitespace (col 1)
+  Line: 41
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 42
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 43
+    pep8: W293 / blank line contains whitespace (col 1)
+  Line: 44
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 45
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 46
+    pylint: bad-indentation / Bad indentation. Found 6 spaces, expected 12
+  Line: 48
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 49
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 50
+    pylint: bad-indentation / Bad indentation. Found 6 spaces, expected 12
+  Line: 52
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 53
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 55
+    pep8: E302 / expected 2 blank lines, found 1 (col 1)
+  Line: 56
+    pep8: E501 / line too long (99 > 79 characters) (col 80)
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 57
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 58
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 59
+    pep8: E502 / the backslash is redundant between brackets (col 91)
+    pep8: E501 / line too long (91 > 79 characters) (col 80)
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 60
+    pep8: E128 / continuation line under-indented for visual indent (col 23)
+    pep8: E501 / line too long (99 > 79 characters) (col 80)
+  Line: 61
+    pep8: E501 / line too long (95 > 79 characters) (col 80)
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+    pep8: E231 / missing whitespace after ',' (col 79)
+  Line: 63
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 64
+    pep8: W293 / blank line contains whitespace (col 1)
+  Line: 65
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 66
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 68
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 69
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 70
+    pylint: bad-indentation / Bad indentation. Found 6 spaces, expected 12
+  Line: 72
+    pep8: E501 / line too long (104 > 79 characters) (col 80)
+  Line: 75
+    pep8: E501 / line too long (92 > 79 characters) (col 80)
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+    pep8: E231 / missing whitespace after ':' (col 35)
+  Line: 76
+    pep8: E128 / continuation line under-indented for visual indent (col 5)
+    pep8: E231 / missing whitespace after ':' (col 48)
+  Line: 78
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 79
+    pylint: bad-indentation / Bad indentation. Found 6 spaces, expected 12
+  Line: 80
+    pylint: bad-indentation / Bad indentation. Found 6 spaces, expected 12
+  Line: 82
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 86
+    pep8: E501 / line too long (94 > 79 characters) (col 80)
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+    pylint: bad-whitespace / Exactly one space required after comma
+  firstname = TextField("First name",  [validators.Required("Please enter your first name.")])
+                                    ^
+  Line: 87
+    pep8: E501 / line too long (91 > 79 characters) (col 80)
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+    pylint: bad-whitespace / Exactly one space required after comma
+  lastname = TextField("Last name",  [validators.Required("Please enter your last name.")])
+                                  ^
+  Line: 88
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 89
+    pep8: W293 / blank line contains whitespace (col 1)
+  Line: 90
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 91
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 92
+    pep8: W293 / blank line contains whitespace (col 1)
+  Line: 93
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 94
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 95
+    pylint: bad-indentation / Bad indentation. Found 6 spaces, expected 12
+  Line: 96
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 100
+    pep8: E501 / line too long (99 > 79 characters) (col 80)
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 101
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 102
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 103
+    pep8: E502 / the backslash is redundant between brackets (col 91)
+    pep8: E501 / line too long (91 > 79 characters) (col 80)
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 104
+    pep8: E128 / continuation line under-indented for visual indent (col 23)
+    pep8: E501 / line too long (99 > 79 characters) (col 80)
+  Line: 105
+    pep8: E501 / line too long (95 > 79 characters) (col 80)
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+    pep8: E231 / missing whitespace after ',' (col 79)
+  Line: 107
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 108
+    pep8: W293 / blank line contains whitespace (col 1)
+  Line: 109
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 110
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 112
+    pylint: unused-argument / Unused argument 'uid' (col 21)
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 113
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 114
+    pylint: bad-indentation / Bad indentation. Found 6 spaces, expected 12
+  Line: 116
+    pep8: E302 / expected 2 blank lines, found 1 (col 1)
+  Line: 117
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 118
+    pep8: E301 / expected 1 blank line, found 0 (col 3)
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 119
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 121
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 122
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 123
+    pylint: bad-indentation / Bad indentation. Found 6 spaces, expected 12
+  Line: 124
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 126
+    pep8: E302 / expected 2 blank lines, found 1 (col 1)
+  Line: 127
+    pep8: E501 / line too long (89 > 79 characters) (col 80)
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+    pylint: bad-whitespace / Exactly one space required after comma
+  message = TextAreaField("Message",  [validators.Required("Please enter your message")])
+                                   ^
+  Line: 128
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 129
+    pep8: W293 / blank line contains whitespace (col 1)
+  Line: 130
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 131
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 132
+    pep8: W293 / blank line contains whitespace (col 1)
+  Line: 133
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 134
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 135
+    pylint: bad-indentation / Bad indentation. Found 6 spaces, expected 12
+  Line: 136
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 138
+    pep8: E302 / expected 2 blank lines, found 1 (col 1)
+  Line: 139
+    pep8: E501 / line too long (99 > 79 characters) (col 80)
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 140
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 141
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 142
+    pep8: E502 / the backslash is redundant between brackets (col 91)
+    pep8: E501 / line too long (91 > 79 characters) (col 80)
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 143
+    pep8: E128 / continuation line under-indented for visual indent (col 23)
+    pep8: E501 / line too long (99 > 79 characters) (col 80)
+  Line: 144
+    pep8: E501 / line too long (95 > 79 characters) (col 80)
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+    pep8: E231 / missing whitespace after ',' (col 79)
+  Line: 146
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 147
+    pep8: W293 / blank line contains whitespace (col 1)
+  Line: 148
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 149
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 151
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 152
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 153
+    pylint: bad-indentation / Bad indentation. Found 6 spaces, expected 12
+  Line: 154
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 155
+    pylint: trailing-newlines / Trailing newlines
+
+app/models.py
+  Line: 2
+    pylint: import-error / Unable to import 'werkzeug'
+  Line: 3
+    pylint: import-error / Unable to import 'haversine'
+  Line: 5
+    pep8: E302 / expected 2 blank lines, found 1 (col 1)
+  Line: 6
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 8
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+    pep8: E251 / unexpected spaces around keyword / parameter equals (col 42)
+  Line: 9
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 10
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 11
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 12
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 13
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 15
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 16
+    pep8: W293 / blank line contains whitespace (col 1)
+  Line: 17
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 18
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 19
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 20
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 21
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 22
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 23
+    pep8: W293 / blank line contains whitespace (col 1)
+  Line: 24
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 25
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 26
+    pep8: W293 / blank line contains whitespace (col 1)
+  Line: 27
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 28
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 30
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 31
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+    pep8: E251 / unexpected spaces around keyword / parameter equals (col 48)
+  Line: 33
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 34
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 35
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 37
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 38
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 39
+    pep8: E501 / line too long (80 > 79 characters) (col 80)
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 41
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 42
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 43
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 45
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+    pep8: E251 / unexpected spaces around keyword / parameter equals (col 37)
+  Line: 47
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 48
+    pylint: redefined-builtin / Redefining built-in 'id' (col 25)
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+    pylint: invalid-name / Invalid argument name "id" (col 2)
+  Line: 49
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 50
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 51
+    pep8: E226 / missing whitespace around arithmetic operator (col 26)
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+    pep8: E225 / missing whitespace around operator (col 30)
+  Line: 53
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 54
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 55
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 56
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 58
+    pep8: E114 / indentation is not a multiple of four (comment) (col 3)
+  Line: 59
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 60
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 61
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 62
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 64
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 65
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 66
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 67
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 69
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 70
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 71
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 72
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 74
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 75
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 76
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 78
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 79
+    pep8: E501 / line too long (91 > 79 characters) (col 80)
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 81
+    pep8: E302 / expected 2 blank lines, found 1 (col 1)
+    pylint: too-many-instance-attributes / Too many instance attributes (10/7)
+    pep8: N801 / class names should use CapWords convention (col 7)
+  Line: 82
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 83
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+    pep8: E251 / unexpected spaces around keyword / parameter equals (col 43)
+  Line: 84
+    pep8: E501 / line too long (97 > 79 characters) (col 80)
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 85
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 86
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 87
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 88
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 89
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 90
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 91
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 92
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 93
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 95
+    pep8: E114 / indentation is not a multiple of four (comment) (col 3)
+  Line: 96
+    pylint: too-many-arguments / Too many arguments (9/5) (col 2)
+    pep8: E501 / line too long (80 > 79 characters) (col 80)
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 97
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 98
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 99
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 100
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 101
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 102
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 103
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 104
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 105
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 106
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 108
+    pep8: N802 / function name should be lowercase (col 7)
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+    pylint: invalid-name / Invalid method name "getAvailibility" (col 2)
+  Line: 109
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 111
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 112
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 113
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 115
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 117
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 118
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 119
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 120
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 122
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 123
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 124
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 125
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 127
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 128
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 129
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 130
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 131
+    pep8: E128 / continuation line under-indented for visual indent (col 25)
+  Line: 132
+    pep8: E128 / continuation line under-indented for visual indent (col 25)
+  Line: 134
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 135
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 136
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 138
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 139
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 140
+    pep8: E501 / line too long (108 > 79 characters) (col 80)
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 141
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+    pep8: E225 / missing whitespace around operator (col 40)
+  Line: 142
+    pep8: E128 / continuation line under-indented for visual indent (col 7)
+    pep8: E225 / missing whitespace around operator (col 20)
+  Line: 144
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 145
+    pep8: E501 / line too long (81 > 79 characters) (col 80)
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 146
+    pep8: E501 / line too long (80 > 79 characters) (col 80)
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 148
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 153
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 154
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 155
+    pep8: E114 / indentation is not a multiple of four (comment) (col 7)
+  Line: 156
+    pylint: bad-indentation / Bad indentation. Found 6 spaces, expected 12
+  Line: 158
+    pep8: E114 / indentation is not a multiple of four (comment) (col 7)
+  Line: 159
+    pylint: bad-indentation / Bad indentation. Found 6 spaces, expected 12
+  Line: 160
+    pylint: bad-indentation / Bad indentation. Found 8 spaces, expected 16
+  Line: 165
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 167
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 168
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 169
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 170
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 172
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 173
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 174
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 175
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 177
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 178
+    pep8: E501 / line too long (111 > 79 characters) (col 80)
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 179
+    pep8: E128 / continuation line under-indented for visual indent (col 75)
+    pep8: E501 / line too long (89 > 79 characters) (col 80)
+  Line: 183
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 185
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 186
+    pep8: E501 / line too long (100 > 79 characters) (col 80)
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 187
+    pep8: E501 / line too long (102 > 79 characters) (col 80)
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 188
+    pep8: E501 / line too long (103 > 79 characters) (col 80)
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 189
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 190
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 191
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 193
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 194
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 195
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 196
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 197
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 198
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+    pylint: invalid-name / Invalid attribute name "isRead" (col 4)
+  Line: 199
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 201
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 202
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 203
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 205
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 206
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 207
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 209
+    pylint: trailing-newlines / Trailing newlines
+
+app/routes.py
+  Line: 1
+    pylint: cyclic-import / Cyclic import (app -> app.routes)
+  Line: 2
+    pylint: import-error / Unable to import 'flask'
+    pylint: unused-import / Unused Blueprint imported from flask
+    pep8: E501 / line too long (80 > 79 characters) (col 80)
+  Line: 3
+    pep8: E126 / continuation line over-indented for hanging indent (col 19)
+  Line: 4
+    pylint: import-error / Unable to import 'flask_login'
+  Line: 5
+    pylint: wrong-import-order / standard import "from functools import wraps" should be placed before "from flask import render_template, request, flash, session, url_for, redirect, Blueprint"
+    pylint: unused-import / Unused wraps imported from functools
+  Line: 7
+    pylint: unused-import / Unused ContactForm imported from forms
+    pep8: E501 / line too long (87 > 79 characters) (col 80)
+  Line: 8
+    pep8: E126 / continuation line over-indented for hanging indent (col 19)
+  Line: 18
+    pep8: E302 / expected 2 blank lines, found 1 (col 1)
+    pylint: redefined-outer-name / Redefining name 'gmaps' from outer scope (line 6) (col 34)
+  Line: 19
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 20
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 21
+    pep8: W293 / blank line contains whitespace (col 1)
+  Line: 22
+    pep8: E712 / comparison to True should be 'if cond is True:' or 'if cond:' (col 100)
+    pylint: no-else-return / Unnecessary "else" after "return" (col 2)
+    pylint: len-as-condition / Do not use `len(SEQUENCE)` as condition value (col 5)
+    pylint: singleton-comparison / Comparison to True should be just 'expr' or 'expr is True' (col 70)
+    pep8: E501 / line too long (108 > 79 characters) (col 80)
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 23
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 24
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 25
+    pep8: E501 / line too long (106 > 79 characters) (col 80)
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 26
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 28
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 30
+    pep8: E302 / expected 2 blank lines, found 1 (col 1)
+  Line: 43
+    pep8: E501 / line too long (99 > 79 characters) (col 80)
+  Line: 45
+    pep8: E302 / expected 2 blank lines, found 1 (col 1)
+  Line: 46
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 47
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 48
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 50
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 56
+    pep8: E302 / expected 2 blank lines, found 1 (col 1)
+  Line: 58
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 59
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 60
+    pep8: E501 / line too long (84 > 79 characters) (col 80)
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+    pep8: E231 / missing whitespace after ',' (col 42)
+  Line: 61
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 63
+    pep8: E302 / expected 2 blank lines, found 1 (col 1)
+  Line: 65
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 66
+    pep8: W293 / blank line contains whitespace (col 1)
+  Line: 67
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 69
+    pep8: E712 / comparison to False should be 'if cond is False:' or 'if not cond:' (col 24)
+    pylint: no-else-return / Unnecessary "else" after "return" (col 4)
+    pylint: singleton-comparison / Comparison to False should be 'not expr' or 'expr is False' (col 7)
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 70
+    pylint: bad-indentation / Bad indentation. Found 6 spaces, expected 12
+  Line: 72
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 73
+    pep8: E501 / line too long (98 > 79 characters) (col 80)
+    pylint: bad-indentation / Bad indentation. Found 6 spaces, expected 12
+  Line: 74
+    pylint: bad-indentation / Bad indentation. Found 6 spaces, expected 12
+  Line: 76
+    pylint: bad-indentation / Bad indentation. Found 6 spaces, expected 12
+  Line: 77
+    pylint: bad-indentation / Bad indentation. Found 6 spaces, expected 12
+  Line: 78
+    pylint: bad-indentation / Bad indentation. Found 6 spaces, expected 12
+  Line: 79
+    pep8: W293 / blank line contains whitespace (col 1)
+  Line: 80
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 81
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 83
+    pep8: E302 / expected 2 blank lines, found 1 (col 1)
+  Line: 85
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 87
+    pep8: E302 / expected 2 blank lines, found 1 (col 1)
+  Line: 90
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 91
+    pep8: E501 / line too long (83 > 79 characters) (col 80)
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 97
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 98
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 99
+    pep8: E501 / line too long (98 > 79 characters) (col 80)
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 102
+    pep8: E302 / expected 2 blank lines, found 1 (col 1)
+    pep8: E251 / unexpected spaces around keyword / parameter equals (col 49)
+  Line: 106
+    pylint: redefined-outer-name / Redefining name 'message' from outer scope (line 321) (col 4)
+  Line: 109
+    pylint: bad-indentation / Bad indentation. Found 6 spaces, expected 8
+  Line: 111
+    pep8: E114 / indentation is not a multiple of four (comment) (col 7)
+  Line: 112
+    pylint: bad-indentation / Bad indentation. Found 6 spaces, expected 8
+  Line: 113
+    pylint: bad-indentation / Bad indentation. Found 6 spaces, expected 8
+  Line: 115
+    pylint: bad-indentation / Bad indentation. Found 6 spaces, expected 8
+  Line: 116
+    pylint: bad-indentation / Bad indentation. Found 6 spaces, expected 8
+  Line: 120
+    pep8: E501 / line too long (106 > 79 characters) (col 80)
+    pylint: bad-indentation / Bad indentation. Found 6 spaces, expected 8
+  Line: 121
+    pep8: W293 / blank line contains whitespace (col 1)
+  Line: 122
+    pep8: E501 / line too long (104 > 79 characters) (col 80)
+  Line: 124
+    pep8: E302 / expected 2 blank lines, found 1 (col 1)
+  Line: 126
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 127
+    pep8: W293 / blank line contains whitespace (col 1)
+  Line: 128
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 130
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 131
+    pylint: bad-indentation / Bad indentation. Found 6 spaces, expected 12
+  Line: 133
+    pep8: E114 / indentation is not a multiple of four (comment) (col 7)
+  Line: 134
+    pylint: bad-indentation / Bad indentation. Found 6 spaces, expected 12
+  Line: 136
+    pylint: bad-indentation / Bad indentation. Found 8 spaces, expected 16
+  Line: 137
+    pylint: bad-indentation / Bad indentation. Found 8 spaces, expected 16
+  Line: 138
+    pylint: bad-indentation / Bad indentation. Found 8 spaces, expected 16
+  Line: 139
+    pylint: bad-indentation / Bad indentation. Found 8 spaces, expected 16
+  Line: 140
+    pylint: bad-indentation / Bad indentation. Found 8 spaces, expected 16
+  Line: 141
+    pylint: bad-indentation / Bad indentation. Found 6 spaces, expected 12
+  Line: 142
+    pylint: bad-indentation / Bad indentation. Found 8 spaces, expected 16
+  Line: 143
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 149
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 150
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 151
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 152
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 153
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 154
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 161
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 162
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 164
+    pep8: E114 / indentation is not a multiple of four (comment) (col 3)
+  Line: 165
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 167
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 168
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 169
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 171
+    pep8: E114 / indentation is not a multiple of four (comment) (col 3)
+  Line: 172
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 178
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 179
+    pep8: W293 / blank line contains whitespace (col 1)
+  Line: 180
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 181
+    pep8: E712 / comparison to False should be 'if cond is False:' or 'if not cond:' (col 24)
+    pylint: singleton-comparison / Comparison to False should be 'not expr' or 'expr is False' (col 7)
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 182
+    pylint: bad-indentation / Bad indentation. Found 6 spaces, expected 12
+  Line: 184
+    pep8: E226 / missing whitespace around arithmetic operator (col 36)
+    pep8: E226 / missing whitespace around arithmetic operator (col 40)
+    pep8: E226 / missing whitespace around arithmetic operator (col 55)
+    pep8: E226 / missing whitespace around arithmetic operator (col 59)
+    pep8: E226 / missing whitespace around arithmetic operator (col 75)
+    pep8: E226 / missing whitespace around arithmetic operator (col 79)
+    pep8: E501 / line too long (101 > 79 characters) (col 80)
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 185
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 187
+    pylint: no-else-return / Unnecessary "else" after "return" (col 4)
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 188
+    pep8: E114 / indentation is not a multiple of four (comment) (col 7)
+  Line: 189
+    pylint: bad-indentation / Bad indentation. Found 6 spaces, expected 12
+  Line: 190
+    pep8: E226 / missing whitespace around arithmetic operator (col 30)
+    pep8: E226 / missing whitespace around arithmetic operator (col 34)
+    pep8: E226 / missing whitespace around arithmetic operator (col 50)
+    pep8: E226 / missing whitespace around arithmetic operator (col 54)
+    pylint: bad-indentation / Bad indentation. Found 6 spaces, expected 12
+  Line: 192
+    pylint: bad-indentation / Bad indentation. Found 6 spaces, expected 12
+  Line: 194
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 195
+    pylint: bad-indentation / Bad indentation. Found 6 spaces, expected 12
+  Line: 196
+    pylint: bad-indentation / Bad indentation. Found 6 spaces, expected 12
+  Line: 200
+    pep8: E114 / indentation is not a multiple of four (comment) (col 3)
+  Line: 201
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 203
+    pep8: E302 / expected 2 blank lines, found 1 (col 1)
+  Line: 206
+    pylint: unused-variable / Unused variable 'user' (col 2)
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 207
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 209
+    pep8: E302 / expected 2 blank lines, found 1 (col 1)
+  Line: 212
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 213
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 215
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 216
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 217
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 219
+    pep8: E501 / line too long (103 > 79 characters) (col 80)
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 221
+    pep8: E302 / expected 2 blank lines, found 1 (col 1)
+  Line: 224
+    pep8: E114 / indentation is not a multiple of four (comment) (col 3)
+    pep8: E501 / line too long (85 > 79 characters) (col 80)
+  Line: 225
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+    pylint: redefined-outer-name / Redefining name 'message' from outer scope (line 321) (col 2)
+  Line: 226
+    pep8: E501 / line too long (92 > 79 characters) (col 80)
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 228
+    pep8: E302 / expected 2 blank lines, found 1 (col 1)
+  Line: 231
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 232
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 234
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 235
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 236
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 238
+    pep8: E114 / indentation is not a multiple of four (comment) (col 3)
+  Line: 239
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 240
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 241
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 243
+    pep8: E501 / line too long (110 > 79 characters) (col 80)
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 245
+    pep8: E302 / expected 2 blank lines, found 1 (col 1)
+  Line: 248
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+    pylint: redefined-outer-name / Redefining name 'message' from outer scope (line 321) (col 2)
+  Line: 249
+    pep8: E501 / line too long (101 > 79 characters) (col 80)
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 251
+    pep8: E302 / expected 2 blank lines, found 1 (col 1)
+  Line: 254
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 256
+    pep8: E302 / expected 2 blank lines, found 1 (col 1)
+  Line: 259
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 260
+    pep8: E114 / indentation is not a multiple of four (comment) (col 3)
+  Line: 261
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 262
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 264
+    pep8: E302 / expected 2 blank lines, found 1 (col 1)
+    pep8: E231 / missing whitespace after ',' (col 23)
+  Line: 267
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 268
+    pep8: W293 / blank line contains whitespace (col 1)
+  Line: 269
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 270
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 271
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 273
+    pep8: E712 / comparison to False should be 'if cond is False:' or 'if not cond:' (col 27)
+    pylint: singleton-comparison / Comparison to False should be 'not expr' or 'expr is False' (col 7)
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 274
+    pylint: bad-indentation / Bad indentation. Found 6 spaces, expected 12
+  Line: 275
+    pep8: W293 / blank line contains whitespace (col 1)
+  Line: 276
+    pep8: E226 / missing whitespace around arithmetic operator (col 36)
+    pep8: E226 / missing whitespace around arithmetic operator (col 40)
+    pep8: E226 / missing whitespace around arithmetic operator (col 55)
+    pep8: E226 / missing whitespace around arithmetic operator (col 59)
+    pep8: E226 / missing whitespace around arithmetic operator (col 75)
+    pep8: E226 / missing whitespace around arithmetic operator (col 79)
+    pep8: E501 / line too long (101 > 79 characters) (col 80)
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 277
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 279
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 280
+    pylint: bad-indentation / Bad indentation. Found 6 spaces, expected 12
+  Line: 281
+    pep8: E122 / continuation line missing indentation or outdented (col 7)
+  Line: 283
+    pep8: E501 / line too long (145 > 79 characters) (col 80)
+    pylint: bad-indentation / Bad indentation. Found 6 spaces, expected 12
+  Line: 284
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 285
+    pylint: bad-indentation / Bad indentation. Found 6 spaces, expected 12
+  Line: 286
+    pylint: bad-indentation / Bad indentation. Found 6 spaces, expected 12
+  Line: 287
+    pep8: W293 / blank line contains whitespace (col 1)
+  Line: 288
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 289
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 291
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 293
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 299
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 301
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 302
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 304
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 305
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 306
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 307
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 309
+    pep8: E114 / indentation is not a multiple of four (comment) (col 3)
+  Line: 310
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 312
+    pep8: E302 / expected 2 blank lines, found 1 (col 1)
+  Line: 315
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 316
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 317
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 319
+    pep8: E302 / expected 2 blank lines, found 1 (col 1)
+  Line: 322
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 323
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 325
+    pep8: E114 / indentation is not a multiple of four (comment) (col 3)
+  Line: 326
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 328
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 329
+    pep8: E501 / line too long (91 > 79 characters) (col 80)
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+    pylint: redefined-outer-name / Redefining name 'message' from outer scope (line 321) (col 4)
+  Line: 330
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 331
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 332
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 334
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 336
+    pep8: E302 / expected 2 blank lines, found 1 (col 1)
+  Line: 339
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 340
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 342
+    pep8: E114 / indentation is not a multiple of four (comment) (col 3)
+  Line: 343
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 344
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 345
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 347
+    pep8: E302 / expected 2 blank lines, found 1 (col 1)
+  Line: 350
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 352
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 353
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 355
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 356
+    pep8: E226 / missing whitespace around arithmetic operator (col 36)
+    pep8: E226 / missing whitespace around arithmetic operator (col 40)
+    pep8: E226 / missing whitespace around arithmetic operator (col 55)
+    pep8: E226 / missing whitespace around arithmetic operator (col 59)
+    pep8: E226 / missing whitespace around arithmetic operator (col 75)
+    pep8: E226 / missing whitespace around arithmetic operator (col 79)
+    pep8: E501 / line too long (101 > 79 characters) (col 80)
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 357
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 358
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 359
+    pylint: bad-indentation / Bad indentation. Found 6 spaces, expected 12
+  Line: 360
+    pep8: E122 / continuation line missing indentation or outdented (col 7)
+  Line: 361
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 362
+    pylint: bad-indentation / Bad indentation. Found 6 spaces, expected 12
+  Line: 363
+    pep8: E501 / line too long (86 > 79 characters) (col 80)
+    pylint: bad-indentation / Bad indentation. Found 6 spaces, expected 12
+  Line: 365
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 366
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 367
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 368
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 369
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 370
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 371
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 372
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 374
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 376
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+  Line: 377
+    pep8: E501 / line too long (84 > 79 characters) (col 80)
+    pylint: bad-indentation / Bad indentation. Found 4 spaces, expected 8
+  Line: 378
+    pylint: bad-indentation / Bad indentation. Found 2 spaces, expected 4
+
+
+
+Check Information
+=================
+         Started: 2017-11-26 22:14:49.763121
+        Finished: 2017-11-26 22:14:51.954237
+      Time Taken: 2.19 seconds
+       Formatter: grouped
+        Profiles: profile.yaml, no_doc_warnings, strictness_high, strictness_veryhigh, no_member_warnings
+      Strictness: from profile
+  Libraries Used: flask
+       Tools Run: dodgy, mccabe, pep8, profile-validator, pyflakes, pylint
+  Messages Found: 667
+
+Messages
+========
+
+app/tests/base.py
+  Line: 3
+    pylint: import-error / Unable to import 'flask_testing'
+  Line: 5
+    pylint: unused-import / Unused gmaps imported from app
+  Line: 6
+    pylint: unused-import / Unused import config
+  Line: 7
+    pylint: ungrouped-imports / Imports from package app are not grouped
+  Line: 9
+    pep8: E302 / expected 2 blank lines, found 1 (col 1)
+  Line: 13
+    pep8: N802 / function name should be lowercase (col 6)
+    pylint: invalid-name / Invalid method name "assertLoginReq" (col 1)
+  Line: 18
+    pylint: no-self-use / Method could be a function (col 1)
+  Line: 25
+    pep8: E128 / continuation line under-indented for visual indent (col 4)
+  Line: 30
+    pep8: E128 / continuation line under-indented for visual indent (col 4)
+  Line: 34
+    pylint: no-self-use / Method could be a function (col 1)
+  Line: 38
+    pylint: no-self-use / Method could be a function (col 1)
+    pylint: invalid-name / Invalid method name "setUp" (col 1)
+  Line: 42
+    pep8: E501 / line too long (107 > 79 characters) (col 80)
+  Line: 43
+    pep8: E501 / line too long (108 > 79 characters) (col 80)
+  Line: 46
+    pylint: no-self-use / Method could be a function (col 1)
+    pylint: invalid-name / Invalid method name "tearDown" (col 1)
+
+app/tests/test_basic.py
+  Line: None
+    pep8: E101 / indentation contains mixed spaces and tabs (col 1)
+  Line: 2
+    pep8: W293 / blank line contains whitespace (col 1)
+  Line: 7
+    pep8: E302 / expected 2 blank lines, found 1 (col 1)
+  Line: 11
+    pep8: E501 / line too long (82 > 79 characters) (col 80)
+  Line: 19
+    pep8: E501 / line too long (84 > 79 characters) (col 80)
+
+app/tests/test_buyer.py
+  Line: 3
+    pylint: unused-import / Unused import unittest
+  Line: 4
+    pylint: unused-import / Unused MagicMock imported from mock
+  Line: 5
+    pylint: import-error / Unable to import 'flask_login'
+    pylint: unused-import / Unused current_user imported from flask_login
+  Line: 6
+    pylint: import-error / Unable to import 'flask'
+  Line: 9
+    pylint: unused-import / Unused Parking_Spot imported from app.models
+  Line: 11
+    pep8: E501 / line too long (88 > 79 characters) (col 80)
+    pylint: invalid-name / Invalid constant name "valid_addr_tuple"
+  Line: 13
+    pep8: E302 / expected 2 blank lines, found 1 (col 1)
+  Line: 18
+    pylint: invalid-name / Invalid method name "test_buyer_search_invalid_address" (col 1)
+  Line: 20
+    pep8: E225 / missing whitespace around operator (col 23)
+  Line: 29
+    pylint: unused-variable / Unused variable 'response' (col 3)
+
+app/tests/test_helper.py
+  Line: 5
+    pylint: import-error / Unable to import 'flask_login'
+    pylint: unused-import / Unused current_user imported from flask_login
+  Line: 6
+    pylint: import-error / Unable to import 'flask'
+    pylint: unused-import / Unused request imported from flask
+  Line: 12
+    pep8: E501 / line too long (94 > 79 characters) (col 80)
+    pylint: invalid-name / Invalid constant name "valid_address_return"
+  Line: 13
+    pep8: E128 / continuation line under-indented for visual indent (col 1)
+    pep8: E501 / line too long (83 > 79 characters) (col 80)
+  Line: 14
+    pep8: E128 / continuation line under-indented for visual indent (col 1)
+    pep8: E501 / line too long (100 > 79 characters) (col 80)
+  Line: 15
+    pep8: E122 / continuation line missing indentation or outdented (col 1)
+    pep8: E501 / line too long (102 > 79 characters) (col 80)
+  Line: 16
+    pep8: E128 / continuation line under-indented for visual indent (col 1)
+  Line: 17
+    pep8: E122 / continuation line missing indentation or outdented (col 1)
+    pep8: E501 / line too long (124 > 79 characters) (col 80)
+  Line: 18
+    pep8: E122 / continuation line missing indentation or outdented (col 1)
+    pep8: E501 / line too long (95 > 79 characters) (col 80)
+  Line: 19
+    pep8: E122 / continuation line missing indentation or outdented (col 1)
+    pep8: E501 / line too long (128 > 79 characters) (col 80)
+  Line: 20
+    pep8: E122 / continuation line missing indentation or outdented (col 1)
+    pep8: E501 / line too long (108 > 79 characters) (col 80)
+  Line: 21
+    pep8: E122 / continuation line missing indentation or outdented (col 1)
+    pep8: E501 / line too long (118 > 79 characters) (col 80)
+  Line: 22
+    pep8: E128 / continuation line under-indented for visual indent (col 1)
+    pep8: E501 / line too long (138 > 79 characters) (col 80)
+  Line: 23
+    pep8: E122 / continuation line missing indentation or outdented (col 1)
+    pep8: E501 / line too long (141 > 79 characters) (col 80)
+  Line: 25
+    pep8: E501 / line too long (88 > 79 characters) (col 80)
+    pylint: invalid-name / Invalid constant name "valid_addr_tuple"
+  Line: 27
+    pep8: E302 / expected 2 blank lines, found 1 (col 1)
+  Line: 31
+    pep8: E302 / expected 2 blank lines, found 1 (col 1)
+  Line: 34
+    pylint: attribute-defined-outside-init / Attribute 'geocode' defined outside __init__ (col 2)
+  Line: 41
+    pylint: bad-whitespace / Exactly one space required after comma
+		self.assertEqual(response[0],  '2957 Broadway, New York, NY 10025, USA')
+                              ^
+  Line: 47
+    pylint: attribute-defined-outside-init / Attribute 'geocode' defined outside __init__ (col 2)
+  Line: 53
+    pylint: invalid-name / Invalid method name "test_partial_match_validate_address" (col 1)
+  Line: 55
+    pep8: E203 / whitespace before ':' (col 64)
+    pylint: attribute-defined-outside-init / Attribute 'geocode' defined outside __init__ (col 2)
+
+app/tests/test_parking.py
+  Line: 4
+    pylint: import-error / Unable to import 'flask_login'
+  Line: 5
+    pylint: import-error / Unable to import 'flask'
+  Line: 8
+    pylint: unused-import / Unused Parking_Spot imported from app.models
+  Line: 10
+    pep8: E302 / expected 2 blank lines, found 1 (col 1)
+  Line: 24
+    pep8: E501 / line too long (109 > 79 characters) (col 80)
+  Line: 25
+    pep8: E128 / continuation line under-indented for visual indent (col 5)
+  Line: 28
+    pep8: E501 / line too long (85 > 79 characters) (col 80)
+  Line: 46
+    pep8: E501 / line too long (86 > 79 characters) (col 80)
+  Line: 47
+    pep8: E128 / continuation line under-indented for visual indent (col 5)
+    pep8: E501 / line too long (86 > 79 characters) (col 80)
+  Line: 60
+    pep8: E501 / line too long (87 > 79 characters) (col 80)
+  Line: 61
+    pep8: E128 / continuation line under-indented for visual indent (col 5)
+    pep8: E501 / line too long (86 > 79 characters) (col 80)
+  Line: 68
+    pep8: E128 / continuation line under-indented for visual indent (col 6)
+    pep8: E501 / line too long (83 > 79 characters) (col 80)
+  Line: 69
+    pep8: E128 / continuation line under-indented for visual indent (col 6)
+  Line: 73
+    pep8: E501 / line too long (87 > 79 characters) (col 80)
+  Line: 82
+    pylint: invalid-name / Invalid method name "cannot_update_spot_that_isnt_yours" (col 1)
+  Line: 92
+    pep8: E302 / expected 2 blank lines, found 1 (col 1)
+  Line: 99
+    pylint: unused-variable / Unused variable 'response' (col 3)
+    pep8: E501 / line too long (87 > 79 characters) (col 80)
+  Line: 100
+    pep8: E128 / continuation line under-indented for visual indent (col 5)
+    pep8: E501 / line too long (86 > 79 characters) (col 80)
+  Line: 106
+    pylint: invalid-name / Invalid method name "test_see_availible_parking_spots" (col 1)
+  Line: 109
+    pep8: W293 / blank line contains whitespace (col 1)
+  Line: 111
+    pep8: E303 / too many blank lines (3) (col 1)
+
+app/tests/test_user.py
+  Line: None
+    pep8: E101 / indentation contains mixed spaces and tabs (col 1)
+  Line: 2
+    pep8: W293 / blank line contains whitespace (col 1)
+  Line: 4
+    pylint: import-error / Unable to import 'flask_login'
+  Line: 5
+    pylint: import-error / Unable to import 'flask'
+  Line: 9
+    pylint: import-error / Unable to import 'werkzeug'
+    pylint: unused-import / Unused generate_password_hash imported from werkzeug
+  Line: 11
+    pylint: pointless-string-statement / String statement has no effect
+  Line: 12
+    pep8: E302 / expected 2 blank lines, found 0 (col 1)
+  Line: 20
+    pep8: E501 / line too long (93 > 79 characters) (col 80)
+  Line: 26
+    pep8: E501 / line too long (113 > 79 characters) (col 80)
+  Line: 28
+    pylint: invalid-name / Invalid method name "test_incorrect_user_registration" (col 1)
+  Line: 31
+    pep8: E501 / line too long (81 > 79 characters) (col 80)
+  Line: 34
+    pep8: E712 / comparison to True should be 'if cond is True:' or 'if cond:' (col 61)
+    pylint: singleton-comparison / Comparison to True should be just 'expr' or 'expr is True' (col 19)
+  Line: 48
+    pep8: W293 / blank line contains whitespace (col 1)
+  Line: 67
+    pep8: E501 / line too long (95 > 79 characters) (col 80)
+  Line: 68
+    pep8: E128 / continuation line under-indented for visual indent (col 5)
+  Line: 74
+    pep8: W293 / blank line contains whitespace (col 1)
+  Line: 105
+    pep8: E302 / expected 2 blank lines, found 1 (col 1)
+  Line: 133
+    pep8: E501 / line too long (83 > 79 characters) (col 80)
+  Line: 137
+    pep8: W293 / blank line contains whitespace (col 1)
+  Line: 139
+    pep8: E303 / too many blank lines (2) (col 2)
+  Line: 140
+    pep8: E501 / line too long (84 > 79 characters) (col 80)
+  Line: 148
+    pep8: E501 / line too long (86 > 79 characters) (col 80)
+  Line: 167
+    pylint: invalid-name / Invalid method name "test_logout_route_requires_login" (col 1)
+
+
+
+Check Information
+=================
+         Started: 2017-11-26 22:15:19.194080
+        Finished: 2017-11-26 22:15:21.337211
+      Time Taken: 2.14 seconds
+       Formatter: grouped
+        Profiles: profile.yaml, no_doc_warnings, strictness_high, strictness_veryhigh, no_member_warnings
+      Strictness: from profile
+  Libraries Used: flask
+       Tools Run: dodgy, mccabe, pep8, profile-validator, pyflakes, pylint
+  Messages Found: 122
+
