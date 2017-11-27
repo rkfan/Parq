@@ -1,0 +1,21 @@
+strictness: high
+test-warnings: true
+doc-warnings: false
+  
+
+ignore-patterns:
+  - (^|/)skip(this)?(/|$)
+
+pep8:
+  disable:
+    - W602
+    - W603
+    - W0311
+    - W191 
+    - E111
+  enable:
+    - W601
+  options:
+    max-line-length: 79
+
+autodetect: true
