@@ -3,11 +3,16 @@ from flask import render_template, request, flash, session, url_for, redirect, \
                   Blueprint
 from flask_login import current_user, login_required, login_user, logout_user
 from functools import wraps
-from app import db, app, gmaps
+#from app import db, app, gmaps
+from app import db, app
+
 from forms import SignupForm, SigninForm, ContactForm, SellerForm, UpdateProfileForm, \
                   UpdateParkingSpotForm, MessageForm, ApprovalForm, BuyerForm
 from models import User, Parking_Spot, Message
+import googlemaps
+import json
 
+gmaps = googlemaps.Client(key='AIzaSyA3puSdjsWawVHB0LxKU7dk9s9bzHHteGU')
 # define the blueprint: 'parq', set url prefix: app.url/parq
 #app = Blueprint('parq', __name__, url_prefix='/parq')
 
@@ -46,8 +51,69 @@ def parse_search_query(query):
   query = query.split('%')
   lat_lon = (float(query[0]), float(query[1]))
   zipcode = int(query[2])
+  search_add = str(query[3])
+ 
+  return (lat_lon, zipcode, search_add)
 
-  return (lat_lon, zipcode)
+
+def get_mapbox_features(parking_spots, lat_long, val_add):
+  feat_dict  = {}  
+  features =[]
+  center = [lat_long[1], lat_long[0]]
+
+  for spot in parking_spots:
+    if spot.address not in feat_dict.keys():
+      feat_dict[spot.address] = []
+      feature = {}
+      feature['type'] = 'Feature'
+      
+      feature['geometry'] = {}
+      feature['geometry']['type'] = 'Point'
+
+      feature['properties'] = {}
+      feature['properties']['icon'] = 'circle'
+      feature['geometry']['coordinates'] = [float(spot.lon), float(spot.lat)]
+      feature['properties']['description'] = "<strong><li style=\"color:black\">"+ "Parking Spot : "+ str(spot.psid) +"</li></strong><p><a href=\"message/"+str(spot.psid)+"\" target=\"_blank\" title=\"Opens in a new window\">"+ spot.address + ", " + spot.city + ", " + spot.state + " " + str(spot.zipcode)+ "  :  " + spot.ps_size+  "</a></p>"
+
+      feat_dict[spot.address].append(feature)
+    else :
+      feature = {}
+      feature['type'] = 'Feature'
+      
+      feature['geometry'] = {}
+      feature['geometry']['type'] = 'Point'
+
+      feature['properties'] = {}
+      feature['properties']['icon'] = 'circle'
+      feature['geometry']['coordinates'] = [float(spot.lon), float(spot.lat)]
+      feature['properties']['description'] = "<strong><li style=\"color:black\">"+ "Parking Spot : "+ str(spot.psid) +"</li></strong><p><a href=\"message/"+str(spot.psid)+"\" target=\"_blank\" title=\"Opens in a new window\">"+ spot.address + ", " + spot.city + ", " + spot.state + " " + str(spot.zipcode)+ "  :  " + spot.ps_size+  "</a></p>"
+
+      feat_dict[spot.address].append(feature)
+
+  feature = {}
+  feature['type'] = 'Feature'
+  
+  feature['geometry'] = {}
+  feature['geometry']['type'] = 'Point'
+
+  feature['properties'] = {}
+  feature['properties']['icon'] = 'harbor'
+  feature['geometry']['coordinates'] = [lat_long[1], lat_long[0]]
+  feature['properties']['description'] = "<strong><li style=\"color:black\">Requested Position</li></strong><p><a>"+ val_add[0] +  "</a></p>"
+
+  if val_add[0].split(",")[0] in feat_dict.keys():
+    feat_dict[val_add[0].split(",")[0]] = [feature] + feat_dict[val_add[0].split(",")[0]]
+
+  for spot in feat_dict.keys():
+    desc = ""
+    for sub_spot in feat_dict[spot]:
+      desc = desc + sub_spot['properties']['description']
+
+    feat_dict[spot][0]['properties']['description'] = desc
+
+    features.append(feat_dict[spot][0])
+
+  return center, features
 
 ###################
 # Routes
@@ -162,11 +228,16 @@ def buyer_search_results(query):
   uid = user.uid
 
   # Parse the query
-  lat_lon, zipcode = parse_search_query(query)
+  lat_lon, zipcode, search_add = parse_search_query(query)
 
   search_results = Parking_Spot.vicinity_search(lat_lon, zipcode, uid)
   if search_results:
-    return render_template('buyer_search_results.html', spots=search_results)
+    center, features = get_mapbox_features(search_results, lat_lon, search_add)
+    features = json.dumps(features)
+    center = json.dumps(center)
+
+
+    return render_template('buyer_search_map.html', mapbox_features = features, map_center = center )
 
   # When none are found
   return render_template('buyer_search_results.html', spots=None)
@@ -187,9 +258,29 @@ def buyer_search():
     if val_add:
       # Query is unicode. Need to format it in a parseable way
       lat_lon = tuple(val_add[1])
-      query = str(lat_lon[0])+'%'+str(lat_lon[1])+'%'+str(form.zipcode.data)
+      query = str(lat_lon[0])+'%'+str(lat_lon[1])+'%'+str(form.zipcode.data)+'%'+str(val_add[0])
+      
 
-      return redirect(url_for('buyer_search_results', query=query))
+
+      #displaying results. 
+      user = current_user
+      uid = user.uid
+
+      lat_lon, zipcode, search_add = parse_search_query(query)
+
+      search_results = Parking_Spot.vicinity_search(lat_lon, zipcode, uid)
+      if search_results:
+        center, features = get_mapbox_features(search_results, lat_lon, search_add)
+        features = json.dumps(features)
+        center = json.dumps(center)
+
+        return render_template('buyer_search_map.html', mapbox_features = features, map_center = center )
+
+      # When none are found
+      return render_template('buyer_search_results.html', spots=None)
+
+
+      #return redirect(url_for('buyer_search_results', query=query))
 
     else:
       flash('Invalid Address')
