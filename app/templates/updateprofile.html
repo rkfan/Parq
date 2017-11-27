@@ -1,6 +1,7 @@
 {% extends "layout.html" %}
  
 {% block content %}
+  <div class="jumbo" style="background-color: rgba(43, 43, 43, 0.7)">
   <h2>Update Profile</h2>
 
   {% for message in form.firstname.errors %}
@@ -11,6 +12,7 @@
     <div class="flash">{{ message }}</div>
   {% endfor %}
 
+  <center>
   <form action="{{ url_for('updateprofile') }}" method=post>
     {{ form.hidden_tag() }}
     {{ form.csrf_token }}
@@ -20,7 +22,12 @@
  
     {{ form.lastname.label }}
     {{ form.lastname }}
+
+    <br />
+    <br />
  
     {{ form.submit }}
   </form>
+  </center>
+  </div>
 {% endblock %}
