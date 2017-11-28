@@ -1,13 +1,15 @@
 {% extends "layout.html" %}
  
 {% block content %}
+  <div class="jumbo" style="background-color: rgba(43, 43, 43, 0.7)">
   <h2>Approved Requests</h2>
     {% for spot in approved_spots %}
           <ul>
               <li>Approved by: {{ get_user(spot.ownerid) }} 
               	<br> Parking spot at: 
               	{{ spot.address }}, {{ spot.city }} {{ spot.zipcode }} for 
-              	{{spot.ps_size }} type vehicle. | <span style="padding-left:20px"> <a href="{{ url_for('release_spot', parking_id=spot.psid) }}">Release Spot</a></span>|
+              	{{spot.ps_size }} type vehicle. | <span style="padding-left:20px"> <a href="{{ url_for('release_spot', parking_id=spot.psid) }}" style="color: white">Release Spot</a></span>|
           </ul>
     {% endfor %}
+  </div>
 {% endblock %}
