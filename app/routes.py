@@ -161,7 +161,8 @@ def profile():
 @login_required
 def message_page():
   user = current_user
-  my_messages = user.get_all_messages()
+  #my_messages = user.get_all_messages()
+  my_messages = user.get_my_messages_by_expiry_status(expired = 0)
   return render_template('messagepage.html', my_messages=my_messages, get_user=User.get_user_name)
 
 # Check to see if user can see other people's messages...
@@ -301,7 +302,7 @@ def buyer_profile():
 @login_required
 def requests():
   user = current_user
-  unapproved_messages = user.get_my_messages_by_status(approved=0)
+  unapproved_messages = user.get_my_messages_by_status(approved=0, expired = 0)
 
   if not unapproved_messages:
     flash('You have no pending requests!')
@@ -313,14 +314,15 @@ def requests():
 @login_required
 def view_requests(message_id):
   # TODO: Check to see if a user can see other user's messages because of this query?
-  message = Message.get_message_by_id_status(message_id, 0)
+  message = Message.get_message_by_id_status(message_id, 0, 0)
   return render_template('view_requests.html', message=message, get_user=User.get_user_name)
 
 @app.route('/approved_requests')
 @login_required
 def approved_requests():
+  #form = ReleaseForm()
   user = current_user
-  approved_messages = user.get_my_messages_by_status(approved=1)
+  approved_messages = user.get_my_messages_by_status(approved=1, expired = 0)
 
   if not approved_messages:
     flash('You have no approved requests!')
@@ -336,8 +338,24 @@ def approved_requests():
 @app.route('/view_approved_requests/<message_id>')
 @login_required
 def view_approved_requests(message_id):
-  message = Message.get_message_by_id_status(message_id, 1)
+  message = Message.get_message_by_id_status(message_id, 1, 0)
   return render_template('view_approved_requests.html', message=message, get_user=User.get_user_name)
+
+@app.route('/release_spot/<parking_id>')
+@login_required
+def release_spot(parking_id):
+  user = current_user
+  parking_spot = Parking_Spot.get_parking_spot_by_id(parking_id)
+  parking_spot.availible = 1
+  db.session.commit()
+
+  approved_messages = user.get_my_messages_by_status(approved=1, expired = 0)
+  approved_message = [a for a in approved_messages if a.psid == parking_id]
+  a.expired = True
+  db.session.commit()
+  return redirect(url_for('approved_requests'))
+
+
 
 @app.route('/seller')
 @login_required

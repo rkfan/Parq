@@ -34,9 +34,13 @@ class User(db.Model):
     """ Gets a user's messages """  
     return Message.query.filter_by(receiver_uid=self.uid).all()
 
-  def get_my_messages_by_status(self, approved=0):
+  def get_my_messages_by_status(self, approved=0, expired = 0):
     """ Returns user's unapproved messages """ 
-    return Message.query.filter_by(sender_uid=self.uid, approved=approved).all()
+    return Message.query.filter_by(sender_uid=self.uid, approved=approved, expired = expired).all()
+
+  def get_my_messages_by_expiry_status(self, expired = 0):
+    """ Returns user's unapproved messages """ 
+    return Message.query.filter_by(receiver_uid=self.uid, expired = expired).all()
 
   @classmethod
   def user_email_taken(cls, email):
@@ -189,6 +193,7 @@ class Message(db.Model):
   message = db.Column(db.String(500), nullable=False)
   isRead = db.Column(db.Boolean, default=False)
   approved = db.Column(db.Boolean, default=False)
+  expired = db.Column(db.Boolean, default=False)
 
   def __init__(self, sender_uid, rcv_uid, psid, msg):
     self.sender_uid = sender_uid
@@ -197,13 +202,14 @@ class Message(db.Model):
     self.message = msg
     self.isRead = False
     self.approved = False
+    self.expired = False
 
   @classmethod 
   def get_message_by_id(cls, message_id):
     return cls.query.filter_by(message_id=message_id).first()
 
   @classmethod
-  def get_message_by_id_status(cls, message_id, status):
-    return cls.query.filter_by(message_id=message_id, approved=status).first()
+  def get_message_by_id_status(cls, message_id, ap_status, exp_status):
+    return cls.query.filter_by(message_id=message_id, approved=ap_status, expired = exp_status).first()
 
 
