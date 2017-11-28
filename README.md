@@ -1,6 +1,6 @@
 # Parq
 ## Fall 2017 - Advanced Software Engineering
-Group: Argonauts - Ashkan Hosseini, Mukund Yelahanka Raghuprasad, Namrata Uday Evadiga, Raymond Fan
+Group: Argonauts - Ashkan Hosseini, Mukund Yelahanka Raghuprasad, Namrata Uday Devadiga, Raymond Fan
 
 Version 1: First Iteration (as of 10/25/17)
 Parq is web application as a way for users to book parking spots as well as post parking spots to rent out
