@@ -10,7 +10,7 @@ class ParqBasicTestCases(BaseTestCase):
 		# Not authenticated, authenticated will be tested laters
 		response = self.client.get('/', content_type='html/text', follow_redirects=True)
 		self.assertEqual(response.status_code, 200)
-		self.assertTrue(b'Please signup or login.' in response.data)
+		self.assertTrue(b'Welcome to Parq!' in response.data)
 
 	def test_about(self):
 		""" Gets about page """
