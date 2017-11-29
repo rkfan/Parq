@@ -157,7 +157,7 @@ class UserLoginLogoutTests(BaseTestCase):
 		with self.client:
 			response = self.login('test@tester.com', 'test')
 			response = self.logout()
-			self.assertIn(b'Please signup or login.', response.data)
+			self.assertIn(b'Welcome to Parq!', response.data)
 			self.assertFalse(current_user.is_active)
 
 		# Check that User isn't authenticated
