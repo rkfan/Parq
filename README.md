@@ -2,7 +2,7 @@
 ## Fall 2017 - Advanced Software Engineering
 Group: Argonauts - Ashkan Hosseini, Mukund Yelahanka Raghuprasad, Namrata Uday Devadiga, Raymond Fan
 
-[![Build Status](https://travis-ci.org/rkfan/Parq.svg?branch=master)](https://travis-ci.org/rkfan/Parq)
+[![Build Status](https://travis-ci.org/rkfan/Parq.svg?branch=master)](https://travis-ci.org/rkfan/Parq) [![Coverage Status](https://coveralls.io/repos/github/rkfan/Parq/badge.svg?branch=master)](https://coveralls.io/github/rkfan/Parq?branch=master)
 
 Version 1: First Iteration (as of 10/25/17)
 Parq is web application as a way for users to book parking spots as well as post parking spots to rent out
