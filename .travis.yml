@@ -8,6 +8,6 @@ install:
 
 # command to run tests
 script:
-  - nosetests --with-coverage --cover-tests --cover-pagkage app app/tests/*.py
+  - nosetests --with-coverage --cover-tests --cover-package app app/tests/*.py
 
 after_success: coveralls
