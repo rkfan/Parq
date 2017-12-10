@@ -7,7 +7,7 @@ from flask import request
 
 from base import BaseTestCase
 #from app.models import User, Parking_Spot
-from app.routes import validate_address
+from app.routes import validate_address, parse_search_query
 
 valid_address_return = [{u'geometry': {u'location': {u'lat': 40.8079732, u'lng': -73.9643219}, 
 u'viewport': {u'northeast': {u'lat': 40.8093221802915, u'lng': -73.96297291970849}, 
@@ -57,6 +57,19 @@ class HelperFunctionTestCases(BaseTestCase):
 		fake_gmaps.geocode.assert_called_once_with('')
 
 		self.assertFalse(response)
+
+	def test_parse_search_query(self):
+		query = "40.8079732%-73.9643219%10025%2957 Broadway" # Stub query
+
+		ret = parse_search_query(query)
+
+		self.assertEqual(len(ret), 3)
+		self.assertEqual(len(ret[0]), 2)
+		lat_lon = ret[0]
+		self.assertTrue(isinstance(lat_lon[0], float))
+		self.assertTrue(isinstance(lat_lon[1], float))
+		self.assertTrue(isinstance(ret[1], int))
+		self.assertTrue(isinstance(ret[2], str))
 
 
 if __name__ == '__main__':
