@@ -30,7 +30,7 @@ class ParqSellerFunctTests(BaseTestCase):
 		with self.client:
 			self.login('jbuckets@aol.com', 'igetBuckets')
 			user_garage = current_user.get_all_parking_spots()
-			self.assertTrue(user_garage, None)
+			self.assertFalse(user_garage)
 
 	# TODO: May have to mock out the API call here for adding a parking spot
 	def test_add_parking_space(self):
