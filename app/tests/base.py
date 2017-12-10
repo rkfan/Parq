@@ -39,7 +39,8 @@ class BaseTestCase(TestCase):
 		""" Setup. Creates a test user and two parking spots """ 
 		db.create_all()
 		db.session.add(User("Test", "Tester", "test@tester.com", "test"))
-		db.session.add(Parking_Spot(1, "2957 Broadway", "New York", "NY", 10025, "SUV", 40.8079732, -73.9643219))
+		db.session.add(User("Adam", "Admin", "admin@admin.com", "admin"))
+		db.session.add(Parking_Spot(1, "2957 Broadway", "New York", "NY", 10025, "SUV", 40.8079732, -73.9643219))	# Shake Shack
 		db.session.add(Parking_Spot(2, "2013 66 Street", "Brooklyn", "NY", 11204, "LMV", 40.6156401, -73.9860273))
 		db.session.commit()
 

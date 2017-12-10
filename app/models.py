@@ -150,10 +150,7 @@ class Parking_Spot(db.Model):
     """ Returns a list of parking spots within (default) radius of 0.5 miles """
     # First get spots within the same zipcode
     spots_same_zipcode = cls.get_spots_by_zipcode(zipcode, current_user_id)
-    # print("Same zipcode")
-    # print(zipcode)
-    # print(spots_same_zipcode)
-
+    
     spots_in_vicinity = []
     for spot in spots_same_zipcode:
       # get longitude latitude tuple for the spots
