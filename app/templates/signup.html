@@ -1,6 +1,7 @@
 {% extends "layout.html" %}
  
 {% block content %}
+ <div class=jumbo style="background-color: rgba(43, 43, 43, 0.7)">
   <h2>Sign up</h2>
  
   {% for message in form.firstname.errors %}
@@ -19,6 +20,7 @@
     <div class="flash">{{ message }}</div>
   {% endfor %}
    
+  <center> 
   <form action="{{ url_for('signup') }}" method=post>
     {{ form.hidden_tag() }}
     {{ form.csrf_token }}
@@ -37,5 +39,6 @@
      
     {{ form.submit }}
   </form>
-     
+  </center>
+ </div>  
 {% endblock %}

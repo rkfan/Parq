@@ -4,7 +4,6 @@
       <div class="jumbo" style="background-color: rgba(43, 43, 43, 0.7)">
   	  <h2>This is your parking spot : {{parking_spot.psid}}</h2>
   	  <center><h1> Update Details Here </h1></center>
-      </div>
   	  {% for message in form.address.errors %}
       <div class="flash">{{ message }}</div>
       {% endfor %}
@@ -25,7 +24,7 @@
       <div class="flash">{{ message }}</div>
       {% endfor %}
 
-      <form action="{{ url_for('update_spot', parking_id=parking_spot.psid) }}" method=post>
+      <form style="padding-left: 4em;" action="{{ url_for('update_spot', parking_id=parking_spot.psid) }}" method=post>
       {{ form.csrf_token }}
 	  {{ form.hidden_tag() }}
 			     
@@ -47,4 +46,5 @@
 	  {{ form.submit }}
 
   	  </form>
+  </div>
 {% endblock %}

@@ -3,8 +3,8 @@
   	{% for message in form.message.errors %}
 	<div class="flash">{{ message }}</div>
     {% endfor %}
-
-	<form action="{{ url_for('message', parking_id=parking_spot.psid) }}" method=post>
+    <div class="jumbo" style="background-color: rgba(43, 43, 43, 0.7)">
+	<form style="padding-left: 4em;" action="{{ url_for('message', parking_id=parking_spot.psid) }}" method=post>
 		{{ form.csrf_token }}
 		{{ form.hidden_tag() }}
 		     
@@ -13,4 +13,5 @@
 		     
 		{{ form.submit }}
 	</form>
+	</div>
 {% endblock %}

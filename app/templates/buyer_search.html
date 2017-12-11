@@ -1,8 +1,9 @@
 {% extends "layout.html" %}
  
 {% block content %}
+<div class=jumbo style="background-color: rgba(43, 43, 43, 0.7)">
   <h2>Enter the locality for searching for parking spots<h2>
-    	<h1>Enter Details Here</h1>
+    	<h1 style="padding-left: 2em">Enter Details Here</h1>
 		  {% for message in form.address.errors %}
 		  <div class="flash">{{ message }}</div>
           {% endfor %}
@@ -22,8 +23,8 @@
           {% for message in form.ps_size.errors %}
 		  <div class="flash">{{ message }}</div>
           {% endfor %}
-
-		  <form action="{{ url_for('buyer_search') }}" method=post>
+          
+		  <form style="padding-left: 4em" action="{{ url_for('buyer_search') }}" method=post>
 		  	{{ form.csrf_token }}
 		    {{ form.hidden_tag() }}
 		     
@@ -44,5 +45,5 @@
 		     
 		    {{ form.submit }}
 		  </form>
-
+</div>
 {% endblock %}
