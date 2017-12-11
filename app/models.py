@@ -99,9 +99,9 @@ class Parking_Spot(db.Model):
   # ownerid? Do we need to do something with that...?
   def __init__(self, ownerid, address, city, state, zipcode, ps_size, lat, lon):
     self.ownerid = ownerid
-    self.address = address
-    self.city = city
-    self.state = state
+    self.address = address.title()
+    self.city = city.title()
+    self.state = state.title()
     self.zipcode = zipcode
     self.ps_size = ps_size.title()
     self.validity = True
@@ -131,9 +131,12 @@ class Parking_Spot(db.Model):
   @classmethod 
   def spot_exists(cls, uid, full_address):
     """ Return true if spot exists, false otherwise """ 
-    return cls.query.filter_by(ownerid=uid, address=full_address['address'],
+    ret = cls.query.filter_by(ownerid=uid, address=full_address['address'],
                         city=full_address['city'], state=full_address['state'],
-                        zipcode=full_address['zipcode']).first() is not None
+                        zipcode=full_address['zipcode']).first()
+    if ret:
+      return True
+    return False
 
   @classmethod 
   def get_spots_for_buyer(cls, uid):
@@ -150,7 +153,6 @@ class Parking_Spot(db.Model):
     """ Returns a list of parking spots within (default) radius of 0.5 miles """
     # First get spots within the same zipcode
     spots_same_zipcode = cls.get_spots_by_zipcode(zipcode, current_user_id)
-    
     spots_in_vicinity = []
     for spot in spots_same_zipcode:
       # get longitude latitude tuple for the spots

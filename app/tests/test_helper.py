@@ -71,6 +71,3 @@ class HelperFunctionTestCases(BaseTestCase):
 		self.assertTrue(isinstance(ret[1], int))
 		self.assertTrue(isinstance(ret[2], str))
 
-
-if __name__ == '__main__':
-	unittest.main()

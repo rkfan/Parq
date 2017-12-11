@@ -60,13 +60,14 @@ class UserBuyerTestCases(BaseTestCase):
 	@patch('app.routes.validate_address')
 	def test_buyer_search_valid_address_miss(self, va_mock):
 		self.assertLoginReq('/buyer_search')
+
+		# Change it to something that is not within the vicinity
+		valid_addr_tuple = ('90 Church St, New York, NY 10007, USA', [40.7127847, -74.0102577])
 		va_mock.return_value = valid_addr_tuple
 
-		# with self.client:
-		# 	self.login('admin@admin.com', 'admin')
-		# 	response = self.client.post('/buyer_search', data=dict(address='2957 Broadway',
-		# 	city='New York', state='NY', zipcode=10025, ps_size='SUV'), follow_redirects=True)
-		# 	self.assertIn(b'/buyer_search_map', request.url)
-
-
-
+		with self.client:
+			self.login('admin@admin.com', 'admin')
+			response = self.client.post('/buyer_search', data=dict(address='2957 Broadway',
+			city='New York', state='NY', zipcode=10025, ps_size='SUV'), follow_redirects=True)
+			self.assert_template_used('buyer_search_results.html')
+			self.assertIn(b'Your search yielded no results :-(', response.data)

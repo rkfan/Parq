@@ -1,11 +1,14 @@
 #test/test_parking.py
 
 import unittest
+from mock import MagicMock, patch
 from flask_login import current_user
 from flask import request
 
 from base import BaseTestCase
 from app.models import User, Parking_Spot
+
+valid_addr_tuple = ('1020 Bay Ridge Avenue, Brooklyn, NY 11219, USA', [40.627258, -74.010027])
 
 class ParqSellerFunctTests(BaseTestCase):
 	def test_see_garage(self):
@@ -32,10 +35,11 @@ class ParqSellerFunctTests(BaseTestCase):
 			user_garage = current_user.get_all_parking_spots()
 			self.assertFalse(user_garage)
 
-	# TODO: May have to mock out the API call here for adding a parking spot
-	def test_add_parking_space(self):
+	@patch('app.routes.validate_address')
+	def test_add_parking_space(self, va_mock):
 		""" Tests to see if you can add a parking spot """ 
 		self.assertLoginReq('/addspots')
+		va_mock.return_value = valid_addr_tuple
 
 		with self.client:
 			self.login('test@tester.com', 'test')
@@ -45,29 +49,27 @@ class ParqSellerFunctTests(BaseTestCase):
 
 			response = self.client.post('/addspots', data=dict(address='1020 Bay Ridge Avenue',
 				city='Brooklyn', state='NY', zipcode=11219, ps_size='LMV'), follow_redirects=True)
-			self.assertIn(b'/seller', request.url)
+			self.assert_template_used('seller.html')
 
 			# User has two parking spaces now, see if this is true.
 			garage = current_user.get_all_parking_spots()
 			self.assertEqual(2, len(garage))
 
-	def cant_add_same_parking_space(self):
+	@patch('app.routes.validate_address')
+	def test_cant_add_same_parking_space(self, va_mock):
 		self.assertLoginReq('/addspots')
+		va_mock.return_value = False 
 
 		with self.client:
 			self.login('test@tester.com', 'test')
 
-			response = self.client.post('/addspots', data=dict(address='1022 Bay Ridge Parkway',
-				city='Brooklyn', state='NY', zipcode=11228, ps_size='LMV'), follow_redirects=True)
-			self.assertIn(b'/seller', request.url)
-
 			# Tries to add things in tester's garage as new spots
-			user_garage = current_user.get_parking_spots()
-			for spot in user_garage:
-				response = self.client.post('/addspots', data=dict(address=spot.address,
-					city=spot.city, state=spot.state, zipcode=spot.zipcode, ps_size=spot.ps_size), 
-					follow_redirects=True)
-				self.assertIn(b'You already added this spot to your garage', response.data)
+			response = self.client.post('/addspots', data=dict(address='2957 Broadway',
+				city='New York', state='NY', zipcode=10025, ps_size='SUV'), 
+				follow_redirects=True)
+
+			self.assertIn(b'You already added this spot to your garage', response.data)
+			self.assert_template_used('addspots.html')
 
 	def test_update_spots(self):
 		# Does nothing much for now because the updating spot implementation has been changed
@@ -79,15 +81,16 @@ class ParqSellerFunctTests(BaseTestCase):
 			response = self.client.get('/update_spot/1')
 			self.assertTrue(response.status_code, 200)
 
-	def cannot_update_spot_that_isnt_yours(self):
-		""" Tests to see that you cant update a spot that isnt yours """ 
+	def test_cannot_update_spot_that_isnt_yours(self):
+		""" Tests to see that you can't update a spot that isn't yours """ 
 		self.assertLoginReq('/update_spot/2')
 
 		with self.client:
 			self.login('test@tester.com', 'test')
 			response = self.client.get('/update_spot/2', follow_redirects=True)
-			self.assertIn(b'/notallowed', request.url)
-			self.assertIn(b'NO NOT ALLOWED!!!!', response.data)
+			self.assert_template_used('notallowed.html')
+			# self.assertIn(b'/notallowed', request.url)
+			# self.assertIn(b'NO NOT ALLOWED!!!!', response.data)
 
 class SellerFormValidationTests(BaseTestCase):
 	def test_invalid_vehicle_type(self):
@@ -100,15 +103,5 @@ class SellerFormValidationTests(BaseTestCase):
 				city='Brooklyn', state='NY', zipcode=11217, ps_size='LVC'), follow_redirects=True)
 			self.assertIn(b'/addspots', request.url)
 
-
-# This test will change because we haven't finished buyer functionality yet
-class ParqBuyerFunctTests(BaseTestCase):
-	def test_see_availible_parking_spots(self):
-		pass
-
-			
-
-#class BuyerFormValidationTests(BaseTestCase):
-
-if __name__ == '__main__':
-	unittest.main()
+# if __name__ == '__main__':
+# 	unittest.main()

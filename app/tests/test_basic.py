@@ -23,5 +23,5 @@ class ParqBasicTestCases(BaseTestCase):
 		response = self.client.get('/safjsdlkjfsdlkjf', follow_redirects=True)
 		self.assertEquals(response.status_code, 404)
 
-if __name__ == '__main__':
-	unittest.main()
+# if __name__ == '__main__':
+# 	unittest.main()

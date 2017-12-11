@@ -167,6 +167,3 @@ class UserLoginLogoutTests(BaseTestCase):
 	def test_logout_route_requires_login(self):
 		""" Tests to see that you have to be logged in to logout """ 
 		self.assertLoginReq('/logout')
-
-if __name__ == '__main__':
-	unittest.main()
