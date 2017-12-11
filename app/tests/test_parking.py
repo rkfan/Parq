@@ -86,7 +86,7 @@ class ParqSellerFunctTests(BaseTestCase):
 			self.assert_template_used('profile.html')
 
 	@patch('app.routes.validate_address')
-	def test_update_spots_valid(self, va_mock):
+	def test_update_spots_invalid(self, va_mock):
 		# Does nothing much for now because the updating spot implementation has been changed
 		self.assertLoginReq('/update_spot/1')
 		va_mock.return_value = False
