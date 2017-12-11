@@ -5,7 +5,7 @@ from flask_login import current_user
 from flask import request
 
 from base import BaseTestCase
-from app.models import User
+from app.models import User, Parking_Spot, Message
 from werkzeug import generate_password_hash, check_password_hash
 
 """ Tests User functionality"""
@@ -90,6 +90,10 @@ class UserViewsTests(BaseTestCase):
 			self.assertIn(b'seller', response.data)
 			self.assertIn(b'Update Profile', response.data)
 
+	def test_get_signup_page(self):
+		response = self.client.get('/signup')
+		self.assert_template_used('signup.html')
+
 	def test_seller_view(self):
 		""" Tests to see that the user can see the seller page if logged in """
 		self.assertLoginReq('/seller')
@@ -101,6 +105,49 @@ class UserViewsTests(BaseTestCase):
 			self.assertIn(b'This is test@tester.com\'s seller page', response.data)
 			self.assertIn(b'My Garage', response.data)
 			self.assertIn(b'Add Parking Space', response.data)
+
+	def test_message_page(self):
+		self.assertLoginReq('/messagepage')
+
+		with self.client:
+			self.login('test@tester.com', 'test')
+			response = self.client.get('/messagepage')
+			self.assert_template_used('messagepage.html')
+
+class UserMessagesTests(BaseTestCase):	
+	########################
+	#### Tests 			####
+	########################
+
+	def test_view_message(self):
+		self.assertLoginReq('/view_message/1')
+
+		with self.client:
+			self.login('test@tester.com', 'test')
+			response = self.client.get('/view_message/1')
+			self.assertIn(b'Hi I am interested in 2957 Broadway.', response.data)
+
+	def test_approve_message(self):
+		self.assertLoginReq('/view_message/1')
+
+		with self.client:
+			self.login('test@tester.com', 'test')
+			# Approve of it
+			response = self.client.post('/view_message/1')
+
+			# Check to see if availible
+			spot = Parking_Spot.get_parking_spot_by_id(1)
+			self.assertFalse(spot.availible)
+
+	def test_not_your_message(self):
+		self.assertLoginReq('/view_message/1')
+
+		with self.client:
+			# Get a new user
+			self.register('patrick', 'kennedy', 'patkennedy79@gmail.com', 'FlaskIsAwesome')
+			self.login('patkennedy79@gmail.com', 'FlaskIsAwesome')
+			response = self.client.get('/view_message/1')
+			self.assertIn(b'NO NOT ALLOWED!!!!', response.data)
 
 class UserLoginLogoutTests(BaseTestCase):
 	########################

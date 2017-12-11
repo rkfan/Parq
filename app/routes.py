@@ -76,7 +76,9 @@ def get_mapbox_features(parking_spots, lat_long, val_add):
       feature['properties']['description'] = "<strong><li style=\"color:black\">"+ "Parking Spot : "+ str(spot.psid) +"</li></strong><p><a href=\"message/"+str(spot.psid)+"\" target=\"_blank\" title=\"Opens in a new window\">"+ spot.address + ", " + spot.city + ", " + spot.state + " " + str(spot.zipcode)+ "  :  " + spot.ps_size+  "</a></p>"
 
       feat_dict[spot.address].append(feature)
-    else :
+    
+    # What does this do? (RF)
+    else:
       feature = {}
       feature['type'] = 'Feature'
       
@@ -170,7 +172,11 @@ def message_page():
 @login_required
 def view_message(message_id):
     form = ApprovalForm()
-    message = Message.get_message_by_id(message_id)
+    message = Message.get_message_by_id(message_id, current_user.uid)
+
+    # Not your message!!!
+    if message is None:
+      return render_template('notallowed.html')      
 
     if request.method == 'POST':
       message.approved = 1

@@ -4,7 +4,7 @@ from flask_testing import TestCase
 
 from app import app, db, gmaps
 import config
-from app.models import User, Parking_Spot
+from app.models import User, Parking_Spot, Message
 
 class BaseTestCase(TestCase):
 	""" A base test case."""
@@ -42,6 +42,7 @@ class BaseTestCase(TestCase):
 		db.session.add(User("Adam", "Admin", "admin@admin.com", "admin"))
 		db.session.add(Parking_Spot(1, "2957 Broadway", "New York", "NY", 10025, "SUV", 40.8079732, -73.9643219))	# Shake Shack
 		db.session.add(Parking_Spot(2, "2013 66 Street", "Brooklyn", "NY", 11204, "LMV", 40.6156401, -73.9860273))
+		db.session.add(Message(2, 1, 1, "Hi I am interested in 2957 Broadway."))
 		db.session.commit()
 
 	def tearDown(self):

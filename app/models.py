@@ -204,8 +204,8 @@ class Message(db.Model):
     self.expired = False
 
   @classmethod 
-  def get_message_by_id(cls, message_id):
-    return cls.query.filter_by(message_id=message_id).first()
+  def get_message_by_id(cls, message_id, uid):
+    return cls.query.filter_by(message_id=message_id, receiver_uid=uid).first()
 
   @classmethod
   def get_message_by_id_status(cls, message_id, ap_status, exp_status):

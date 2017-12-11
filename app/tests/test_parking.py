@@ -102,6 +102,3 @@ class SellerFormValidationTests(BaseTestCase):
 			response = self.client.post('/addspots', data=dict(address='1022 Bay Ridge Parkway',
 				city='Brooklyn', state='NY', zipcode=11217, ps_size='LVC'), follow_redirects=True)
 			self.assertIn(b'/addspots', request.url)
-
-# if __name__ == '__main__':
-# 	unittest.main()
