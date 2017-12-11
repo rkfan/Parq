@@ -71,3 +71,13 @@ class UserBuyerTestCases(BaseTestCase):
 			city='New York', state='NY', zipcode=10025, ps_size='SUV'), follow_redirects=True)
 			self.assert_template_used('buyer_search_results.html')
 			self.assertIn(b'Your search yielded no results :-(', response.data)
+
+	# def test_buyer_search_results(self):
+	# 	query = "40.8079732"+"%"+"-73.9643219"+"%"+"10025"+"%"+"2957 Broadway"
+	# 	url = '/buyer_search_results/' + query
+	# 	self.assertLoginReq(url)
+
+	# 	with self.client:
+	# 		self.login('admin@admin.com', 'admin')
+	# 		response = self.client.get(url)
+	# 		self.assert_template_used('buyer_search_map.html')

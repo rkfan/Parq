@@ -59,7 +59,8 @@ class HelperFunctionTestCases(BaseTestCase):
 		self.assertFalse(response)
 
 	def test_parse_search_query(self):
-		query = "40.8079732%-73.9643219%10025%2957 Broadway" # Stub query
+		#query = "40.8079732%-73.9643219%10025%2957 Broadway" # Stub query
+		query = "40.8079732"+"%"+"-73.9643219"+"%"+"10025"+"%"+"2957 Broadway"
 
 		ret = parse_search_query(query)
 

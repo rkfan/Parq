@@ -71,15 +71,34 @@ class ParqSellerFunctTests(BaseTestCase):
 			self.assertIn(b'You already added this spot to your garage', response.data)
 			self.assert_template_used('addspots.html')
 
-	def test_update_spots(self):
+	@patch('app.routes.validate_address')
+	def test_update_spots_valid(self, va_mock):
 		# Does nothing much for now because the updating spot implementation has been changed
-		# TODO UPDATE THIS TEST!!!
 		self.assertLoginReq('/update_spot/1')
+		va_mock.return_value = ('90 Church St, New York, NY 10007, USA', [40.7127847, -74.0102577])
 
 		with self.client:
 			self.login('test@tester.com', 'test')
 			response = self.client.get('/update_spot/1')
 			self.assertTrue(response.status_code, 200)
+			response = self.client.post('/update_spot/1', data=dict(address='90 Church Street', 
+				city='New York', state='NY', zipcode=10007), follow_redirects=True)
+			self.assert_template_used('profile.html')
+
+	@patch('app.routes.validate_address')
+	def test_update_spots_valid(self, va_mock):
+		# Does nothing much for now because the updating spot implementation has been changed
+		self.assertLoginReq('/update_spot/1')
+		va_mock.return_value = False
+
+		with self.client:
+			self.login('test@tester.com', 'test')
+			response = self.client.get('/update_spot/1')
+			self.assertTrue(response.status_code, 200)
+			response = self.client.post('/update_spot/1', data=dict(address='90 Fake Street', 
+				city='New York', state='NY', zipcode=10007), follow_redirects=True)
+			self.assertIn('Invalid Address', response.data)
+
 
 	def test_cannot_update_spot_that_isnt_yours(self):
 		""" Tests to see that you can't update a spot that isn't yours """ 
