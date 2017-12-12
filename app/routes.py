@@ -314,14 +314,14 @@ def requests():
     flash('You have no pending requests!')
     return redirect(url_for('buyer_profile'))
 
-  return render_template('requests.html', my_messages=unapproved_messages, get_user=User.get_user_name)
+  return render_template('requests.html', my_messages=unapproved_messages, get_user_name=User.get_user_name, get_user_mail=User.get_user_mail)
 
 @app.route('/view_requests/<message_id>')
 @login_required
 def view_requests(message_id):
   # TODO: Check to see if a user can see other user's messages because of this query?
   message = Message.get_message_by_id_status(message_id, 0, 0)
-  return render_template('view_requests.html', message=message, get_user=User.get_user_name)
+  return render_template('view_requests.html', message=message, get_user_name=User.get_user_name)
 
 @app.route('/approved_requests')
 @login_required

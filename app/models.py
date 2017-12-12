@@ -54,6 +54,13 @@ class User(db.Model):
     user = cls.query.filter_by(uid=id).first()
     return user.firstname+" "+ user.lastname 
 
+  @classmethod 
+  def get_user_mail(cls, id):
+    """ Returns a user's name by uid """ 
+    user = cls.query.filter_by(uid=id).first()
+    return user.email 
+
+
   @classmethod
   def get_user(cls, email):
     """ Queries to see if the user exists and returns the User object """
