@@ -2,7 +2,7 @@
  
 {% block content %}
 	<div class="jumbo" style="background-color: rgba(43, 43, 43, 0.7)">
-	<h2>From : {{ get_user(message.sender_uid) }}</h2>
+	<h2>Requested Owner : {{ get_user_name(message.receiver_uid) }}</h2>
 	<p style="padding-left: 4em;">Message: {{ message.message }}</p>
     </div>
 {% endblock %}

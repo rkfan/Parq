@@ -5,7 +5,7 @@
   <h2>My messages</h2>
     {% for m in my_messages %}
           <ul>
-              <li><a href="{{ url_for('view_requests', message_id=m.message_id) }}" style="color: white">Message sent from : {{ get_user(m.sender_uid) }}</a>
+              <li><a href="{{ url_for('view_requests', message_id=m.message_id) }}" style="color: white">Message To : {{ get_user_name(m.receiver_uid) }}   |   Contact : {{ get_user_mail(m.receiver_uid) }} </a>
           </ul>
     {% endfor %}
   </div>
